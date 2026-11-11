@@ -18,6 +18,7 @@
   --bg:#FAF6F2; --surface:#FFFFFF; --sunk:#F3EEF7;
   --lav:#EEE7FA; --lav-2:#DCCFF3; --plum:#68489A; --plum-2:#56397F; --on-plum:#FFFDF9;
   --pink:#FBE2EB; --rose:#B23F6A;
+  --pb1:#C3EEDA; --pb2:#FFD3BE; --pb3:#DACCFB; --pb4:#FFE7A8; --pbg1:#FFF7FB; --pbg2:#EEF5FF; --pdot:#D9CDEF;
   --ink:#2B2238; --muted:#6C6380; --line:#E9E1F0;
   --speak:#3D7BC7; --speak-bg:#E6F0FB; --good:#2C7A57; --good-bg:#E1F2E9; --warn:#93620F; --warn-bg:#FBEFD6; --bad:#AE3858; --bad-bg:#FBE5EC;
   --shadow:0 1px 2px rgba(62,40,96,.06),0 8px 24px rgba(62,40,96,.07);
@@ -29,6 +30,7 @@
   --bg:#1A1522; --surface:#241D2F; --sunk:#2B2338;
   --lav:#352A4A; --lav-2:#46385F; --plum:#C2A6F2; --plum-2:#D5C1F7; --on-plum:#1E1729;
   --pink:#4A2638; --rose:#F29BBE;
+  --pb1:#244638; --pb2:#4C2F22; --pb3:#372C57; --pb4:#463B1C; --pbg1:#241E2E; --pbg2:#1C2232; --pdot:#3B3350;
   --ink:#F2EDF8; --muted:#ADA3C0; --line:#3A3049;
   --speak:#8FBDF2; --speak-bg:#1F3047; --good:#7FD3A8; --good-bg:#1D3A2D; --warn:#EBC173; --warn-bg:#3D3020; --bad:#F2A0B7; --bad-bg:#45222F;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark;}}
@@ -36,6 +38,7 @@
   --bg:#1A1522; --surface:#241D2F; --sunk:#2B2338;
   --lav:#352A4A; --lav-2:#46385F; --plum:#C2A6F2; --plum-2:#D5C1F7; --on-plum:#1E1729;
   --pink:#4A2638; --rose:#F29BBE;
+  --pb1:#244638; --pb2:#4C2F22; --pb3:#372C57; --pb4:#463B1C; --pbg1:#241E2E; --pbg2:#1C2232; --pdot:#3B3350;
   --ink:#F2EDF8; --muted:#ADA3C0; --line:#3A3049;
   --speak:#8FBDF2; --speak-bg:#1F3047; --good:#7FD3A8; --good-bg:#1D3A2D; --warn:#EBC173; --warn-bg:#3D3020; --bad:#F2A0B7; --bad-bg:#45222F;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark;}
@@ -527,7 +530,9 @@ i.lg.ac{background:var(--pink)}
 .lv.done summary::-webkit-details-marker{display:none}
 .lv-sum{font-size:.82rem;color:var(--good);font-weight:500}
 .lv-jump{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);background:color-mix(in srgb,var(--surface) 70%,transparent);padding:8px 10px;border-radius:12px}
-.pmap-scroll{overflow-x:auto;overflow-y:hidden;padding-block:6px 2px}
+.pmap-scroll{overflow-x:auto;overflow-y:hidden;padding-block:16px 10px;border-radius:22px;border:1px solid color-mix(in srgb,var(--pdot) 60%,transparent);
+  background:radial-gradient(230px 200px at 6% 4%,var(--pb1),transparent 70%),radial-gradient(260px 230px at 96% 20%,var(--pb2),transparent 70%),radial-gradient(240px 260px at 4% 44%,var(--pb3),transparent 70%),radial-gradient(250px 220px at 96% 64%,var(--pb4),transparent 70%),radial-gradient(240px 230px at 8% 86%,var(--pb2),transparent 70%),radial-gradient(220px 200px at 92% 100%,var(--pb1),transparent 70%),radial-gradient(circle,var(--pdot) 1.3px,transparent 1.7px) 0 0/22px 22px,linear-gradient(180deg,var(--pbg1),var(--pbg2))}
+.lv.locked .pmap-scroll{background:radial-gradient(circle,var(--pdot) 1.3px,transparent 1.7px) 0 0/22px 22px,var(--sunk)}
 .pmap{position:relative;width:360px;margin:0 auto}
 .pmap-line{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .pl-todo{fill:none;stroke:var(--lav-2);stroke-width:7;stroke-linecap:round;stroke-dasharray:1 14;opacity:.9}
@@ -932,6 +937,7 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .btn.danger{background:#B23F6A;color:#FFFFFF}
 .dkbox{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:14px;padding:10px 14px}
 .ptb{display:flex;gap:6px;flex-wrap:wrap}
+.rnbox input{font:inherit;width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -2319,7 +2325,9 @@ VIEWS.home = () => {
     ${voicePanel()}
     <div class="btns"><button class="btn sm ghost" data-act="sfx" aria-pressed="${SFX.on}">צלילי משוב: ${SFX.on ? 'פועלים' : 'כבויים'}</button></div>
   </div>` : PANEL === 'profile' ? `<div class="card settings setc">
-    <div class="btns wrapb"><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost danger" data-act="reset-ask">איפוס ההתקדמות</button></div>
+    <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost danger" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn ghost danger" data-act="del-ask">מחיקת החשבון</button></div>
+    ${V.rn ? `<div class="confirm rnbox"><label class="lbl" for="rnname">כינוי חדש</label><input id="rnname" maxlength="24" value="${esc(P.name)}" autocomplete="off"><div class="btns"><button class="btn" data-act="rn-yes">${V.busy ? 'שומרת…' : 'שמירה'}</button><button class="btn ghost" data-act="rn-no">ביטול</button></div></div>` : ''}
+    ${V.delc ? `<div class="confirm" role="alert"><p>למחוק את החשבון של ${esc(P.name)}${P.cloud ? ' מכל המכשירים' : ''}? כל ההתקדמות והכוכבים יימחקו, ואי אפשר לבטל את זה.</p><div class="btns"><button class="btn danger-solid" data-act="del-yes">${V.busy ? 'מוחקת…' : 'כן, למחוק'}</button><button class="btn ghost" data-act="del-no">ביטול</button></div></div>` : ''}
     ${V.confirm ? `<div class="confirm" role="alert"><p>למחוק את כל ההתקדמות של ${esc(P.name)}? אי אפשר לבטל את זה. פרופילים אחרים לא ייפגעו.</p><div class="btns"><button class="btn danger-solid" data-act="reset-yes">כן, לאפס</button><button class="btn ghost" data-act="reset-no">ביטול</button></div></div>` : ''}
   </div>` : ''}</section>`;
 };
@@ -3267,6 +3275,7 @@ function render(top) {
   if (V.name === 'home') setTimeout(animateMascot, 300);
   if (V.name === 'quiz' && Q && Q.o.track) trackHop();
   if (P && P.tour && !TOUR) {
+    if (V.name === 'home' && P.diag.done && P.tour.home && !P.tour.pstar && document.querySelector('.pnode.skip')) setTimeout(() => { if (V.name === 'home' && !TOUR && !P.tour.pstar && !NS && !HELP) startTour('pstar'); }, 1100);
     if (V.name === 'home' && P.diag.done && !P.tour.home) setTimeout(() => { if (V.name === 'home' && !TOUR && !P.tour.home && !NS && !HELP) startTour('home'); }, 1100);
     const tk = tourKey();
     if (tk && !P.tour[tk]) setTimeout(() => { if (!TOUR && tourKey() === tk && !P.tour[tk] && !NS && !HELP && !GS && !SHEET) startTour(tk); }, V.name === 'quiz' ? 600 : 800);
@@ -3310,7 +3319,7 @@ const HELPTX = {
   qdone: ['סוף סבב', ['הכוכבים מראים כמה הצלחת.', 'אפשר לשחק שוב או להמשיך.']],
   results: ['התוצאות שלך', ['מה שכבר יודעות, מדלגות.', 'המסלול נבנה לפי מה שצריך ללמוד.']],
   stageres: ['בוחן קצר', ['צלילים שלא הצלחת נלמד עכשיו.', 'אחר כך ייפתח הבוחן הבא.']],
-  home: ['המסלול', ['לוחצים על העיגול המהבהב כדי להתחיל.', 'כל צעד שמסיימות פותח את הבא.', 'רחפי עם העכבר מעל צעד כדי לראות את שמו.']],
+  home: ['המסלול', ['לוחצים על העיגול המהבהב כדי להתחיל.', 'כל צעד שמסיימות פותח את הבא.', 'כוכב ליד צעד: הבוחן הראה שאת כבר יודעת את החומר, אז דילגנו הלאה.', 'רחפי עם העכבר מעל צעד כדי לראות את שמו.']],
   phon: ['דפוסי קריאה', ['איך אותיות נשמעות יחד.', 'מה שכבר בשליטה לא חוזר לתרגול.']],
   unit: ['דפוס קריאה', ['שיעור קצר, ואז תרגול.', 'שליטה = 90% דיוק בשני מפגשים לפחות.']],
   lesson: ['שיעור', ['מקשיבים, קוראים בקול ובודקים.', 'לחיצה על מילה משמיעה אותה.']],
@@ -3343,6 +3352,7 @@ const TOURS = {
   multi: [['.dw-say', 'הקשיבי'], ['.dw-pick', 'סמני'], ['[data-act=dcheck]', 'בדיקה']],
   find: [['.ppar.focus, .pas', 'מצאי בפסקה'], ['[data-act=fcheck]', 'בדיקה']],
   pick: [['.pk-box, [data-act=ppick]', 'בחרי שתיים'], ['[data-act=pcheck]', 'בדיקה']],
+  pstar: [['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה']],
   v_cards: [['.flip', 'הפכי'], ['[data-act=cknow]', 'יודעת'], ['[data-act=cagain]', 'לא יודעת']],
   v_lesson: [['.lesson-card .btn.soft, .lesson-card .spk', 'הקשיבי'], ['[data-act=lnext]', 'הבא']],
   v_aclearn: [['.audrow', 'הקשיבי'], ['[data-act=anext]', 'הבא']],
@@ -3353,7 +3363,7 @@ const TOURS = {
   v_games: [['.gtile', 'בחרי משחק']],
   v_read: [['.book', 'בחרי ספר']],
   v_dict: [['.dstep.cur, .dstep', 'מתחילים כאן']],
-  home: [['.pnode.cur', 'מתחילים כאן'], ['.starchip', 'כוכבים על כל הצלחה'], ['#lbmini', 'לוח המובילות'], ['#nav', 'עוד תרגול ומשחקים'], ['.helpbtn', 'עזרה בכל עמוד']],
+  home: [['.pnode.cur', 'מתחילים כאן'], ['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה'], ['.starchip', 'כוכבים על כל הצלחה'], ['#lbmini', 'לוח המובילות'], ['#nav', 'עוד תרגול ומשחקים'], ['.helpbtn', 'עזרה בכל עמוד']],
   quiz: [['.qcard .spk, .listen-pad .spk', 'הקשבה'], ['.opts, .aopts', 'בוחרים תשובה'], ['.dk', 'לא בטוחה? כאן']]
 };
 function tourKey() {
@@ -3370,7 +3380,7 @@ function tourKey() {
 }
 function startTour(name) {
   const steps = TOURS[name].filter(([sel]) => { const e = document.querySelector(sel); return e && e.getClientRects().length; }); if (!steps.length) return;
-  P.tour[name] = 1; save(); TOUR = { name, steps, i: 0 }; tourShow();
+  P.tour[name] = 1; if (name === 'home' && steps.some(x => x[0].includes('skip'))) P.tour.pstar = 1; save(); TOUR = { name, steps, i: 0 }; tourShow();
 }
 function tourShow() {
   if (!TOUR) return;
@@ -3524,7 +3534,38 @@ const ACT = {
   stagecheck: () => startStageCheck(),
   rediag: () => { P.diag.done = false; P.diag.state = newDiagState(); save(); go('diagintro'); },
   panel: el => { PANEL = PANEL === el.dataset.k ? null : el.dataset.k; V.confirm = false; render(); },
-  'reset-ask': () => { V.confirm = true; render(); },
+  'reset-ask': () => { V.confirm = true; V.rn = V.delc = false; render(); },
+  'rn-ask': () => { V.rn = true; V.confirm = V.delc = false; render(); setTimeout(() => { const i = document.getElementById('rnname'); if (i) { i.focus(); i.select(); } }, 30); },
+  'rn-no': () => { V.rn = false; render(); },
+  'rn-yes': async () => {
+    if (V.busy) return; const nm = (document.getElementById('rnname').value || '').trim().replace(/\s+/g, ' ');
+    if (nm.length < 2 || nm.length > 24) { toast('כינוי באורך 2 עד 24 תווים'); return; }
+    if (nm === P.name) { V.rn = false; render(); return; }
+    if (Object.values(DB.profiles).some(p => p.id !== P.id && p.name.trim().toLowerCase() === nm.toLowerCase())) { toast('יש כבר פרופיל בשם הזה'); return; }
+    if (P.cloud) {
+      V.busy = true; render();
+      try { await CLOUD.rpc('rename_student', { p_token: P.cloud, p_name: nm }); }
+      catch (e) { V.busy = false; render(); toast(/name_taken/.test(e.message) ? 'הכינוי הזה תפוס. נסי אחר.' : /rename_student/.test(e.message) || e.status === 404 ? 'האפשרות עוד לא הופעלה באתר' : 'אין חיבור. נסי שוב.'); return; }
+      V.busy = false;
+    }
+    P.name = nm; V.rn = false; save(); lbQueue(); CLOUD.lbAt = 0; toast('הכינוי עודכן'); render();
+  },
+  'del-ask': () => { V.delc = true; V.rn = V.confirm = false; render(); },
+  'del-no': () => { V.delc = false; render(); },
+  'del-yes': async () => {
+    if (V.busy) return;
+    if (P.cloud) {
+      V.busy = true; render();
+      try { clearTimeout(CLOUD.h); CLOUD.dirty = false; await CLOUD.rpc('delete_self', { p_token: P.cloud }); }
+      catch (e) { if (!/bad_token/.test(e.message)) { V.busy = false; render(); toast(/delete_self/.test(e.message) || e.status === 404 ? 'האפשרות עוד לא הופעלה באתר' : 'אין חיבור. נסי שוב.'); return; } }
+    }
+    const id = P.id;
+    if (LB.db && LB.uid && !LB.ro && LB.exists) { try { LB.db.doc('lb/' + LB.uid).update({ ['p' + id]: null }); } catch (e) { } }
+    if (LB.sent) delete LB.sent['p' + id];
+    delete DB.profiles[id]; P = null; DB.cur = null; CLOUD.lbAt = 0;
+    try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { }
+    toast('החשבון נמחק'); go('profiles');
+  },
   'reset-no': () => { V.confirm = false; render(); },
   'reset-yes': () => { const keep = { id: P.id, name: P.name, created: P.created }; const np = newProfile(P.name); Object.assign(np, keep); DB.profiles[P.id] = np; P = np; save(); toast('ההתקדמות אופסה'); go('diagintro'); },
   next: () => doNext(),
