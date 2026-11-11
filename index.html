@@ -958,6 +958,8 @@ body[data-bg=sky]{background:linear-gradient(165deg,color-mix(in srgb,#CFE3FB va
 body[data-bg=pink]{background:linear-gradient(165deg,color-mix(in srgb,#FAD2E1 var(--bgk),var(--bg)),color-mix(in srgb,#FDE6D8 var(--bgk),var(--bg))) fixed}
 body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mix(in srgb,#F7C9DD var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 100% 30%,color-mix(in srgb,#C9E6FA var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 0% 70%,color-mix(in srgb,#CDEFD9 var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 100% 100%,color-mix(in srgb,#FFE6A8 var(--bgk),transparent),transparent 70%),var(--bg) fixed}
 .bgpick{display:flex;flex-direction:column;gap:8px}.bgpick>b{font-size:.95rem}.bgsw{display:flex;gap:10px;flex-wrap:wrap}.bgsw button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}.bgsw button[aria-pressed=true]{border-color:var(--plum);box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 30%,transparent)}
+.ns-best{display:flex;align-items:center;justify-content:center;gap:5px;margin:0;color:var(--muted)}.ns-best svg{width:16px;height:16px;color:#F2B544}.ns-best b{color:var(--ink)}
+.pathok.best svg{color:#F2B544}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -2516,7 +2518,7 @@ VIEWS.qdone = () => {
   return `<section class="block card donecard">${OWL(p >= 70 ? 'cheer' : '')}<span class="eyebrow">${esc(o.title || '')}</span><div class="stars3">${[0, 1, 2].map(i => `<span class="st ${i < rating ? 'on' : ''}" style="--d:${(i * 0.18).toFixed(2)}s">${I.star}</span>`).join('')}</div>${s.perfect ? '<p class="bonus">סבב מושלם! +3 כוכבים בונוס</p>' : ''}<div class="score"><b>${s.ok}</b><span>/${s.n}</span></div><h1 class="h1">${msg}</h1>
     ${avg ? `<p>זמן ממוצע לתשובה נכונה: <b>${avg} שנ׳</b>${P.speed ? ` · השיא שלך: ${(P.speed / 1000).toFixed(1)} שנ׳` : ''}</p>` : ''}
     ${s.newMast.length ? `<div class="newmast">${I.star}<div><b>שליטה חדשה!</b><p>${s.newMast.map(id => en(uLabel(UM[id]))).join(', ')}</p></div></div>` : ''}
-    ${s.path ? (s.path.pass ? `<div class="pathok">${PIC.route}<b>${s.path.jump ? 'דילגת על השלב!' : 'התקדמת במסלול!'}</b></div>` : `<p class="note">כדי להתקדם במסלול צריך ${Math.round(s.path.thr * 100)}% תשובות נכונות. נסי שוב, את קרובה.</p>`) : ''}
+    ${s.path && s.path.retry ? `<div class="pathok best">${I.star}<b>${s.path.rec ? `שיא חדש! ${Math.round(s.path.best * 100)}%` : `השיא שלך נשמר: ${Math.round(s.path.best * 100)}%`}</b></div>` : s.path ? (s.path.pass ? `<div class="pathok">${PIC.route}<b>${s.path.jump ? 'דילגת על השלב!' : 'התקדמת במסלול!'}</b></div>` : `<p class="note">כדי להתקדם במסלול צריך ${Math.round(s.path.thr * 100)}% תשובות נכונות. נסי שוב, את קרובה.</p>`) : ''}
     ${s.gUnlock ? `<div class="newmast lvup">${PIC.crown}<div><b>שלב ${s.gUnlock} נפתח!</b></div></div>` : ''}
     ${s.levelUp != null ? `<div class="newmast lvup">${PIC.crown}<div><b>שלב ${s.levelUp + 1} הושלם!</b><p>${esc(LV[s.levelUp].name)}</p></div></div>` : ''}
     ${(s.newDict || []).length ? `<div class="newmast">${I.star}<div><b>מיומנות מילון בשליטה!</b><p>${s.newDict.map(id => DLM[id].short).join(', ')}</p></div></div>` : ''}
@@ -2524,7 +2526,7 @@ VIEWS.qdone = () => {
     ${(s.reassessD || []).length ? `<p class="note">${s.reassessD.map(id => DLM[id].short).join(', ')} חזרה לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
     ${s.reassess.length ? `<p class="note">${s.reassess.map(id => en(uLabel(UM[id]))).join(', ')} חזר לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
     ${(s.dk || []).length ? `<div class="dkbox"><b>סימנת ${s.dk.length === 1 ? 'פריט אחד' : s.dk.length + ' פריטים'} כ"לא יודעת"</b><button class="btn soft" data-act="dkthis">חזרה על מה שלא ידעתי</button></div>` : ''}
-    <div class="btns center">${s.path ? `<button class="btn" data-act="back">המשך במסלול</button>${!s.path.pass && o.again ? '<button class="btn ghost" data-act="again">נסי שוב</button>' : ''}` : `${s.gUnlock ? `<button class="btn" data-act="glnext">לשלב ${s.gUnlock}</button>` : ''}${o.again ? `<button class="btn ${s.gUnlock ? 'ghost' : ''}" data-act="again">סבב נוסף</button>` : ''}<button class="btn ${o.again || s.gUnlock ? 'ghost' : ''}" data-act="back">המשך</button>`}</div></section>`;
+    <div class="btns center">${s.path ? `<button class="btn" data-act="back">המשך במסלול</button>${(!s.path.pass || s.path.retry) && o.again ? `<button class="btn ghost" data-act="again">${s.path.retry ? 'לתרגל שוב' : 'נסי שוב'}</button>` : ''}` : `${s.gUnlock ? `<button class="btn" data-act="glnext">לשלב ${s.gUnlock}</button>` : ''}${o.again ? `<button class="btn ${s.gUnlock ? 'ghost' : ''}" data-act="again">סבב נוסף</button>` : ''}<button class="btn ${o.again || s.gUnlock ? 'ghost' : ''}" data-act="back">המשך</button>`}</div></section>`;
 };
 
 VIEWS.sight = () => {
@@ -3021,7 +3023,7 @@ function startNode(n, quick) {
   if (!n) return;
   const thr = n.t === 'boss' ? 0.8 : n.t === 'rd' ? 0.5 : quick ? 0.85 : n.t === 'dc' && n.id === 'tech' ? 0.83 : 0.6;
   const tag = { stage: 'stage:' + n.id, pl: (quick || P.units[n.id] && P.units[n.id].st === 'nt' ? 'ucheck:' : 'pl:') + n.id, sg: 'sight:' + n.id, ac: 'acad:' + n.id, dc: 'dict:' + n.id, rd: 'read:' + n.id, st: 'strat', ps: 'pas:' + n.id, mix: 'mix:' + n.key, boss: 'boss:' + n.k }[n.t];
-  PN = { key: n.key, tag, thr }; ensurePath(); P.path.at = n.key; save();
+  PN = { key: n.key, tag, thr, again: nodeState(n) !== 'todo' }; ensurePath(); P.path.at = n.key; save();
   const o = (title, extra = {}) => ({ kind: 'mixed', title, tag, back: { name: 'home', scrollPath: true }, again: () => startNode(n, quick), ...extra });
   if (n.t === 'stage') startStageCheck(n.id);
   else if (n.t === 'pl') { if (tag.startsWith('ucheck:')) startStageCheck(STAGES.findIndex(s => s.includes(n.id)), [n.id]); else startLesson(n.id); }
@@ -3049,7 +3051,9 @@ function markNode(key) {
 function pathFinish(o, sum) {
   if (!PN || !o.tag || o.tag !== PN.tag) return;
   const sc = sum.n ? sum.ok / sum.n : 0, pass = sc >= PN.thr;
-  sum.path = { pass, thr: PN.thr, jump: PN.key.startsWith('jump:') };
+  const B = P.path.best || (P.path.best = {}), prev = B[PN.key];
+  B[PN.key] = Math.max(prev || 0, sc);
+  sum.path = { pass, thr: PN.thr, jump: PN.key.startsWith('jump:'), retry: !!PN.again, best: B[PN.key], rec: prev != null && sc > prev, sc };
   sum.pn = PN;
   if (pass) { const up = markNode(PN.key); if (up != null) sum.levelUp = up; }
   o.back = { name: 'home', scrollPath: true };
@@ -3096,7 +3100,7 @@ function nodeSheet() {
   return `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet nsheet" role="dialog" aria-label="${esc(nodeTitle(n))}">
     <span class="ns-ic t-${n.t}">${nodeIcon(n)}</span><span class="eyebrow">${NKIND[n.t]} · שלב ${n.k + 1}</span><h2 class="ns-t">${n.t === 'pl' ? en(uLabel(UM[n.id])) : esc(nodeTitle(n))}</h2>
     <p class="ns-d">${esc(nodeDesc(n))}</p>
-    ${s === 'skip' ? '<p class="chip ok">כבר יודעת: דילגנו על הצעד הזה</p>' : s === 'done' ? '<p class="chip ok">הושלם</p>' : ''}
+    ${s === 'skip' ? '<p class="chip ok">כבר יודעת: דילגנו על הצעד הזה</p>' : s === 'done' ? '<p class="chip ok">הושלם</p>' : ''}${P.path.best && P.path.best[n.key] != null ? `<p class="ns-best">${I.star}השיא שלך: <b>${Math.round(P.path.best[n.key] * 100)}%</b></p>` : ''}
     <div class="btns center">${nt ? `<button class="btn" data-act="pquick">בוחן קצר (מומלץ)</button><button class="btn ghost" data-act="pstart">לשיעור</button>`
       : `<button class="btn" data-act="pstart">${s === 'todo' ? 'התחילי' : 'לתרגל שוב'}</button>${isQ ? '<button class="btn ghost" data-act="pquick">כבר יודעת? בוחן קצר</button>' : ''}`}</div>
     <button class="link small" data-act="sheet-close">סגירה</button></div>`;
