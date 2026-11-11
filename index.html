@@ -2374,8 +2374,14 @@ h += `<div class="aopts">${q.opts.map((w, j) => { const st = q.answered ? (j ===
 const DTRK = () => [I.abc, I.cards, I.cap, I.book, PIC.doc, PIC.flag];
 function partCount(st) {
   if (!st || st.part > 5) return null;
-  const pk = st.part === 1 ? '1:' + st.stage : '' + st.part, done = (st.pc || {})[pk] || 0;
-  const rem = st.part === 1 ? Math.max(1, (st.order.length - st.ui) * 2 - st.ua.length) : st.part === 2 ? st.sl.length - st.si : st.part === 3 ? st.al.length - st.ai : st.part === 4 ? st.ml.length - st.mi : st.cl.length - st.ci;
+  const pc = st.pc || {};
+  let done, rem;
+  if (st.part === 1) {
+    /* the whole sounds part, across all its stages */
+    done = Object.keys(pc).filter(k => k.startsWith('1:')).reduce((a, k) => a + pc[k], 0);
+    rem = Math.max(1, (st.order.length - st.ui) * 2 - st.ua.length);
+    for (let g = st.stage + 1; g < STAGES.length; g++) rem += stageUnits(g, st.only).length * 2;
+  } else { done = pc['' + st.part] || 0; rem = st.part === 2 ? st.sl.length - st.si : st.part === 3 ? st.al.length - st.ai : st.part === 4 ? st.ml.length - st.mi : st.cl.length - st.ci; }
   const total = done + Math.max(0, rem); return total ? [Math.min(done + 1, total), total] : null;
 }
 function diagTrack(st) {
@@ -2384,7 +2390,9 @@ function diagTrack(st) {
   /* the popcorn moves a little toward the next dot with every answer in the part */
   const frac = pc ? Math.min(0.9, (pc[0] - 1) / Math.max(1, pc[1])) : (Q && Q.trk === cur && Q.trkF) || 0;
   if (Q && pc) Q.trkF = frac;
-  const mp = cur >= N - 1 ? 0 : 100 - (cur + frac) * seg;
+  let mp = cur >= N - 1 ? 0 : 100 - (cur + frac) * seg;
+  /* only forward: never move back toward the start */
+  if (Q) { if (Q.trkMin != null) mp = Math.min(mp, Q.trkMin); Q.trkMin = mp; }
   return `<div class="dtrack" dir="ltr" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="${cur + 1}" aria-label="חלק ${Math.min(cur + 1, 5)} מתוך 5"><div class="dt-line"><span style="left:${mp.toFixed(2)}%"></span></div>${ic.map((x, i) => `<span class="dt-dot ${i < cur ? 'done' : i === cur ? 'cur' : ''}" style="left:${pos(i)}%">${i < cur ? I.check : x}</span>`).join('')}<span class="dt-mk" id="dtmk" data-i="${cur}" data-p="${mp.toFixed(2)}" style="left:${mp.toFixed(2)}%">${OWL('mk')}</span>${pc ? `<span class="dt-n en" style="left:${pos(cur)}%">${pc[0]}/${pc[1]}</span>` : ''}</div>`;
 }
 function trackHop() {
