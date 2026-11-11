@@ -742,6 +742,14 @@ button.starchip{cursor:pointer}
 @media (max-width:460px){.who-n{display:none}.slowt{padding:6px 10px;font-size:.8rem}.who{padding:4px}}
 @media (max-width:370px){.starchip{padding:6px 8px}}
 .hsheet{text-align:center}
+.psheet{display:flex;flex-direction:column;gap:14px}
+.ps-head{display:flex;align-items:center;gap:12px}
+.ps-head>div{flex:1;min-width:0}
+.ps-head p{display:flex;align-items:center;gap:4px;margin:2px 0 0}
+.ps-head p svg{width:15px;height:15px;color:#F2B544}
+.avatar.lg{width:52px;height:52px;font-size:1.4rem}
+.psheet .wrapb{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.psheet .wrapb .btn{width:100%}
 .hs-ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--lav);color:var(--plum);font:700 1.6rem var(--f-en)}
 .hs-l{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;max-width:40ch;text-align:start}
 .hs-l li{background:var(--sunk);border-radius:12px;padding:9px 12px}
@@ -2312,7 +2320,7 @@ VIEWS.home = () => {
   <section class="block">${lbMini()}</section>
   <section class="block card prog"><h2 class="h2">הישגים <small class="muted">${Object.keys(ACH).filter(k => P.ach[k]).length}/${Object.keys(ACH).length}</small></h2>
     <div class="ach">${Object.entries(ACH).sort((x, y) => (!!P.ach[y[0]]) - (!!P.ach[x[0]])).map(([k, l]) => `<div class="badge ${P.ach[k] ? 'on' : ''}">${I.star}<span>${l}</span></div>`).join('')}</div></section>
-  <section class="block hbtns"><div class="btnrow">${[['prog', 'ההתקדמות שלי'], ['voice', 'קול ההקראה'], ['profile', 'הפרופיל שלי']].map(([k, l]) => `<button class="btn ghost ${PANEL === k ? 'on' : ''}" data-act="panel" data-k="${k}" aria-expanded="${PANEL === k}">${l}</button>`).join('')}</div>
+  <section class="block hbtns"><div class="btnrow">${[['prog', 'ההתקדמות שלי'], ['voice', 'קול ההקראה']].map(([k, l]) => `<button class="btn ghost ${PANEL === k ? 'on' : ''}" data-act="panel" data-k="${k}" aria-expanded="${PANEL === k}">${l}</button>`).join('')}</div>
   ${PANEL === 'prog' ? `<div class="card prog progc">
     <div class="stats">
       <div class="stat"><b>${ws.mastered}</b><span>מילים בשליטה</span></div>
@@ -2324,13 +2332,16 @@ VIEWS.home = () => {
     </div></div>` : PANEL === 'voice' ? `<div class="card settings setc">
     ${voicePanel()}
     <div class="btns"><button class="btn sm ghost" data-act="sfx" aria-pressed="${SFX.on}">צלילי משוב: ${SFX.on ? 'פועלים' : 'כבויים'}</button></div>
-  </div>` : PANEL === 'profile' ? `<div class="card settings setc">
+  </div>` : ''}</section>`;
+};
+function profSheet() {
+  return `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet psheet" role="dialog" aria-label="הפרופיל שלי"><div class="ps-head"><span class="avatar lg" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><div><h2 class="ns-t">${esc(P.name)}</h2><p class="muted">${I.star} ${P.stars || 0} כוכבים</p></div><button class="icon-btn ps-x" data-act="sheet-close" aria-label="סגירה">${I.close}</button></div>
     <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost danger" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn ghost danger" data-act="del-ask">מחיקת החשבון</button></div>
     ${V.rn ? `<div class="confirm rnbox"><label class="lbl" for="rnname">כינוי חדש</label><input id="rnname" maxlength="24" value="${esc(P.name)}" autocomplete="off"><div class="btns"><button class="btn" data-act="rn-yes">${V.busy ? 'שומרת…' : 'שמירה'}</button><button class="btn ghost" data-act="rn-no">ביטול</button></div></div>` : ''}
     ${V.delc ? `<div class="confirm" role="alert"><p>למחוק את החשבון של ${esc(P.name)}${P.cloud ? ' מכל המכשירים' : ''}? כל ההתקדמות והכוכבים יימחקו, ואי אפשר לבטל את זה.</p><div class="btns"><button class="btn danger-solid" data-act="del-yes">${V.busy ? 'מוחקת…' : 'כן, למחוק'}</button><button class="btn ghost" data-act="del-no">ביטול</button></div></div>` : ''}
     ${V.confirm ? `<div class="confirm" role="alert"><p>למחוק את כל ההתקדמות של ${esc(P.name)}? אי אפשר לבטל את זה. פרופילים אחרים לא ייפגעו.</p><div class="btns"><button class="btn danger-solid" data-act="reset-yes">כן, לאפס</button><button class="btn ghost" data-act="reset-no">ביטול</button></div></div>` : ''}
-  </div>` : ''}</section>`;
-};
+</div>`;
+}
 
 VIEWS.phon = () => {
   const path = phonPath(), act = path.slice(0, 2), rest = path.slice(2), mast = UNITS.filter(u => P.units[u.id].st === 'mast'), nsg = nextStageIdx();
@@ -2538,7 +2549,7 @@ function gTile(k, ic, name) {
   const r = (P.glv || {})[k] || {};
   return `<button class="gtile" data-act="gsheet" data-k="${k}"><span class="gt-ic">${ic}</span><b>${esc(name)}</b><span class="gt-lv" aria-hidden="true">${[1, 2, 3].map(l => `<i class="${(r[l] || 0) >= 0.8 ? 'on' : ''}"></i>`).join('')}</span></button>`;
 }
-let GS = null, GSL = null, HELP = false;
+let GS = null, GSL = null, HELP = false, PROF = false;
 function gameSheet() {
   const k = GS, dict = k.startsWith('d-'), id = dict ? k.slice(2) : k, G = dict ? DGAMES.find(g => g.id === id) : GAMES.find(g => g.id === id); if (!G) return '';
   const r = (P.glv || {})[k] || {}, un = gUnl(k), sel = Math.min(GSL || un, un);
@@ -3258,11 +3269,11 @@ const NAV = [['home', 'מסלול', PIC.route], ['phon', 'דפוסים', I.abc],
 const FOCUS = ['teacher', 'stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
 function render(top) {
   const app = document.getElementById('app'), nav = document.getElementById('nav');
-  const head = `<header class="top"><div class="brand">${V.name === 'diagintro' || V.name === 'profiles' || !P ? '' : `<span class="logo">${POPLOGO}</span>`}<span class="brand-t"><b class="en">Popcorn English</b><small>קריאה אקדמית</small></span></div><div class="top-r">${P ? `${V.name === 'quiz' ? `<span class="starchip" title="הכוכבים שלך">${I.star}<b>${P.stars || 0}</b></span>` : `<button class="starchip" data-act="go" data-v="lb" title="לוח המובילות">${I.star}<b>${P.stars || 0}</b></button>`}<button class="slowt ${SLOW ? 'on' : ''}" data-act="slow" aria-pressed="${SLOW}">${SLOW ? I.check : TURTLE}<span>שמיעה איטית</span></button><button class="who" data-act="switch" title="החלפת סטודנטית"><span class="avatar sm" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><span class="who-n">${esc(P.name)}</span></button>` : ''}${cloudBadge()}<button class="helpbtn" data-act="help" aria-label="עזרה">?</button></div></header>`;
+  const head = `<header class="top"><div class="brand">${V.name === 'diagintro' || V.name === 'profiles' || !P ? '' : `<span class="logo">${POPLOGO}</span>`}<span class="brand-t"><b class="en">Popcorn English</b><small>קריאה אקדמית</small></span></div><div class="top-r">${P ? `${V.name === 'quiz' ? `<span class="starchip" title="הכוכבים שלך">${I.star}<b>${P.stars || 0}</b></span>` : `<button class="starchip" data-act="go" data-v="lb" title="לוח המובילות">${I.star}<b>${P.stars || 0}</b></button>`}<button class="slowt ${SLOW ? 'on' : ''}" data-act="slow" aria-pressed="${SLOW}">${SLOW ? I.check : TURTLE}<span>שמיעה איטית</span></button><button class="who" data-act="prof" title="הפרופיל שלי" aria-label="הפרופיל שלי"><span class="avatar sm" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><span class="who-n">${esc(P.name)}</span></button>` : ''}${cloudBadge()}<button class="helpbtn" data-act="help" aria-label="עזרה">?</button></div></header>`;
   let main;
   try { main = (P || V.name === 'profiles' || V.name === 'teacher' ? (VIEWS[V.name] || VIEWS.home)() : VIEWS.profiles()); }
   catch (e) { console.error(e); main = `<section class="block card"><p>משהו השתבש בתצוגה. חזרי לדף הבית.</p><button class="btn" data-act="go" data-v="home">לדף הבית</button></section>`; }
-  app.innerHTML = head + `<main class="wrap">${main}</main><footer class="credit"><span class="cr-logo">${POPLOGO}</span><span class="en" dir="ltr">Noa Shalom, English Instructor</span><b class="en" dir="ltr">Popcorn English</b></footer>` + (SHEET ? sheetView() : '') + (NS ? nodeSheet() : '') + (GS && P ? gameSheet() : '') + (HELP ? helpSheet() : '');
+  app.innerHTML = head + `<main class="wrap">${main}</main><footer class="credit"><span class="cr-logo">${POPLOGO}</span><span class="en" dir="ltr">Noa Shalom, English Instructor</span><b class="en" dir="ltr">Popcorn English</b></footer>` + (SHEET ? sheetView() : '') + (NS ? nodeSheet() : '') + (GS && P ? gameSheet() : '') + (HELP ? helpSheet() : '') + (PROF && P ? profSheet() : '');
   const showNav = P && P.diag.done && !FOCUS.includes(V.name);
   nav.hidden = !showNav; document.body.classList.toggle('has-nav', !!showNav);
   if (showNav) nav.innerHTML = NAV.map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
@@ -3529,10 +3540,10 @@ const ACT = {
     if (n.length < 2 || !/^\d{4}$/.test(pin)) { toast('כתבי כינוי (2 תווים לפחות) וקוד של 4 ספרות'); return; }
     try { const t = await CLOUD.rpc('sign_up', { p_name: n, p_pin: pin }); cloudEnter(null, t, n); } catch (e) { toast(cloudErr(e)); }
   },
-  switch: () => { save(); if (CLOUD.on) { clearTimeout(CLOUD.h); CLOUD.push(); } P = null; DB.cur = null; try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { } go('profiles'); },
+  switch: () => { PROF = false; save(); if (CLOUD.on) { clearTimeout(CLOUD.h); CLOUD.push(); } P = null; DB.cur = null; try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { } go('profiles'); },
   diag: () => startDiag(),
   stagecheck: () => startStageCheck(),
-  rediag: () => { P.diag.done = false; P.diag.state = newDiagState(); save(); go('diagintro'); },
+  rediag: () => { PROF = false; P.diag.done = false; P.diag.state = newDiagState(); save(); go('diagintro'); },
   panel: el => { PANEL = PANEL === el.dataset.k ? null : el.dataset.k; V.confirm = false; render(); },
   'reset-ask': () => { V.confirm = true; V.rn = V.delc = false; render(); },
   'rn-ask': () => { V.rn = true; V.confirm = V.delc = false; render(); setTimeout(() => { const i = document.getElementById('rnname'); if (i) { i.focus(); i.select(); } }, 30); },
@@ -3564,10 +3575,10 @@ const ACT = {
     if (LB.sent) delete LB.sent['p' + id];
     delete DB.profiles[id]; P = null; DB.cur = null; CLOUD.lbAt = 0;
     try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { }
-    toast('החשבון נמחק'); go('profiles');
+    PROF = false; toast('החשבון נמחק'); go('profiles');
   },
   'reset-no': () => { V.confirm = false; render(); },
-  'reset-yes': () => { const keep = { id: P.id, name: P.name, created: P.created }; const np = newProfile(P.name); Object.assign(np, keep); DB.profiles[P.id] = np; P = np; save(); toast('ההתקדמות אופסה'); go('diagintro'); },
+  'reset-yes': () => { const keep = { id: P.id, name: P.name, created: P.created }; const np = newProfile(P.name); Object.assign(np, keep); DB.profiles[P.id] = np; P = np; save(); PROF = false; toast('ההתקדמות אופסה'); go('diagintro'); },
   next: () => doNext(),
   mixed: () => startMixed(false),
   opt: el => answerQ(+el.dataset.i),
@@ -3604,6 +3615,7 @@ const ACT = {
   glvpick: el => { GSL = +el.dataset.l; SFX.play('tap'); render(); },
   gplay: () => { const k = GS, l = Math.min(GSL || gUnl(k), gUnl(k)); GS = null; GSL = null; if (k.startsWith('d-')) startDictGame(k.slice(2), l); else startGame(k, l); },
   glnext: () => { const g = V.o.glv, l = V.sum.gUnlock; if (g.k.startsWith('d-')) startDictGame(g.k.slice(2), l); else startGame(g.k, l); },
+  prof: () => { PROF = true; V.rn = V.delc = V.confirm = false; SFX.play('tap'); render(); },
   help: () => { HELP = true; SFX.play('tap'); render(); },
   tour: () => { HELP = false; if (V.name !== 'home') go('home'); else render(); setTimeout(() => startTour('home'), 450); },
   lbtab: el => { V.tab = el.dataset.k; render(); },
@@ -3615,7 +3627,7 @@ const ACT = {
   voicetest: () => TTS.say('The main idea of the text is clear. Research shows that reading every day can improve your English.'),
   sayall: () => { const T = TEXTS.find(t => t.id === V.id); TTS.say(T.s.map(x => x[0]).join(' ')); },
   tok: el => { SHEET = { w: el.dataset.w, he: el.dataset.he }; TTS.say(el.dataset.w); render(); },
-  'sheet-close': () => { SHEET = null; NS = null; GS = null; GSL = null; HELP = false; render(); },
+  'sheet-close': () => { SHEET = null; NS = null; GS = null; GSL = null; HELP = false; PROF = false; V.rn = V.delc = V.confirm = false; render(); },
   pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key) && !nodeOpen(n, cur)) { toast(n.t === 'boss' ? 'הבוחן נפתח אחרי כל הצעדים בשלב' : 'הצעד הזה ייפתח בשלב הבא'); return; } SFX.play('tap'); NS = n.key; render(); },
   pstart: () => { const n = findNode(NS); NS = null; startNode(n, false); },
   pquick: () => { const n = findNode(NS); NS = null; startNode(n, true); },
@@ -3703,7 +3715,7 @@ function boot() {
     if (e.key === 'Enter' && e.target && e.target.id === 'dsearch') { e.preventDefault(); ACT.dsearch(); }
     if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('flip')) { e.preventDefault(); ACT.flip(); }
     if (e.key === 'Escape' && TOUR) { tourEnd(); return; }
-    if (e.key === 'Escape' && (SHEET || NS || GS || HELP)) { SHEET = null; NS = null; GS = null; HELP = false; render(); }
+    if (e.key === 'Escape' && (SHEET || NS || GS || HELP || PROF)) { SHEET = null; NS = null; GS = null; HELP = false; PROF = false; render(); }
   });
   if (DB.cur && DB.profiles[DB.cur]) { enterProfile(DB.cur); V = { name: P.diag.done ? 'home' : 'diagintro' }; }
   render(true);
