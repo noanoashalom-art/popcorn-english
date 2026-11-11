@@ -923,6 +923,13 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .cloudin input.pin{font-family:var(--f-en);letter-spacing:.4em;direction:ltr;text-align:center;font-size:1.3rem}
 .cloudst{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--good-bg);color:var(--good);font-size:1rem}
 .cloudst.off{background:var(--warn-bg);color:var(--warn)}
+.tlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.tlist li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;flex-wrap:wrap}
+.t-main{flex:1;min-width:140px;display:flex;flex-direction:column}
+.t-main small{color:var(--muted);display:flex;align-items:center;gap:4px}
+.t-main small svg{width:14px;height:14px;color:#F2B544}
+.t-conf{display:flex;gap:6px}
+.btn.danger{background:#B23F6A;color:#FFFFFF}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -1477,7 +1484,7 @@ const CLOUD = {
     if (!P || !P.cloud || !this.dirty) return; if (this.busy) { this.queue(); return; }
     this.busy = true; this.dirty = false; const p = P, e = lbEntry(p);
     try { await this.rpc('save_progress', { p_token: p.cloud, p_data: p, p_stars: e.s, p_week: e.wk, p_week_stars: e.w, p_level: e.lv }); this.state = 'ok'; }
-    catch (err) { this.dirty = true; this.state = 'off'; setTimeout(() => this.queue(), 15000); }
+    catch (err) { if (/bad_token/.test(err.message)) { delete p.cloud; this.state = 'ok'; toast('החשבון הזה נמחק. ההתקדמות נשמרת רק במכשיר.'); } else { this.dirty = true; this.state = 'off'; setTimeout(() => this.queue(), 15000); } }
     this.busy = false; const b = document.getElementById('cloudst'); if (b) b.outerHTML = cloudBadge();
   },
   async board(force) {
@@ -2198,7 +2205,8 @@ VIEWS.profiles = () => {
     <label class="lbl" for="cpin">קוד אישי (4 ספרות)</label><input id="cpin" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="current-password" placeholder="••••" class="pin">
     <button class="btn big-btn" data-act="${(V.ctab || 'in') === 'in' ? 'clogin' : 'csignup'}">${(V.ctab || 'in') === 'in' ? 'כניסה' : 'יצירת חשבון'}</button>
     ${(V.ctab || 'in') === 'up' ? '<p class="muted small">זכרי את הכינוי והקוד. איתם נכנסים מכל מכשיר.</p>' : ''}
-  </section>` : ''}
+  </section>
+  <section class="block center"><button class="link small" data-act="go" data-v="teacher">כניסת מורה</button></section>` : ''}
   <section class="block card" ${CLOUD.on ? 'hidden' : ''}>
     <h2 class="h2">${list.length ? 'סטודנטית חדשה' : 'בואי נתחיל'}</h2>
     <label class="lbl" for="pname">שם או כינוי</label>
@@ -3205,12 +3213,12 @@ VIEWS.passage = () => {
 /* ===================== RENDER & EVENTS ===================== */
 let SHEET = null, timerH = null; const OPEN = new Set(); let PANEL = null;
 const NAV = [['home', 'מסלול', PIC.route], ['phon', 'דפוסים', I.abc], ['sight', 'מילים', I.cards], ['acad', 'אקדמי', I.cap], ['dict', 'מילון', DICT_ICON], ['read', 'ספרייה', I.book], ['games', 'משחקים', I.play]];
-const FOCUS = ['stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
+const FOCUS = ['teacher', 'stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
 function render(top) {
   const app = document.getElementById('app'), nav = document.getElementById('nav');
   const head = `<header class="top"><div class="brand">${V.name === 'diagintro' || V.name === 'profiles' || !P ? '' : `<span class="logo">${POPLOGO}</span>`}<span class="brand-t"><b class="en">Popcorn English</b><small>קריאה אקדמית</small></span></div><div class="top-r">${P ? `${V.name === 'quiz' ? `<span class="starchip" title="הכוכבים שלך">${I.star}<b>${P.stars || 0}</b></span>` : `<button class="starchip" data-act="go" data-v="lb" title="לוח המובילות">${I.star}<b>${P.stars || 0}</b></button>`}<button class="slowt ${SLOW ? 'on' : ''}" data-act="slow" aria-pressed="${SLOW}">${SLOW ? I.check : TURTLE}<span>שמיעה איטית</span></button><button class="who" data-act="switch" title="החלפת סטודנטית"><span class="avatar sm" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><span class="who-n">${esc(P.name)}</span></button>` : ''}${cloudBadge()}<button class="helpbtn" data-act="help" aria-label="עזרה">?</button></div></header>`;
   let main;
-  try { main = (P || V.name === 'profiles' ? (VIEWS[V.name] || VIEWS.home)() : VIEWS.profiles()); }
+  try { main = (P || V.name === 'profiles' || V.name === 'teacher' ? (VIEWS[V.name] || VIEWS.home)() : VIEWS.profiles()); }
   catch (e) { console.error(e); main = `<section class="block card"><p>משהו השתבש בתצוגה. חזרי לדף הבית.</p><button class="btn" data-act="go" data-v="home">לדף הבית</button></section>`; }
   app.innerHTML = head + `<main class="wrap">${main}</main><footer class="credit"><span class="cr-logo">${POPLOGO}</span><span class="en" dir="ltr">Noa Shalom, English Instructor</span><b class="en" dir="ltr">Popcorn English</b></footer>` + (SHEET ? sheetView() : '') + (NS ? nodeSheet() : '') + (GS && P ? gameSheet() : '') + (HELP ? helpSheet() : '');
   const showNav = P && P.diag.done && !FOCUS.includes(V.name);
@@ -3411,6 +3419,15 @@ function lbMini() {
   const rows = lbRows('w'), top = rows.slice(0, 3), me = rows.findIndex(r => r.me);
   return `<button class="card lbmini" id="lbmini" data-act="go" data-v="lb"><span class="lbm-ic">${PIC.trophy}</span><span class="lbm-t"><b>לוח המובילות</b><small>${me >= 0 && rows[me].w > 0 ? `המקום שלך השבוע: ${me + 1}` : 'השבוע'}</small></span><span class="lbm-top">${top.map((r, i) => `<span class="lbm-av m${i}" title="${esc(r.n)}">${esc(r.n.trim()[0] || '?')}</span>`).join('')}</span>${I.arrow}</button>`;
 }
+/* teacher page (standalone site only): list and delete students */
+let TCH = { pass: null, rows: null, del: null, busy: false };
+VIEWS.teacher = () => {
+  const head = `<button class="back" data-act="tback">${I.arrow}<span>חזרה</span></button><section class="block"><h1 class="h1">כניסת מורה</h1></section>`;
+  if (!CLOUD.on) return head + '<section class="block card"><p>הניהול זמין רק באתר העצמאי.</p></section>';
+  if (!TCH.rows) return head + `<section class="block card cloudin"><label class="lbl" for="tpass">סיסמת מורה</label><input id="tpass" type="password" autocomplete="current-password"><button class="btn big-btn" data-act="tlogin">${TCH.busy ? 'בודקת…' : 'כניסה'}</button></section>`;
+  const fmt = t => t ? new Date(t).toLocaleDateString('he-IL') : '';
+  return head + `<section class="block"><p class="muted">${TCH.rows.length} סטודנטיות</p><ul class="tlist">${TCH.rows.map(r => `<li><span class="avatar" aria-hidden="true">${esc((r.name || '?').trim()[0] || '?')}</span><span class="t-main"><b>${esc(r.name)}</b><small>${I.star}${+r.stars || 0} · שלב ${+r.level || 1} · עודכן ${fmt(r.updated_at)}</small></span>${TCH.del === r.id ? `<span class="t-conf"><button class="btn sm danger" data-act="tdel2" data-id="${esc(r.id)}">למחוק לצמיתות</button><button class="btn sm ghost" data-act="tdel0">ביטול</button></span>` : `<button class="btn sm ghost" data-act="tdel" data-id="${esc(r.id)}">מחיקה</button>`}</li>`).join('')}</ul></section>`;
+};
 VIEWS.lb = () => {
   if (CLOUD.on) CLOUD.board();
   const tab = V.tab || 'w', rows = lbRows(tab);
@@ -3441,6 +3458,21 @@ const ACT = {
     enterProfile(el.dataset.id); go(P.diag.done ? 'home' : 'diagintro');
   },
   ctab: el => { V.ctab = el.dataset.k; render(); },
+  tback: () => { TCH = { pass: null, rows: null, del: null, busy: false }; go(P ? 'home' : 'profiles'); },
+  tlogin: async () => {
+    const pw = (document.getElementById('tpass').value || ''); if (!pw) return;
+    TCH.busy = true; render();
+    try { TCH.rows = await CLOUD.rpc('admin_list', { p_pass: pw }); TCH.pass = pw; } catch (e) { toast(/bad_admin/.test(e.message) ? 'סיסמה שגויה' : /admin_list/.test(e.message) || e.status === 404 ? 'צריך להריץ קודם את teacher-setup.sql ב-Supabase' : 'אין חיבור. נסי שוב.'); }
+    TCH.busy = false; render();
+  },
+  tdel: el => { TCH.del = el.dataset.id; render(); },
+  tdel0: () => { TCH.del = null; render(); },
+  tdel2: async el => {
+    const id = el.dataset.id;
+    try { await CLOUD.rpc('admin_delete', { p_pass: TCH.pass, p_id: id }); TCH.rows = TCH.rows.filter(r => r.id !== id); TCH.del = null; CLOUD.lbAt = 0; toast('נמחק'); }
+    catch (e) { toast('המחיקה נכשלה. נסי שוב.'); }
+    render();
+  },
   clogin: async () => {
     const n = (document.getElementById('cname').value || '').trim(), pin = (document.getElementById('cpin').value || '').trim();
     if (!n || !/^\d{4}$/.test(pin)) { toast('כתבי כינוי וקוד של 4 ספרות'); return; }
