@@ -930,6 +930,8 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .t-main small svg{width:14px;height:14px;color:#F2B544}
 .t-conf{display:flex;gap:6px}
 .btn.danger{background:#B23F6A;color:#FFFFFF}
+.dkbox{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:14px;padding:10px 14px}
+.ptb{display:flex;gap:6px;flex-wrap:wrap}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -1707,6 +1709,7 @@ function newKeys() {
 }
 function buildMixed(n = 8) {
   const out = [], used = new Set(); const add = q => { if (q && out.length < n) out.push(q); };
+  dkKeys().slice(0, 2).forEach(k => { const q = dkQ(k); if (q) { const w = q.onAns; q.onAns = ok => { if (w) w(ok); if (ok) delete P.dk[k]; }; add(q); } });
   dueKeys().filter(k => wordOK(keyWord(k))).slice(0, Math.ceil(n * 0.5)).forEach(k => { used.add(k); add(qFromKey(k)); });
   activeUnits().forEach(u => { const s = P.units[u.id]; add(qPhon(u, rnd(phonTypes(u, s.lvl)), rnd(unitWords(u, s.lvl)), s.lvl)); });
   const mast = UNITS.filter(u => P.units[u.id].st === 'mast');
@@ -1734,6 +1737,35 @@ function qMeaningEntry(e, flash) {
   if (flash) { q.audio = null; } return q;
 }
 
+/* ===================== "לא יודעת" bank: what she marked as unknown comes back for review ===================== */
+function dkKey(q) {
+  if (!q) return null; if (q.dkk) return q.dkk;
+  for (const r of (q.rec || [])) { if (r.k) return r.k; if (r.u && r.w) return 'p:' + r.u + ':' + r.w; if (r.d) return 'd:' + r.d; }
+  return null;
+}
+function dkAdd(k) { if (!k || !P) return; (P.dk || (P.dk = {}))[k] = now(); if (Q) (Q.dkSet || (Q.dkSet = [])).includes(k) || Q.dkSet.push(k); }
+const dkKeys = () => Object.keys((P && P.dk) || {}).sort((a, b) => P.dk[a] - P.dk[b]);
+function dkQ(k) {
+  const p = k.split(':'); let q = null;
+  try {
+    if (p[0] === 'd') { const L = LBANKS[p[1]]; if (L) { q = rnd(L.flatMap(b => BANKS[b].items))(); q.variant = null; } }
+    else if (p[0] === 'pv' || p[0] === 'pc') { const Pa = PAS.find(x => String(x.id) === p[1]), it = Pa && (p[0] === 'pv' ? Pa.vocab : Pa.qs)[+p[2]]; if (it) q = pasQ(Pa, it, p[0] === 'pv' ? 'v' : 'c', +p[2]); }
+    else if (p[0] === 'c') { const c = DIAG_CTX[+p[1]]; if (c) q = qCtx(c); }
+    else if (p[0] === 'r') { const T = TEXTS.find(t => String(t.id) === p[1]), x = T && T.q[+p[2]]; if (x) { q = mcq({ prompt: en(x.q, 'qen'), opts: x.o.map(enOpt), correct: x.o[0], help: `<p>${esc(x.qh)}</p><ol>${x.o.map((o, i) => `<li>${en(o)} · ${esc(x.oh[i])}</li>`).join('')}</ol>`, why: x.why, rec: [{ s: 'ctx' }] }); q.ctx = textBlock(T, false); } }
+    else if (p[0] === 'p') { q = qFromKey(k); if (!q && UM[p[1]]) { const u = UM[p[1]]; q = qPhon(u, rnd(['listen', 'contains']), { w: p[2], he: '' }, P.units[u.id].lvl); } }
+    else q = qFromKey(k);
+  } catch (e) { q = null; }
+  if (!q) { delete P.dk[k]; return null; }
+  q.dkk = k; return q;
+}
+function startDk(keys) {
+  keys = (keys || dkKeys()).filter(k => P.dk && P.dk[k]).slice(0, 10);
+  const qs = keys.map(dkQ).filter(Boolean);
+  if (!qs.length) { toast('אין כרגע מה לחזור עליו'); go('home'); return; }
+  qs.forEach(q => { const was = q.onAns; q.onAns = ok => { if (was) was(ok); if (ok && P.dk) delete P.dk[q.dkk]; }; });
+  startQuiz(arraySrc(shuf(qs)), { kind: 'mixed', title: 'חזרה על מה שלא ידעתי', back: { name: 'home' }, again: () => startDk() });
+}
+
 /* ===================== QUIZ RUNNER ===================== */
 let Q = null;
 function arraySrc(qs) {
@@ -1758,6 +1790,7 @@ function answerQ(i) {
   const dk = i === -1, ok = !dk && i === q.ans;
   q.answered = true; q.sel = i; q.ok = ok;
   if (ok) { Q.ok++; Q.times.push(now() - Q.t0); }
+  if (dk) dkAdd(dkKey(q));
   if (!Q.o.diag) { if (ok) { Q.combo = (Q.combo || 0) + 1; Q.gain = Q.combo >= 3 ? 2 : 1; P.stars = (P.stars || 0) + Q.gain; } else { Q.combo = 0; Q.gain = 0; } q.combo = Q.combo; }
   applyRec(q, ok); if (ok && q.onOk) q.onOk(); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok, dk); save();
   if (Q.o.feedback === false) {
@@ -1769,7 +1802,7 @@ function answerQ(i) {
   celebrate(ok, q);
 }
 function finishQuiz() {
-  const o = Q.o; const sum = { ok: Q.ok, n: Q.n, newMast: uniq(Q.newMast || []), reassess: uniq(Q.reassess || []), newDict: uniq(Q.newDict || []), reassessD: uniq(Q.reassessD || []), times: Q.times };
+  const o = Q.o; const sum = { dk: (Q.dkSet || []).filter(k => P.dk && P.dk[k]), ok: Q.ok, n: Q.n, newMast: uniq(Q.newMast || []), reassess: uniq(Q.reassess || []), newDict: uniq(Q.newDict || []), reassessD: uniq(Q.reassessD || []), times: Q.times };
   if (!o.diag && Q.n >= 4 && Q.ok === Q.n) { P.stars = (P.stars || 0) + 3; sum.perfect = true; }
   if (o.kind) { P.hist.unshift({ t: now(), l: o.title, ok: Q.ok, n: Q.n }); P.hist = P.hist.slice(0, 40); }
   if (o.game) { P.games++; P.glog[o.game] = (P.glog[o.game] || 0) + 1; }
@@ -1872,7 +1905,7 @@ function diagSrc(st) {
           st.part = 5; continue;
         }
         if (st.part === 5) {
-          if (st.ci < st.cl.length) { const q = qCtx(DIAG_CTX[st.cl[st.ci]]); q.dm = { p: 5 }; return q; }
+          if (st.ci < st.cl.length) { const q = qCtx(DIAG_CTX[st.cl[st.ci]]); q.dkk = 'c:' + st.cl[st.ci]; q.dm = { p: 5 }; return q; }
           return null;
         }
         return null;
@@ -1984,7 +2017,7 @@ function lessonPractice(id) {
 }
 function startReading(id) {
   const T = TEXTS.find(t => t.id === id);
-  const qs = T.q.map(x => { const q = mcq({ prompt: en(x.q, 'qen'), opts: x.o.map(enOpt), correct: x.o[0], help: `<p>${esc(x.qh)}</p><ol>${x.o.map((o, i) => `<li>${en(o)} · ${esc(x.oh[i])}</li>`).join('')}</ol>`, why: x.why, rec: [{ s: 'ctx' }] }); q.ctx = textBlock(T, false); return q; });
+  const qs = T.q.map((x, xi) => { const q = mcq({ dkk: 'r:' + id + ':' + xi, prompt: en(x.q, 'qen'), opts: x.o.map(enOpt), correct: x.o[0], help: `<p>${esc(x.qh)}</p><ol>${x.o.map((o, i) => `<li>${en(o)} · ${esc(x.oh[i])}</li>`).join('')}</ol>`, why: x.why, rec: [{ s: 'ctx' }] }); q.ctx = textBlock(T, false); return q; });
   startQuiz(arraySrc(qs), { kind: 'read', area: 'read', title: 'קריאה: ' + T.title, tag: 'read:' + id, back: { name: 'read' },
     onFinish: s => { const sc = s.n ? s.ok / s.n : 0; P.reads[id] = Math.max(P.reads[id] || 0, sc); const passed = TEXTS.filter(t => t.lvl === T.lvl && (P.reads[t.id] || 0) >= 1).length; if (passed >= 1 && T.lvl >= P.rlvl && P.rlvl < 3 && sc >= 1) P.rlvl = T.lvl + 1; } });
 }
@@ -2269,7 +2302,7 @@ VIEWS.home = () => {
   const skills = Object.keys(SK_NAMES).map(k => [k, skillPct(k)]);
   const st = streak();
   return `<section class="block greet"><div class="greet-row"><div class="greet-txt"><h1 class="h1">היי ${esc(P.name)}</h1><p class="muted">${st > 1 ? `${I.flame}${st} ימים ברצף · ` : ''}${Math.round(pr.all * 100)}%</p></div><div class="starbank">${I.star}<b>${P.stars || 0}</b><small>כוכבים</small></div></div>${bar(pr.all, 'thick')}</section>
-  <section class="block path-wrap"><div class="path-top"><h2 class="h2">${PIC.route}<span>המסלול שלי</span></h2>${due ? `<button class="btn sm soft" data-act="mixed">חזרה יומית</button>` : ''}</div>${pathHtml()}</section>
+  <section class="block path-wrap"><div class="path-top"><h2 class="h2">${PIC.route}<span>המסלול שלי</span></h2><span class="ptb">${dkKeys().length ? `<button class="btn sm soft" data-act="dkall">חזרה: לא ידעתי · ${dkKeys().length}</button>` : ''}${due ? `<button class="btn sm soft" data-act="mixed">חזרה יומית</button>` : ''}</span></div>${pathHtml()}</section>
   <section class="block">${lbMini()}</section>
   <section class="block card prog"><h2 class="h2">הישגים <small class="muted">${Object.keys(ACH).filter(k => P.ach[k]).length}/${Object.keys(ACH).length}</small></h2>
     <div class="ach">${Object.entries(ACH).sort((x, y) => (!!P.ach[y[0]]) - (!!P.ach[x[0]])).map(([k, l]) => `<div class="badge ${P.ach[k] ? 'on' : ''}">${I.star}<span>${l}</span></div>`).join('')}</div></section>
@@ -2457,6 +2490,7 @@ VIEWS.qdone = () => {
     ${s.techDone ? `<div class="newmast">${I.star}<div><b>סיימת את מדריך המילון!</b></div></div>` : ''}
     ${(s.reassessD || []).length ? `<p class="note">${s.reassessD.map(id => DLM[id].short).join(', ')} חזרה לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
     ${s.reassess.length ? `<p class="note">${s.reassess.map(id => en(uLabel(UM[id]))).join(', ')} חזר לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
+    ${(s.dk || []).length ? `<div class="dkbox"><b>סימנת ${s.dk.length === 1 ? 'פריט אחד' : s.dk.length + ' פריטים'} כ"לא יודעת"</b><button class="btn soft" data-act="dkthis">חזרה על מה שלא ידעתי</button></div>` : ''}
     <div class="btns center">${s.path ? `<button class="btn" data-act="back">המשך במסלול</button>${!s.path.pass && o.again ? '<button class="btn ghost" data-act="again">נסי שוב</button>' : ''}` : `${s.gUnlock ? `<button class="btn" data-act="glnext">לשלב ${s.gUnlock}</button>` : ''}${o.again ? `<button class="btn ${s.gUnlock ? 'ghost' : ''}" data-act="again">סבב נוסף</button>` : ''}<button class="btn ${o.again || s.gUnlock ? 'ghost' : ''}" data-act="back">המשך</button>`}</div></section>`;
 };
 
@@ -2473,7 +2507,7 @@ VIEWS.cards = () => {
     <div class="face front"><div class="big">${en(w.w)}</div></div>
     <div class="face fback"><div class="big">${en(w.w)}</div><p class="he-mean">${esc(w.he)}</p></div></div>
     <div class="audrow center">${spk(w.w, 'השמעה', 'lg')}${spkSlow(w.w)}</div>
-    <div class="btns center"><button class="btn" data-act="cknow">${I.check}<span>אני יודעת</span></button><button class="btn ghost" data-act="cagain">לתרגל שוב</button></div></section>`;
+    <div class="btns center"><button class="btn" data-act="cknow">${I.check}<span>אני יודעת</span></button><button class="btn ghost" data-act="cagain">לא יודעת</button></div></section>`;
 };
 VIEWS.acad = () => {
   const cur = curAcad(), due = dueKeys().filter(k => k.startsWith('a:')).length;
@@ -3139,12 +3173,12 @@ function pasQ(Pa, it, kind, idx) {
 }
 function startPasVocab(id) {
   const Pa = PASM[id];
-  startQuiz(arraySrc(Pa.vocab.map((v, i) => pasQ(Pa, v, 'v', i))), { kind: 'read', area: 'read', title: 'Vocabulary · ' + Pa.title, tag: 'pasv:' + id, back: { name: 'passage', id }, again: () => startPasVocab(id),
+  startQuiz(arraySrc(Pa.vocab.map((v, i) => Object.assign(pasQ(Pa, v, 'v', i), { dkk: 'pv:' + id + ':' + i }))), { kind: 'read', area: 'read', title: 'Vocabulary · ' + Pa.title, tag: 'pasv:' + id, back: { name: 'passage', id }, again: () => startPasVocab(id),
     onFinish: s => { const r = pasRec(id); r.vs = Math.max(r.vs || 0, s.n ? s.ok / s.n : 0); } });
 }
 function startPasComp(id) {
   const Pa = PASM[id];
-  startQuiz(arraySrc(Pa.qs.map((x, i) => pasQ(Pa, x, 'c', i))), { kind: 'read', area: 'read', title: 'Comprehension · ' + Pa.title, tag: 'pas:' + id, back: { name: 'passage', id }, again: () => startPasComp(id),
+  startQuiz(arraySrc(Pa.qs.map((x, i) => Object.assign(pasQ(Pa, x, 'c', i), { dkk: 'pc:' + id + ':' + i }))), { kind: 'read', area: 'read', title: 'Comprehension · ' + Pa.title, tag: 'pas:' + id, back: { name: 'passage', id }, again: () => startPasComp(id),
     onFinish: s => { const r = pasRec(id); r.cs = Math.max(r.cs || 0, s.n ? s.ok / s.n : 0); } });
 }
 function answerCustom(ok) {
@@ -3281,7 +3315,7 @@ const HELPTX = {
   unit: ['דפוס קריאה', ['שיעור קצר, ואז תרגול.', 'שליטה = 90% דיוק בשני מפגשים לפחות.']],
   lesson: ['שיעור', ['מקשיבים, קוראים בקול ובודקים.', 'לחיצה על מילה משמיעה אותה.']],
   sight: ['מילים שכיחות', ['מילים שמופיעות בכל טקסט.', 'לומדים לזהות אותן מיד.']],
-  cards: ['כרטיסיות', ['נוגעים בכרטיסייה כדי להפוך.', '"אני יודעת" או "לתרגל שוב".']],
+  cards: ['כרטיסיות', ['נוגעים בכרטיסייה כדי להפוך.', '"אני יודעת" או "לא יודעת". המילים שלא ידעת יתורגלו מיד בסוף.']],
   acad: ['אוצר מילים אקדמי', ['מילים וביטויים ממבחנים.', 'לומדים ביטוי כיחידה אחת.']],
   aclearn: ['ביטוי חדש', ['מקשיבים, קוראים את המשפט ועוברים הלאה.']],
   games: ['משחקים', ['נוגעים במשחק כדי לבחור שלב.', '80% בשלב פותח את השלב הבא.']],
@@ -3309,7 +3343,7 @@ const TOURS = {
   multi: [['.dw-say', 'הקשיבי'], ['.dw-pick', 'סמני'], ['[data-act=dcheck]', 'בדיקה']],
   find: [['.ppar.focus, .pas', 'מצאי בפסקה'], ['[data-act=fcheck]', 'בדיקה']],
   pick: [['.pk-box, [data-act=ppick]', 'בחרי שתיים'], ['[data-act=pcheck]', 'בדיקה']],
-  v_cards: [['.flip', 'הפכי'], ['[data-act=cknow]', 'יודעת'], ['[data-act=cagain]', 'עוד פעם']],
+  v_cards: [['.flip', 'הפכי'], ['[data-act=cknow]', 'יודעת'], ['[data-act=cagain]', 'לא יודעת']],
   v_lesson: [['.lesson-card .btn.soft, .lesson-card .spk', 'הקשיבי'], ['[data-act=lnext]', 'הבא']],
   v_aclearn: [['.audrow', 'הקשיבי'], ['[data-act=anext]', 'הבא']],
   v_text: [['.reading .tok', 'נגיעה = תרגום'], ['[data-act=sayall]', 'הקראה'], ['[data-act=rstart]', 'לשאלות']],
@@ -3465,6 +3499,8 @@ const ACT = {
     try { TCH.rows = await CLOUD.rpc('admin_list', { p_pass: pw }); TCH.pass = pw; } catch (e) { toast(/bad_admin/.test(e.message) ? 'סיסמה שגויה' : /admin_list/.test(e.message) || e.status === 404 ? 'צריך להריץ קודם את teacher-setup.sql ב-Supabase' : 'אין חיבור. נסי שוב.'); }
     TCH.busy = false; render();
   },
+  dkall: () => startDk(),
+  dkthis: () => startDk(V.sum && V.sum.dk),
   tdel: el => { TCH.del = el.dataset.id; render(); },
   tdel0: () => { TCH.del = null; render(); },
   tdel2: async el => {
@@ -3515,7 +3551,7 @@ const ACT = {
   sg: el => startSightGroup(+el.dataset.i),
   flip: () => { V.flip = !V.flip; const f = document.querySelector('.flip'); if (f) f.classList.toggle('on', V.flip); else render(); },
   cknow: () => { const k = 's:' + V.deck[V.i]; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; cardNext(); },
-  cagain: () => { const w = V.deck[V.i]; itemRec('s:' + w, false); if (!V.again.includes(w)) { V.again.push(w); V.deck.push(w); } cardNext(); },
+  cagain: () => { const w = V.deck[V.i]; itemRec('s:' + w, false); dkAdd('s:' + w); if (!V.again.includes(w)) { V.again.push(w); V.deck.push(w); } cardNext(); },
   sdue: () => { const ks = dueKeys().filter(k => k.startsWith('s:')).slice(0, 10); startQuiz(arraySrc(ks.map(qFromKey)), { kind: 'sight', area: 'sight', title: 'חזרה: מילים שכיחות', back: { name: 'sight' } }); },
   ac: el => startAcad(+el.dataset.i),
   anext: () => { if (V.i < V.list.length - 1) { V.i++; V.he = false; render(); } else { V.list.forEach(id => { const k = 'a:' + id; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; }); save(); acadQuiz(V.c, V.list); } },
@@ -3545,7 +3581,7 @@ const ACT = {
   pjump: el => startJump(+el.dataset.k),
   fpick: el => { const q = Q && Q.q; if (!q || q.answered || q.t !== 'find') return; q.sel = el.dataset.w; render(); },
   fcheck: () => { const q = Q.q; if (q.t === 'find' && q.sel) answerCustom(q.find.includes(q.sel)); },
-  fdk: () => { const q = Q.q; if (q.t === 'find') q.sel = null; answerCustom(false); },
+  fdk: () => { const q = Q.q; dkAdd(dkKey(q)); if (q.t === 'find') q.sel = null; answerCustom(false); },
   ppick: el => { const q = Q.q, i = +el.dataset.i; if (q.answered) return; if (q.sel.includes(i)) q.sel = q.sel.filter(x => x !== i); else { q.sel.push(i); if (q.sel.length > q.need) q.sel.shift(); } render(); },
   pcheck: () => { const q = Q.q; if (q.sel.length === q.need) answerCustom(q.sel.every(i => q.valid.includes(q.opts[i]))); },
   kw: () => { Q.q.showKw = true; render(); },
@@ -3593,7 +3629,7 @@ Object.assign(ACT, {
 });
 function cardNext() {
   if (V.i < V.deck.length - 1) { V.i++; V.flip = false; render(); const w = V.deck[V.i]; setTimeout(() => TTS.say(w), 150); }
-  else { save(); sightQuiz(V.g, uniq(V.deck)); }
+  else { save(); sightQuiz(V.g, V.again.length ? uniq(V.again) : uniq(V.deck)); }
 }
 
 function boot() {
