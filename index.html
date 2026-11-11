@@ -95,6 +95,7 @@ p{margin:0}
 .btn.ghost-l{background:transparent;color:var(--on-plum);border:1.5px solid color-mix(in srgb,var(--on-plum) 45%,transparent)}
 .btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
 .btn.danger-solid{background:var(--bad);color:var(--surface)}
+.btn.danger-solid:hover{background:color-mix(in srgb,var(--bad) 85%,var(--ink))}
 .big-btn{min-height:54px;font-size:1.08rem}
 .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .btns.end{justify-content:flex-start}
@@ -946,7 +947,7 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .t-main small{color:var(--muted);display:flex;align-items:center;gap:4px}
 .t-main small svg{width:14px;height:14px;color:#F2B544}
 .t-conf{display:flex;gap:6px}
-.btn.danger{background:#B23F6A;color:#FFFFFF}
+.btn.danger:not(.ghost){background:#B23F6A;color:#FFFFFF}
 .dkbox{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:14px;padding:10px 14px}
 .ptb{display:flex;gap:6px;flex-wrap:wrap}
 .rnbox input{font:inherit;width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink)}
@@ -2349,7 +2350,7 @@ const BGS = [['cream','קרם','var(--bg)'],['lav','לילך','linear-gradient(1
 function profSheet() {
   return `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet psheet" role="dialog" aria-label="הפרופיל שלי"><div class="ps-head"><span class="avatar lg" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><div><h2 class="ns-t">${esc(P.name)}</h2><p class="muted">${I.star} ${P.stars || 0} כוכבים</p></div><button class="icon-btn ps-x" data-act="sheet-close" aria-label="סגירה">${I.close}</button></div>
   <div class="bgpick"><b>רקע</b><div class="bgsw">${BGS.map(([k, n, c]) => `<button data-act="bgset" data-k="${k}" title="${n}" aria-label="רקע ${n}" aria-pressed="${(P.bg || 'cream') === k}" style="background:${c}"></button>`).join('')}</div></div>
-    <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost danger" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn ghost danger" data-act="del-ask">מחיקת החשבון</button></div>
+    <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn danger-solid" data-act="del-ask">מחיקת החשבון</button></div>
     ${V.rn ? `<div class="confirm rnbox"><label class="lbl" for="rnname">כינוי חדש</label><input id="rnname" maxlength="24" value="${esc(P.name)}" autocomplete="off"><div class="btns"><button class="btn" data-act="rn-yes">${V.busy ? 'שומרת…' : 'שמירה'}</button><button class="btn ghost" data-act="rn-no">ביטול</button></div></div>` : ''}
     ${V.delc ? `<div class="confirm" role="alert"><p>למחוק את החשבון של ${esc(P.name)}${P.cloud ? ' מכל המכשירים' : ''}? כל ההתקדמות והכוכבים יימחקו, ואי אפשר לבטל את זה.</p><div class="btns"><button class="btn danger-solid" data-act="del-yes">${V.busy ? 'מוחקת…' : 'כן, למחוק'}</button><button class="btn ghost" data-act="del-no">ביטול</button></div></div>` : ''}
     ${V.confirm ? `<div class="confirm" role="alert"><p>למחוק את כל ההתקדמות של ${esc(P.name)}? אי אפשר לבטל את זה. פרופילים אחרים לא ייפגעו.</p><div class="btns"><button class="btn danger-solid" data-act="reset-yes">כן, לאפס</button><button class="btn ghost" data-act="reset-no">ביטול</button></div></div>` : ''}
