@@ -18,6 +18,7 @@
   --bg:#FAF6F2; --surface:#FFFFFF; --sunk:#F3EEF7;
   --lav:#EEE7FA; --lav-2:#DCCFF3; --plum:#68489A; --plum-2:#56397F; --on-plum:#FFFDF9;
   --pink:#FBE2EB; --rose:#B23F6A;
+  --bgk:42%;
   --pb1:#C3EEDA; --pb2:#FFD3BE; --pb3:#DACCFB; --pb4:#FFE7A8; --pbg1:#FFF7FB; --pbg2:#EEF5FF; --pdot:#D9CDEF;
   --ink:#2B2238; --muted:#6C6380; --line:#E9E1F0;
   --speak:#3D7BC7; --speak-bg:#E6F0FB; --good:#2C7A57; --good-bg:#E1F2E9; --warn:#93620F; --warn-bg:#FBEFD6; --bad:#AE3858; --bad-bg:#FBE5EC;
@@ -30,6 +31,7 @@
   --bg:#1A1522; --surface:#241D2F; --sunk:#2B2338;
   --lav:#352A4A; --lav-2:#46385F; --plum:#C2A6F2; --plum-2:#D5C1F7; --on-plum:#1E1729;
   --pink:#4A2638; --rose:#F29BBE;
+  --bgk:16%;
   --pb1:#244638; --pb2:#4C2F22; --pb3:#372C57; --pb4:#463B1C; --pbg1:#241E2E; --pbg2:#1C2232; --pdot:#3B3350;
   --ink:#F2EDF8; --muted:#ADA3C0; --line:#3A3049;
   --speak:#8FBDF2; --speak-bg:#1F3047; --good:#7FD3A8; --good-bg:#1D3A2D; --warn:#EBC173; --warn-bg:#3D3020; --bad:#F2A0B7; --bad-bg:#45222F;
@@ -38,6 +40,7 @@
   --bg:#1A1522; --surface:#241D2F; --sunk:#2B2338;
   --lav:#352A4A; --lav-2:#46385F; --plum:#C2A6F2; --plum-2:#D5C1F7; --on-plum:#1E1729;
   --pink:#4A2638; --rose:#F29BBE;
+  --bgk:16%;
   --pb1:#244638; --pb2:#4C2F22; --pb3:#372C57; --pb4:#463B1C; --pbg1:#241E2E; --pbg2:#1C2232; --pdot:#3B3350;
   --ink:#F2EDF8; --muted:#ADA3C0; --line:#3A3049;
   --speak:#8FBDF2; --speak-bg:#1F3047; --good:#7FD3A8; --good-bg:#1D3A2D; --warn:#EBC173; --warn-bg:#3D3020; --bad:#F2A0B7; --bad-bg:#45222F;
@@ -946,6 +949,13 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .dkbox{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:14px;padding:10px 14px}
 .ptb{display:flex;gap:6px;flex-wrap:wrap}
 .rnbox input{font:inherit;width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink)}
+body[data-bg=lav]{background:linear-gradient(165deg,color-mix(in srgb,#D9CCF7 var(--bgk),var(--bg)),color-mix(in srgb,#F4D6EC var(--bgk),var(--bg))) fixed}
+body[data-bg=mint]{background:linear-gradient(165deg,color-mix(in srgb,#C7EEDB var(--bgk),var(--bg)),color-mix(in srgb,#DDF0F7 var(--bgk),var(--bg))) fixed}
+body[data-bg=peach]{background:linear-gradient(165deg,color-mix(in srgb,#FFD8C4 var(--bgk),var(--bg)),color-mix(in srgb,#FFEFC2 var(--bgk),var(--bg))) fixed}
+body[data-bg=sky]{background:linear-gradient(165deg,color-mix(in srgb,#CFE3FB var(--bgk),var(--bg)),color-mix(in srgb,#E2DAF8 var(--bgk),var(--bg))) fixed}
+body[data-bg=pink]{background:linear-gradient(165deg,color-mix(in srgb,#FAD2E1 var(--bgk),var(--bg)),color-mix(in srgb,#FDE6D8 var(--bgk),var(--bg))) fixed}
+body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mix(in srgb,#F7C9DD var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 100% 30%,color-mix(in srgb,#C9E6FA var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 0% 70%,color-mix(in srgb,#CDEFD9 var(--bgk),transparent),transparent 70%),radial-gradient(60vmax 50vmax at 100% 100%,color-mix(in srgb,#FFE6A8 var(--bgk),transparent),transparent 70%),var(--bg) fixed}
+.bgpick{display:flex;flex-direction:column;gap:8px}.bgpick>b{font-size:.95rem}.bgsw{display:flex;gap:10px;flex-wrap:wrap}.bgsw button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}.bgsw button[aria-pressed=true]{border-color:var(--plum);box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 30%,transparent)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -2334,8 +2344,10 @@ VIEWS.home = () => {
     <div class="btns"><button class="btn sm ghost" data-act="sfx" aria-pressed="${SFX.on}">צלילי משוב: ${SFX.on ? 'פועלים' : 'כבויים'}</button></div>
   </div>` : ''}</section>`;
 };
+const BGS = [['cream','קרם','var(--bg)'],['lav','לילך','linear-gradient(135deg,#D9CCF7,#F4D6EC)'],['mint','מנטה','linear-gradient(135deg,#C7EEDB,#DDF0F7)'],['peach','אפרסק','linear-gradient(135deg,#FFD8C4,#FFEFC2)'],['sky','שמיים','linear-gradient(135deg,#CFE3FB,#E2DAF8)'],['pink','ורוד','linear-gradient(135deg,#FAD2E1,#FDE6D8)'],['rainbow','קשת','conic-gradient(#F7C9DD,#FFE6A8,#CDEFD9,#C9E6FA,#D9CCF7,#F7C9DD)']];
 function profSheet() {
   return `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet psheet" role="dialog" aria-label="הפרופיל שלי"><div class="ps-head"><span class="avatar lg" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><div><h2 class="ns-t">${esc(P.name)}</h2><p class="muted">${I.star} ${P.stars || 0} כוכבים</p></div><button class="icon-btn ps-x" data-act="sheet-close" aria-label="סגירה">${I.close}</button></div>
+  <div class="bgpick"><b>רקע</b><div class="bgsw">${BGS.map(([k, n, c]) => `<button data-act="bgset" data-k="${k}" title="${n}" aria-label="רקע ${n}" aria-pressed="${(P.bg || 'cream') === k}" style="background:${c}"></button>`).join('')}</div></div>
     <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost danger" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn ghost danger" data-act="del-ask">מחיקת החשבון</button></div>
     ${V.rn ? `<div class="confirm rnbox"><label class="lbl" for="rnname">כינוי חדש</label><input id="rnname" maxlength="24" value="${esc(P.name)}" autocomplete="off"><div class="btns"><button class="btn" data-act="rn-yes">${V.busy ? 'שומרת…' : 'שמירה'}</button><button class="btn ghost" data-act="rn-no">ביטול</button></div></div>` : ''}
     ${V.delc ? `<div class="confirm" role="alert"><p>למחוק את החשבון של ${esc(P.name)}${P.cloud ? ' מכל המכשירים' : ''}? כל ההתקדמות והכוכבים יימחקו, ואי אפשר לבטל את זה.</p><div class="btns"><button class="btn danger-solid" data-act="del-yes">${V.busy ? 'מוחקת…' : 'כן, למחוק'}</button><button class="btn ghost" data-act="del-no">ביטול</button></div></div>` : ''}
@@ -3275,6 +3287,7 @@ function render(top) {
   catch (e) { console.error(e); main = `<section class="block card"><p>משהו השתבש בתצוגה. חזרי לדף הבית.</p><button class="btn" data-act="go" data-v="home">לדף הבית</button></section>`; }
   app.innerHTML = head + `<main class="wrap">${main}</main><footer class="credit"><span class="cr-logo">${POPLOGO}</span><span class="en" dir="ltr">Noa Shalom, English Instructor</span><b class="en" dir="ltr">Popcorn English</b></footer>` + (SHEET ? sheetView() : '') + (NS ? nodeSheet() : '') + (GS && P ? gameSheet() : '') + (HELP ? helpSheet() : '') + (PROF && P ? profSheet() : '');
   const showNav = P && P.diag.done && !FOCUS.includes(V.name);
+  if (P && P.bg) document.body.dataset.bg = P.bg; else delete document.body.dataset.bg;
   nav.hidden = !showNav; document.body.classList.toggle('has-nav', !!showNav);
   if (showNav) nav.innerHTML = NAV.map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
   if (top) window.scrollTo(0, 0);
@@ -3615,6 +3628,7 @@ const ACT = {
   glvpick: el => { GSL = +el.dataset.l; SFX.play('tap'); render(); },
   gplay: () => { const k = GS, l = Math.min(GSL || gUnl(k), gUnl(k)); GS = null; GSL = null; if (k.startsWith('d-')) startDictGame(k.slice(2), l); else startGame(k, l); },
   glnext: () => { const g = V.o.glv, l = V.sum.gUnlock; if (g.k.startsWith('d-')) startDictGame(g.k.slice(2), l); else startGame(g.k, l); },
+  bgset: el => { P.bg = el.dataset.k === 'cream' ? undefined : el.dataset.k; save(); render(); },
   prof: () => { PROF = true; V.rn = V.delc = V.confirm = false; SFX.play('tap'); render(); },
   help: () => { HELP = true; SFX.play('tap'); render(); },
   tour: () => { HELP = false; if (V.name !== 'home') go('home'); else render(); setTimeout(() => startTour('home'), 450); },
