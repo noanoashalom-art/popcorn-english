@@ -5785,6 +5785,807 @@ function bNext() {
   else { save(); startBandQuiz(V.bid, V.si); }
 }
 
+/* ===================== A1 cloze sentences + matching for every word set in the path ===================== */
+const CLZ = {}; `about|The book is *about* a little dog. It is a dog story.|under;behind;between
+above|The lamp is on the ceiling, *above* the table.|under;inside;into
+across|Look left and right, then walk *across* the street.|into;under;inside
+action|Don't just talk about it. We need *action*!|bread;milk;chair
+address|My *address* is 5 Herzl Street, Haifa.|age;color;hair
+afraid|My sister runs away from dogs. She is *afraid* of them.|glad;rich;full
+after|First we eat, and *after* that we go out.|before;behind;under
+afternoon|Lunch is at 1:00 in the *afternoon*.|night;morning;week
+again|I didn't hear you. Please say it *again*.|never;behind;alone
+age|"How old are you?" "My *age* is twenty."|address;color;name
+ago|I came to Israel two years *ago*. I live here now.|soon;tomorrow;next
+agree|You say it's a good idea. I think so too. I *agree* with you.|forget;cry;fall
+all|Nobody is missing. *All* the students are here.|No;None;Few
+almost|It is 9:55. It is *almost* ten o'clock.|never;behind;away
+alone|She has no family in the city. She lives *alone*.|together;sad;tall
+already|I'm not hungry. I have *already* eaten.|never;tomorrow;soon
+also|He is a doctor. He is *also* a teacher at the college.|never;behind;yesterday
+always|Every morning, every day, I *always* drink coffee.|never;yesterday;ago
+angry|I broke his phone, so Dad was very *angry* with me.|glad;funny;beautiful
+animal|A cat is a small *animal*.|chair;color;book
+another|My cup is empty. Can I have *another* cup of tea?|last;same;old
+answer|"What is 2 + 2?" "The *answer* is 4."|question;address;age
+any|Do you have *any* questions? Ask me now.|every;each;much
+anyone|I knocked on the door. Is *anyone* at home?|anything;nothing;everything
+anything|My bag is empty. I didn't buy *anything*.|anyone;somebody;everybody
+appear|At night, the stars *appear* in the sky.|cry;eat;buy
+arrive|The bus leaves at four and will *arrive* at five.|begin;sleep;cry
+ask|I don't understand. Can I *ask* a question?|answer;eat;drink
+ask for|She can't do it alone, so she will *ask for* help.|look at;lie down;come back
+away|The dog is in the garden. Go *away*, dog!|inside;under;between
+baby|The *baby* is one month old and drinks milk.|man;teacher;doctor
+back|You are going out? Come *back* soon!|under;between;above
+bad|It is raining and very cold. The weather is *bad* today.|good;great;wonderful
+bag|I carry my books in my school *bag*.|bread;milk;sky
+be|I study medicine. I want to *be* a doctor.|go;eat;sleep
+beautiful|Look at the pretty flower. What a *beautiful* flower!|angry;hungry;boring
+because|I am tired *because* I worked all day.|but;or;until
+because of|We stayed home *because of* the rain.|instead;in front of;next to
+bed|I am tired. I go to *bed* at eleven.|school;work;bus
+before|Wash your hands *before* you eat.|behind;above;under
+begin|The class will *begin* at nine and end at ten.|finish;close;stop
+behind|I can't see the cat. It is *behind* the door.|into;than;of
+believe|You are telling the truth. I *believe* you.|forget;eat;cry
+beside|There is a free chair. Come and sit *beside* me.|into;across;over
+best|I love her very much. She is my *best* friend.|worst;bad;worse
+better|This book is good, but that one is *better*. I like it more.|worse;worst;bad
+between|A is first, C is third, and B is *between* them.|behind;above;inside
+big|An elephant is very *big*.|little;small;short
+birthday|You are 20 today! Happy *birthday*!|morning;evening;Monday
+a bit of|The soup needs *a bit of* salt.|a lot;many;every
+black|At night the sky is *black*.|white;yellow;green
+blue|On a sunny day the sky is *blue*.|black;brown;red
+board|The teacher wrote the answer on the *board*.|bread;water;sky
+body|Sport is good for your *body*.|bag;box;chair
+book|I am reading a good *book*.|chair;bed;door
+bored|I have nothing to do. I am *bored*.|busy;angry;hungry
+boring|Nothing happened in the movie. It was *boring*.|funny;interesting;exciting
+bottle|I am thirsty. Can I have a *bottle* of water?|chair;door;bed
+box|We put the toys in a *box*.|sky;sun;water
+boy|The *boy* is ten years old. His name is Dan.|girl;woman;mother
+bread|I make a sandwich with *bread*.|water;milk;tea
+break|Be careful with the glass! Don't *break* it!|eat;drink;wear
+breakfast|In the morning I eat eggs for *breakfast*.|supper;dinner;night
+bring|Don't forget! *Bring* your book to class.|Sleep;Cry;Sit
+brother|My *brother* is a boy. He is older than me.|sister;mother;daughter
+brown|Chocolate is *brown*.|blue;green;white
+build|They want to *build* a new school here.|eat;drink;sleep
+bus|I go to work by *bus*.|bed;chair;bag
+busy|I have a lot of work today. I am very *busy*.|bored;free;alone
+but|I like tea, *but* I don't like coffee.|because;if;so
+buy|I need a new phone. I want to *buy* one.|sell;sleep;cry
+by the way|Nice to see you. *By the way*, where is your car?|Thank you;Goodbye;Happy birthday
+call|I will *call* you tonight on the phone.|eat;sit;wash
+can|I am a good swimmer. I *can* swim.|can't;don't;not
+capital|Jerusalem is the *capital* of Israel.|animal;bottle;color
+car|I drive my *car* to work.|bed;book;flower
+take care|Goodbye, and *take care*!|good morning;hello;thank you
+careful|The road is dangerous. Be *careful*!|bored;angry;sad
+cat|The *cat* says "meow" and drinks milk.|dog;baby;fish
+catch|I am throwing the ball. *Catch* it!|Eat;Read;Write
+center|The hotel is in the *center* of the city, not outside it.|bottle;page;color
+chair|Please sit on the *chair*.|sky;sun;water
+change|My plans are bad. I want to *change* them.|eat;drink;sleep
+cheap|It costs only 5 shekels. It is very *cheap*.|expensive;angry;hungry
+child|He is five years old. He is a *child*.|man;woman;doctor
+children|Dan and Maya are five and six. They are *children*.|parents;men;women
+chocolate|I love sweet things, like *chocolate*.|bread;water;salt
+class|Our English *class* starts at eight.|bed;car;dog
+classroom|The students sit in the *classroom*.|sky;sea;tree
+clean|Your room is dirty. Please *clean* it.|eat;drink;sing
+clear|I understand the rule. It is very *clear*.|hungry;angry;tired
+close|It is cold. *Close* the window, please.|Eat;Drink;Read
+closed|You can't go in. The shop is *closed*.|open;hungry;happy
+coffee|I drink a cup of *coffee* every morning.|bread;chair;book
+cold|It is snowing. It is *cold* outside.|hot;warm;sunny
+color|"What *color* is your bag?" "It is red."|age;address;time
+come|*Come* here, please. Sit with me.|Go;Sleep;Eat
+come back|You are leaving? When will you *come back*?|sit down;wake up;stand up
+computer|I write emails on my *computer*.|bread;tree;sky
+cool|In the evening the weather is *cool*, not hot.|angry;hungry;sad
+copy|This is a test. Don't *copy* my answers!|eat;drink;sleep
+cost|The bag is 50 shekels. It doesn't *cost* a lot.|eat;sleep;cry
+count|One, two, three... Can you *count* to ten?|eat;drink;sleep
+country|Israel is a small *country*.|chair;bottle;book
+of course|"Can you help me?" "Yes, *of course*!"|goodbye;sorry;excuse me
+cross|Look at the red light before you *cross* the street.|eat;drink;sleep
+cry|The baby is sad. He started to *cry*.|laugh;smile;eat
+cut|Take a knife and *cut* the bread.|drink;sing;read
+dad|My *dad* is my father.|mom;sister;daughter
+dark|The sun is gone. It is *dark* now.|light;white;yellow
+date|"What is the *date* today?" "It's May 5th."|color;age;address
+daughter|They have a little girl. Their *daughter* is five.|son;brother;father
+day|There are seven days in a week. Today is a good *day*.|night;year;month
+dear|At the start of the letter: "*Dear* Sarah, ..."|Goodbye;Sorry;Bad
+decide|Tea or coffee? I can't *decide*.|sleep;eat;cry
+dictionary|I don't know the word. I look it up in the *dictionary*.|bottle;kitchen;garden
+different|Dan likes sport and I like art. We are very *different*.|the same;hungry;cold
+difficult|I couldn't answer the questions. The test was *difficult*.|easy;simple;short
+do|"What do you *do* on Fridays?" "I visit my family."|go;eat;sleep
+doctor|I am sick. I need to see a *doctor*.|teacher;singer;student
+dog|My *dog* likes to run and says "woof".|cat;baby;fish
+door|Somebody is knocking. Open the *door*, please.|sky;bread;water
+down|Don't stand. Sit *down*, please.|up;over;above
+draw|She has paper and pencils. She likes to *draw* animals.|drink;sleep;cry
+dress|She is wearing a long red *dress* to the party.|bread;tree;bus
+drink|You are thirsty. *Drink* some water.|Eat;Read;Write
+drive|You need a car to *drive* to work.|swim;fly;read
+dry|I used a towel. My hair is *dry* now.|wet;hungry;angry
+each|There are ten students and *each* student has a book.|no;none;nobody
+early|I get up at 5 o'clock. I get up very *early*.|late;slow;long
+ears|We hear with our *ears*.|eyes;hands;feet
+easy|All my answers were right. The test was *easy*.|difficult;hard;boring
+eat|I'm hungry. Let's *eat* dinner.|drink;sleep;wash
+email|I sent you an *email* from my computer.|bread;chair;tree
+end|"... and they lived happily." This is the *end* of the story.|start;middle;beginning
+in the end|We waited and waited. *In the end*, we went home.|At first;Before;Today morning
+English|"Hello" is an *English* word.|Hebrew;French;Arabic
+enjoy|I love books. I *enjoy* reading.|hate;cry;sleep
+enough|We have a lot of food. We have *enough* food for everyone.|no;none;less
+enter|The door is open. Please *enter* the room.|eat;drink;sleep
+evening|Good *evening*! It's 8 p.m.|morning;afternoon;breakfast
+every|I go to the gym *every* day: Sunday, Monday, Tuesday...|no;never;none
+everybody|All people like music. *Everybody* likes music.|Nobody;No-one;Nothing
+everyone|Nobody is missing. *Everyone* is here.|Nobody;No-one;Nothing
+everything|No problems at all. *Everything* is fine.|Nothing;Nobody;Never
+example|I don't understand. Give me an *example*, please.|bread;water;address
+for example|I like fruit, *for example* apples and bananas.|because;but;although
+excuse me|*Excuse me*, where is the bank?|Goodbye;Well done;Happy birthday
+exercise|Open your book and do *exercise* 3 on page 10.|breakfast;bread;milk
+expensive|The car costs a million shekels. It is too *expensive*.|cheap;hungry;sad
+extra|The test is long. I need *extra* time.|less;no;never
+eyes|We see with our *eyes*.|ears;hands;feet
+face|Wash your *face* in the morning: eyes, nose and mouth.|foot;bag;book
+in fact|People think I like coffee. *In fact*, I don't like it.|For example;Because;Goodbye
+fair|He got two pieces and I got none. That's not *fair*!|hungry;tired;tall
+fall|Be careful on the stairs. Don't *fall*.|eat;sing;read
+family|My mother, father and sisters are my *family*.|bread;school;book
+far|The school is a five-minute walk. It's not *far* from here.|hungry;tired;sad
+fast|He won the race. He runs very *fast*.|slow;slowly;late
+father|My *father* is my dad.|mother;sister;daughter
+favorite|I love the color blue. Blue is my *favorite* color.|worst;angry;hungry
+feel|I got a good grade. I *feel* happy today.|eat;drink;wash
+a few|I don't have many friends here, only *a few*.|a lot;many;much
+film|We went to the cinema and saw a good *film*.|bread;bed;bottle
+find|Where are my keys? I can't *find* them.|eat;drink;sleep
+find out|We don't know the answer. Let's *find out*.|lie down;sit down;go to bed
+fine|"How are you?" "I'm *fine*, thank you."|hungry;angry;sad
+finish|Don't stop now. *Finish* your homework.|Eat;Sleep;Drink
+fire|It's hot and dangerous. Don't play with *fire*.|bread;water;milk
+first|Today is my *first* day at college. I'm new here.|last;old;next
+flower|A rose is a beautiful *flower*.|car;bus;chair
+fly|Birds *fly* in the sky.|swim;eat;sleep
+food|I'm hungry. I need some *food*.|chairs;music;paper
+foot|I walked a lot. My *foot* hurts.|hair;bag;book
+for|I bought this gift *for* you.|than;under;behind
+forget|Remember to take your bag. Don't *forget* it!|remember;eat;drink
+free|I have no work tonight. I'm *free*.|busy;tired;hungry
+friend|We play together every day. He is my good *friend*.|enemy;doctor;teacher
+from|I live in Tel Aviv, but I am *from* Haifa.|for;under;above
+in front of|The car is *in front of* the house, not behind it.|behind;under;inside
+full|There are no free seats. The bus is *full*.|empty;hungry;angry
+funny|Everyone laughed. He told a *funny* story.|sad;boring;angry
+game|Let's play a *game*. Who will win?|bread;bed;bus
+garden|We have flowers and trees in our *garden*.|bag;book;bottle
+get|I *get* many emails every day.|eat;sleep;cry
+girl|The *girl* is reading. Her name is Maya.|boy;man;father
+give|*Give* me the pen, please. I need to write.|Eat;Drink;Sleep
+glad|I'm *glad* to see you!|sad;angry;sick
+glass|I'm thirsty. Can I have a *glass* of water?|chair;bed;door
+go|It's late. Let's *go* home.|eat;sleep;cry
+go on|That's interesting! *Go on*, tell me more.|Goodbye;Sit down;Lie down
+going to|Tonight I am *going to* study for the test.|good at;afraid of;interested in
+good|This is a *good* idea. Let's do it!|bad;worse;worst
+good at|She always gets 100 in math. She is *good at* math.|afraid of;angry with;bored of
+goodbye|I'm leaving now. *Goodbye*, see you tomorrow!|Hello;Good morning;Welcome
+grade|I got a good *grade* on the test: 95!|bread;bus;flower
+great|That's a *great* idea! I love it!|bad;boring;sad
+green|Grass and leaves are *green*.|black;white;blue
+grow|Plants need water to *grow*.|eat;read;write
+guess|I won't tell you my age. Can you *guess*?|eat;drink;sleep
+hair|She has long black *hair*.|eyes;feet;hands
+half|There were 10 pieces and I ate 5. I ate *half* of the cake.|all;none;every
+hand|Raise your *hand* if you know the answer.|bread;bag;book
+hang|*Hang* your coat on the wall.|Eat;Drink;Read
+happen|Hmm, what will *happen* next in the story?|eat;drink;sleep
+happy|I won the game! I am *happy*!|sad;angry;afraid
+hard|I worked for ten hours. The work is very *hard*.|easy;simple;free
+hat|It's sunny. He is wearing a *hat* on his head.|shoe;bread;bottle
+have|I *have* two sisters and one brother.|am;eat;go
+have to|My bus is at 5. I *have to* go now.|good at;afraid of;interested in
+head|I need a pill. My *head* hurts.|bag;book;chair
+hear|Speak louder! I can't *hear* you.|eat;drink;cook
+hello|*Hello*, how are you?|Goodbye;Sorry;Excuse
+help|This box is heavy. Can you *help* me?|eat;drink;sleep
+here|Come *here*, next to me.|there;away;far
+high|The wall is very *high*. I can't climb it.|short;small;low
+hold|Cross the road with me. *Hold* my hand.|Eat;Drink;Read
+home|School is over. I go *home* at four.|bed;breakfast;tomorrow
+hope|You are sick. I *hope* you feel better soon.|eat;drink;forget
+hot|It is 40 degrees. It is *hot* today.|cold;cool;dark
+hour|The class is sixty minutes. It is one *hour* long.|day;week;year
+house|They live in a big *house* with a garden.|bus;bag;bottle
+how|"*How* are you?" "I'm fine."|Who;Where;When
+hundred|There are 100 students. There are a *hundred* students here.|few;little;half
+hungry|I didn't eat all day. I am *hungry*.|full;tired;cold
+idea|Let's go to the beach! I have a good *idea*.|bread;chair;bottle
+if|*If* it rains, we will stay home.|But;Or;Because of
+immediately|The house is on fire! Come out *immediately*!|tomorrow;never;slowly
+important|Read this carefully. It is very *important*.|hungry;sleepy;angry
+impossible|I can't finish 100 pages in one hour. It is *impossible*.|easy;simple;possible
+inside|It's raining. Let's go *inside* the house.|outside;over;above
+interested in|I love paintings. I am *interested in* art.|afraid of;angry with;tired of
+interesting|I can't stop reading. This is an *interesting* book.|boring;angry;hungry
+into|He jumped *into* the water and swam.|from;over;under
+invite|It's my party on Friday. I want to *invite* you.|eat;drink;sleep
+job|She works in a bank. She has a new *job*.|bread;flower;cat
+just|She is *just* a baby. She can't walk.|ago;never;until
+keep|This gift is for you. *Keep* it.|Eat;Drink;Sleep
+kid|The *kid* is six years old.|man;woman;father
+kind|"What *kind* of music do you like?" "Pop."|age;address;date
+kind of|I'm not very tired, but I'm *kind of* tired.|a lot of;many;every
+know|I studied. I *know* the answer.|eat;drink;sleep
+large|We are 12 people. We need a *large* table.|small;little;short
+last|Question 10 is the end. This is the *last* question.|first;next;new
+last night|I went to bed early *last night*.|tomorrow;next week;soon
+late|The class starts at eight. Don't be *late*!|early;hungry;fast
+learn|I want to *learn* English at college.|eat;sleep;cry
+leave|I *leave* the house at seven and go to work.|enter;eat;sleep
+left|The bank is on the *left*, not on the right.|up;high;tall
+less|The tea is too sweet. I want *less* sugar.|more;every;many
+at least|You need *at least* seven hours of sleep.|at last;in the end;of course
+lesson|The English *lesson* is from 8:00 to 9:00.|bread;bed;bus
+let's|I'm hungry. *Let's* eat!|Don't;Never;Not
+letter|I wrote a *letter* to my cousin and sent it.|bread;bed;bus
+lie|Tell me the truth. Don't *lie* to me.|eat;drink;sleep
+lie down|I am very tired. I need to *lie down* on the bed.|stand up;get up;come back
+life|*Life* is beautiful when you are healthy.|Bread;Paper;Chair
+light|It's dark in here. Turn on the *light*.|water;bread;book
+like|Pizza is my favorite food. I *like* pizza.|hate;sleep;cry
+listen|The teacher is talking. *Listen* to her.|Eat;Sleep;Drink
+little|A mouse is a *little* animal.|big;large;tall
+live|My home is in Tel Aviv. I *live* in Tel Aviv.|eat;drink;cry
+long|I worked from 6 a.m. to 10 p.m. It was a *long* day.|short;small;little
+look|*Look* at the board, please.|Listen;Drink;Sleep
+at last|We waited for an hour. *At last*, the bus came!|At least;Of course;For example
+a lot of|I have *a lot of* work today: ten tasks!|a few;a little;a bit
+make|I'm in the kitchen. I *make* tea for my mom.|drink;sleep;cry
+man|My father is a tall *man* with a beard.|woman;girl;baby
+many|I have *many* books: more than a hundred!|much;a little;one
+how many|"*How many* students are in the class?" "Twenty."|How much;How old;How long
+it doesn't matter|"I'm sorry, I'm late." "*It doesn't matter*, come in."|Happy birthday;Excuse me;Well done
+what's the matter|You look sad. *What's the matter*?|How old are you;Happy birthday;Well done
+maybe|I'm not sure. *Maybe* it will rain.|Never;Yesterday;Ago
+me|I'm here! Look at *me*!|I;my;we
+mean|"What does this word *mean*?" "It means 'big'."|eat;sleep;cry
+meaning|I don't know this word. What is its *meaning*?|age;address;color
+meet|Hi, I'm Dan. Nice to *meet* you.|eat;drink;sleep
+meeting|All the workers are in the office. They have a *meeting*.|bread;chair;bottle
+memory|I remember everything. I have a good *memory*.|bottle;bread;chair
+message|I texted you. Did you get my *message*?|bread;chair;tree
+middle|B is in the *middle* of A and C.|end;start;first
+milk|The baby drinks *milk*.|bread;chairs;books
+minute|There are sixty seconds in a *minute*.|year;week;month
+in a minute|Wait for me, I'm coming! I'll be there *in a minute*.|last year;yesterday;ago
+mistake|2 + 2 = 5? That's a *mistake*.|breakfast;bottle;birthday
+mix|Put the eggs and the sugar in a bowl and *mix* them.|sleep;cry;read
+mom|My *mom* is my mother.|dad;brother;son
+at the moment|Call me later. I'm busy *at the moment*.|yesterday;last year;ago
+money|I want to buy it, but I don't have any *money*.|sky;sun;water
+month|January is the first *month* of the year.|day;hour;minute
+moon|At night you can see the *moon* in the sky.|sun;bread;table
+more|The cake is very good. I want *more* cake.|less;few;fewer
+morning|I wake up and eat breakfast in the *morning*.|night;evening;afternoon
+most|Almost all the students like the class. *Most* students like it.|No;None;Few
+mother|My *mother* is my mom.|father;brother;son
+mouth|We eat with our *mouth*.|ears;eyes;feet
+move|We want to live in Tel Aviv. We want to *move* there.|cry;sleep;eat
+movie|We went to the cinema to see a *movie*.|bread;bed;bottle
+much|I have only five minutes. I don't have *much* time.|many;a few;every
+how much|"*How much* is this shirt?" "Fifty shekels."|How many;How old;Who
+music|I listen to *music* every day. I love pop songs.|bread;chairs;water
+my|This is *my* bag. It belongs to me.|me;I;mine
+myself|Nobody helped me. I did it *myself*.|me;my;mine
+name|"What is your *name*?" "My name is Noa."|age;color;address
+near|The park is five minutes from my house. It's *near* my house.|far;tall;hungry
+need|I can't write. I *need* a pen.|eat;cry;sleep
+neighbor|She lives in the house next door. She is my *neighbor*.|bread;milk;garden
+never|I don't like coffee. I *never* drink it.|always;often;usually
+new|I bought it today. I have a *new* phone.|old;last;bad
+news|I watch the *news* on TV to know what happened today.|breakfast;bread;bottle
+next|This week is busy. See you *next* week.|last;yesterday;ago
+next to|Come here and sit *next to* me.|under;inside;into
+nice|She always helps people. She is very *nice*.|angry;bad;boring
+night|The moon is in the sky. Good *night*!|morning;afternoon;breakfast
+no problem|"Can you help me?" "Sure, *no problem*."|goodbye;hello;what a pity
+nobody|The house was empty. *Nobody* was at home.|Everybody;Everyone;All
+no-one|The question is very hard. *No-one* knows the answer.|Everyone;Everybody;All
+not|I slept ten hours. I am *not* tired.|very;so;too
+notebook|Write the new words in your *notebook*.|bread;bottle;milk
+nothing|The box is empty. There is *nothing* in it.|something;everything;anything
+now|I'm busy at the moment. I can't talk *now*.|yesterday;ago;last year
+number|"What is your phone *number*?" "052-1234567."|color;age;name
+often|I go to the beach every week. I *often* go there.|never;yesterday;tomorrow
+OK|"Let's start." "*OK*, I'm ready."|Goodbye;Sorry;Excuse
+old|My grandfather is 90. He is very *old*.|young;new;small
+how old|"*How old* are you?" "I'm 20."|How much;How many;Where
+on|The book is *on* the table.|of;into;than
+once|I go to the gym only one time a week, *once* a week.|always;never;often
+once upon a time|*Once upon a time* there was a king and a queen.|Tomorrow;Next week;Now
+only|I don't have much money. I have *only* ten shekels.|many;more;every
+open|It's hot. *Open* the window, please.|Close;Shut;Eat
+or|"Tea *or* coffee?" "Tea, please."|but;because;so
+other|Some students are here. Where are the *other* students?|another;every;each
+our|We live here. This is *our* house.|we;us;ours
+ourselves|Nobody helped us. We built it *ourselves*.|us;we;our
+out|It's a nice day. Let's go *out*.|under;between;behind
+over|The players are going home. The game is *over*.|under;between;inside
+own|I don't share a room. I have my *own* room.|never;every;each
+page|Open your book to *page* 20.|chair;milk;bed
+paper|Take a piece of *paper* and write your name.|water;milk;bread
+parents|My mother and father are my *parents*.|children;sisters;friends
+part|The end is the best *part* of the movie.|bottle;bread;bag
+past|Yesterday is in the *past*. Tomorrow is in the future.|future;next;soon
+pay|The coffee is 12 shekels. I want to *pay* by card.|eat;drink;sleep
+pen|I write with a blue *pen*.|cup;bed;bus
+pencil|I draw with a *pencil* and an eraser.|cup;bed;bus
+people|The room is full. Many *people* came to the party.|bread;water;milk
+perhaps|He isn't at school today. *Perhaps* he is sick.|Never;Ago;Yesterday
+person|She is a very kind *person*.|bread;bottle;chair
+pick up|There is paper on the floor. Please *pick up* the paper.|lie down;sit down;go away
+picture|Look at this *picture* of my family.|music;water;sound
+piece|The cake is good. Can I have a *piece* of cake?|bottle;glass;cup
+place|I love this café. It's a nice *place*.|never;slowly;under
+plan|I want to visit Paris next year. That's my *plan*.|bread;bottle;chair
+play|The children *play* football in the park.|eat;sleep;drink
+please|Sit down, *please*.|sorry;goodbye;hello
+poor|They have no money. They are a *poor* family.|rich;expensive;happy
+possible|Come tomorrow if it is *possible* for you.|impossible;hungry;angry
+practice|I want to play well, so I *practice* the piano every day.|forget;sleep;cry
+problem|My car doesn't start. We have a *problem*.|breakfast;bread;birthday
+project|Our group is working on a science *project*.|bread;milk;water
+pupil|There are thirty children in the class. Every *pupil* has a book.|teacher;doctor;mother
+push|The door says "PUSH". *Push* the door to open it.|Eat;Drink;Sleep
+put|*Put* your bag on the chair.|Eat;Drink;Sleep
+question|I don't understand. Can I ask a *question*?|answer;bread;bottle
+quick|I have only one minute. Can I ask a *quick* question?|long;slow;boring
+quiet|The baby is sleeping. Please be *quiet*.|loud;noisy;angry
+radio|I listen to music on the *radio* in the car.|bread;bed;tree
+read|I *read* a book every week.|eat;drink;sleep
+ready|Our bags are in the car. Are you *ready* to go?|tired;hungry;old
+real|It isn't a toy. It is a *real* diamond.|false;fake;toy
+really|I *really* like this song. It's my favorite.|never;not;no
+red|Tomatoes are *red*.|blue;black;white
+remember|What's his name? I can't *remember* it.|eat;drink;sleep
+rest|You worked all day. You need to *rest*.|run;work;shout
+return|You can take the book, but please *return* it tomorrow.|eat;drink;sleep
+rich|He has a lot of money. He is *rich*.|poor;hungry;cheap
+right|Don't turn left. Turn *right* at the bank.|up;high;tall
+right now|The bus is leaving! I need it *right now*.|yesterday;last year;ago
+all right|You fell! Are you *all right*?|goodbye;thank you;please
+road|Cars drive on the *road*.|sky;sea;tree
+room|My *room* has a bed, a desk and a window.|bread;bottle;milk
+round|A ball is *round*.|square;long;tall
+rule|In class there is one *rule*: no phones!|bread;bottle;milk
+run|I'm late! I have to *run* to the bus.|sleep;sit;eat
+sad|Her dog died. She is very *sad*.|happy;glad;funny
+the same|My bag is like yours. We have *the same* bag.|a different;another;other
+say|"Hello!" What did you *say*?|eat;drink;sleep
+school|Children learn at *school*.|bed;bread;breakfast
+second|January is the first month and February is the *second*.|first;last;third
+see|The window is open. I can *see* the sea from here.|cook;eat;drink
+send|I wrote the email. Now I *send* it.|eat;drink;sleep
+sentence|"I like tea." This is a short *sentence*.|bread;bottle;milk
+short|The movie was only one hour. It was *short*.|long;tall;high
+shout|Speak quietly, please. Don't *shout* at me!|smile;sleep;eat
+show|Do you have a photo of your dog? *Show* me!|Eat;Drink;Sleep
+shut|It is cold. *Shut* the window, please.|Open;Eat;Drink
+sick|I have a fever. I am *sick* today.|healthy;happy;glad
+side|In Israel we drive on the right *side* of the road.|bread;bottle;milk
+sign|The *sign* on the door says "OPEN".|bread;bottle;milk
+simple|Everyone can do it. It is *simple*.|difficult;hard;impossible
+sing|She has a beautiful voice. She likes to *sing*.|eat;sleep;cry
+sister|My *sister* is a girl. She is younger than me.|brother;father;son
+sit|Here is a chair. *Sit* here, please.|Run;Fly;Swim
+size|"What *size* are your shoes?" "38."|color;age;name
+sky|Birds fly in the *sky*.|sea;bed;box
+sleep|I am very tired. I want to *sleep*.|run;work;shout
+slow|The bus takes three hours. It is very *slow*.|fast;quick;early
+small|A mouse is a *small* animal.|big;large;tall
+smart|She always knows the answer. She is a *smart* student.|stupid;bad;lazy
+smile|She is happy. She has a nice *smile*.|cry;sad;angry
+so|I was tired, *so* I went to bed.|but;because;or
+some|I'm thirsty. I want *some* water.|many;a few;every
+somebody|Knock, knock! *Somebody* is at the door.|Never;Nothing;Anything
+something|Listen! I want to tell you *something*.|anyone;anywhere;somebody
+sometimes|I *sometimes* walk to work, and sometimes I take the bus.|never;yesterday;ago
+son|They have a boy. Their *son* is a student.|daughter;sister;mother
+song|I love this *song*. I sing it every day.|bread;bottle;chair
+soon|The bus is coming. It will be here *soon*.|ago;yesterday;last
+sorry|I'm *sorry* I'm late.|glad;happy;welcome
+speak|Do you *speak* English?|eat;drink;sleep
+special|It's my wedding today. Today is a *special* day.|boring;bad;normal
+spell|"How do you *spell* your name?" "N-O-A."|eat;drink;sleep
+sport|Football is my favorite *sport*.|food;bread;color
+start|Open your books. Let's *start* the lesson.|finish;end;stop
+still|I am 30, and I *still* live with my parents.|never;ago;yesterday
+story|Tell me a *story* about a king.|bottle;bread;milk
+straight|Don't turn. Go *straight*.|left;right;back
+strong|He can carry the heavy box. He is very *strong*.|weak;tired;small
+student|I study at the college. I am a *student*.|teacher;doctor;driver
+suddenly|It was quiet. *Suddenly*, the lights went out.|Never;Slowly;Always
+sun|The *sun* is hot and bright today.|moon;star;night
+supper|In the evening we eat *supper*.|breakfast;lunch;morning
+sure|"Is it right?" "Yes, I'm *sure*."|hungry;tired;sick
+take|It's raining. *Take* an umbrella.|Eat;Drink;Sleep
+talk|I have a problem. Can we *talk*?|eat;drink;sleep
+tall|He is two meters. He is very *tall*.|short;small;little
+tea|Would you like a cup of *tea*?|bread;rice;meat
+teach|She is a teacher. She likes to *teach* children.|eat;drink;sleep
+telephone|Ring, ring! The *telephone* is ringing.|bread;bottle;chair
+television|We watch the news on *television*.|bread;bottle;chair
+tell|Don't lie to me. *Tell* me the truth.|Eat;Drink;Sleep
+test|I have to study. I have a *test* tomorrow.|bread;bottle;milk
+than|He is taller *than* me.|then;that;and
+thank you|"Here is your coffee." "*Thank you*!"|Goodbye;Sorry;Excuse me
+then|First eat, *then* go out.|than;but;because
+there|Don't put it here. Put it over *there*.|they;their;then
+there is|*There is* a cat in the garden.|There are;They are;It are
+these|*These* shoes are new.|This;That;It
+thing|Wait! I have one more *thing* to say.|people;person;man
+think|I *think* you are right.|eat;drink;sleep
+this|*This* is my friend, Dan.|These;Those;They
+those|Look over there. *Those* books are mine.|This;That;It
+time|"What *time* is it?" "It's 5 o'clock."|color;age;name
+today|Yesterday was Saturday. *Today* is Sunday.|Yesterday;Tomorrow;Ago
+together|We don't work alone. Let's work *together*.|alone;never;ago
+tomorrow|Today is Monday. *Tomorrow* is Tuesday.|Yesterday;Today;Ago
+tonight|What are you doing *tonight* at 9 p.m.?|yesterday;last year;ago
+too|This bag is *too* heavy. I can't carry it.|very much;many;a lot of
+too much|I can't eat more. I ate *too much*.|never;ago;until
+town|I live in a small *town* in the north.|bottle;bread;milk
+tree|There is a big *tree* in the garden.|bread;bottle;milk
+trip|We are going on a *trip* to Eilat.|bread;bottle;milk
+truck|A big *truck* is carrying boxes on the road.|bed;table;flower
+true|"The sky is green." That's not *true*.|hungry;tired;sick
+try|You can do it! *Try* again.|Eat;Drink;Sleep
+turn|*Turn* left at the traffic light.|Eat;Drink;Sleep
+under|The cat is *under* the bed. I can't see it.|into;across;from
+understand|Please say it again. I don't *understand*.|eat;drink;sleep
+until|The shop opens at nine and is open *until* five o'clock.|ago;yesterday;tomorrow
+up|Don't sit. Stand *up*, please.|down;under;below
+use|My phone is dead. Can I *use* your phone?|eat;drink;sleep
+usually|I *usually* get up at seven, but today I got up at nine.|never;yesterday;ago
+vacation|No work this week! We are on *vacation*.|bread;bottle;milk
+very|It is *very* cold. It's snowing!|too much;many;a lot of
+wait|I'm coming! *Wait* for me!|Eat;Drink;Sleep
+walk|I don't take the bus. I *walk* to work.|eat;drink;sleep
+wall|There is a picture on the *wall*.|sky;sea;water
+want|I'm hungry. I *want* to eat.|hate;forget;cry
+wash|Your hands are dirty. *Wash* your hands.|Eat;Drink;Sleep
+watch|I *watch* TV every evening.|eat;drink;sleep
+water|I'm thirsty. I want a glass of *water*.|bread;chairs;books
+way|Excuse me, is this the *way* to the station?|bread;bottle;milk
+wear|It's cold. *Wear* a coat.|Eat;Drink;Sleep
+week|There are seven days in a *week*.|year;month;hour
+welcome|Come in! *Welcome* to our home!|Goodbye;Sorry;Excuse
+you're welcome|"Thank you!" "*You're welcome*."|Goodbye;Excuse me;Happy birthday
+well|She is a good singer. She sings *well*.|good;bad;badly
+well done|You passed the test! *Well done*!|What a pity;Excuse me;Goodbye
+as well|I want tea, and coffee *as well*.|but;because;or
+what|"*What* is your name?" "Noa."|Where;When;Who
+when|"*When* is your birthday?" "In May."|Who;What;Which
+where|"*Where* do you live?" "In Haifa."|When;Who;What
+which|"*Which* bag is yours, the red one or the blue one?"|Who;Where;When
+while|I listen to music *while* I work.|ago;yesterday;tomorrow
+white|Snow is *white*.|black;green;blue
+who|"*Who* is that man?" "He's my teacher."|Where;When;Why
+why|"*Why* are you late?" "Because the bus was late."|Who;Where;Which
+will|Tomorrow I *will* call you.|was;did;am
+window|It's hot in here. Open the *window*, please.|bread;milk;rice
+wish|Happy birthday! I *wish* you a great year!|eat;drink;sleep
+with|I don't live alone. I live *with* my parents.|without;under;from
+without|I don't like sugar. I drink coffee *without* sugar.|with;and;more
+woman|My mother is a tall *woman*.|man;boy;father
+wonderful|We had a great trip. It was *wonderful*.|terrible;bad;awful
+word|"Cat" is an English *word*.|bottle;bread;milk
+work|I am a teacher. I *work* at a school.|sleep;cry;eat
+world|Everest is the highest mountain in the *world*.|bottle;bread;milk
+worse|Yesterday it rained. Today it's raining and windy. Today is *worse*.|better;best;good
+worst|It's the most boring movie ever. It's the *worst* movie!|best;better;good
+write|Take a pen and *write* your name.|eat;drink;sleep
+wrong|2 + 2 = 5? Your answer is *wrong*.|right;correct;true
+what a pity|You can't come to the party? *What a pity*!|Well done;Happy birthday;Thank you
+year|There are twelve months in a *year*.|week;day;hour
+yellow|Bananas are *yellow*.|blue;black;purple
+yes|"Can you swim?" "*Yes*, I can."|No;Not;Never
+yesterday|Today is Monday. *Yesterday* was Sunday.|Tomorrow;Soon;Next
+young|She is only 18. She is very *young*.|old;tall;big
+your|Is this *your* pen, Dan?|you;yours;mine
+winter|It is cold and it rains in *winter*.|summer;August;July
+summer|It is very hot in the *summer*.|winter;December;January
+spring|Flowers grow in the *spring*, after the winter.|night;evening;breakfast
+autumn|After the summer comes the *autumn*, and the leaves fall.|morning;breakfast;night
+Sunday|*Sunday* is the first day of the week in Israel.|January;Summer;Morning
+Monday|Sunday, *Monday*, Tuesday, Wednesday...|January;December;Summer
+Friday|Thursday, *Friday*, Saturday.|January;December;Winter
+Saturday|Shabbat is on *Saturday*.|January;December;morning
+January|*January* is the first month of the year.|Monday;Sunday;Summer
+December|*December* is the last month of the year.|Monday;Friday;Winter
+three|One, two, *three*, four, five.|blue;happy;yesterday
+speech|The president gave a long *speech* to the people.|milk;window;sleep
+teacher|Mrs. Cohen teaches us English. She is our *teacher*.|doctor;driver;baby
+increase|Prices go up every year. They *increase*.|sleep;cry;swim
+reason|"Why are you late?" "The *reason* is the bus."|bread;chair;window
+team|Our football *team* has eleven players.|bread;cup;window
+reach|The book is on a high shelf. I can't *reach* it.|eat;drink;cry
+tool|A hammer is a *tool*.|food;color;song
+choose|There are two cakes. *Choose* one!|Sleep;Cry;Drink
+pool|We swim in the *pool* in the summer.|bed;bag;book
+noon|We eat lunch at *noon*, at twelve o'clock.|night;midnight;breakfast
+mood|She got a gift. She is in a good *mood*.|bag;cup;bus
+took|Yesterday I *took* the bus to work.|ate;drank;slept
+cook|My mother likes to *cook* dinner for us.|sleep;cry;swim
+wood|The table is made of *wood*.|milk;water;bread
+stood|There were no chairs, so we *stood* all evening.|ate;drank;swam
+understood|The teacher explained it again, and I *understood*.|cried;slept;ate
+childhood|I lived in Haifa in my *childhood*, when I was a little girl.|kitchen;bottle;breakfast
+textbook|Open your English *textbook* to page 10.|bottle;window;sandwich
+main|The *main* idea of the story is love.|hungry;tired;sleepy
+explain|I don't understand. Can you *explain* it again?|eat;sleep;swim
+remain|Please *remain* in your seats until the bus stops.|eat;drink;run
+claim|He *claims* he saw a ghost, but I don't believe him.|eats;drinks;sleeps
+train|I go to Tel Aviv by *train*.|bed;bread;book
+rain|Take an umbrella. There is a lot of *rain* today.|sun;bread;milk
+paint|We want to *paint* the wall blue.|eat;drink;sleep
+gain|If you eat a lot of cake, you will *gain* weight.|drink;read;sing
+contain|This box can *contain* ten books.|eat;drink;sing
+aim|My *aim* is to learn English this year.|bread;chair;milk
+fail|Study hard, or you will *fail* the test.|eat;sleep;drink
+may|It's cloudy. It *may* rain later.|is;was;does
+stay|It's late. Can you *stay* for dinner?|eat;drink;cry
+display|The shop *displays* new shoes in the window.|eats;drinks;sleeps
+delay|The train is late. There is a ten-minute *delay*.|bread;chair;milk
+goal|He kicked the ball, and it was a *goal*!|bread;bed;cup
+approach|The cat moved slowly to *approach* the bird.|eat;sleep;sing
+boat|We sailed on a small *boat*.|bed;chair;book
+coat|It's cold. Wear a warm *coat*.|bread;milk;book
+coach|The *coach* trains the football team.|bread;bottle;window
+coast|Tel Aviv is on the *coast*, next to the sea.|bread;bottle;bed
+load|The truck carries a heavy *load* of boxes.|song;smile;idea
+soap|Wash your hands with *soap* and water.|bread;milk;tea
+toast|For breakfast I eat *toast* with butter.|chairs;shoes;books
+loan|I asked the bank for a *loan* to buy a car.|song;smile;dream
+throat|I have a cold and a sore *throat*.|bag;book;chair
+point|Can you *point* to the correct picture?|eat;drink;sleep
+join|We are going to the park. Do you want to *join* us?|eat;drink;sleep
+choice|Tea or coffee? It's your *choice*.|bread;chair;window
+voice|She sings well. She has a beautiful *voice*.|nose;bag;book
+noise|Shh! Don't make *noise*. The baby is sleeping.|bread;milk;books
+avoid|Sugar is bad for you. Try to *avoid* it.|eat;love;buy
+employ|The factory *employs* 100 workers.|eats;drinks;sleeps
+coin|A one-shekel *coin* is small and round.|book;bed;bus
+oil|Cook the eggs in olive *oil*.|chairs;books;shoes
+destroy|The fire can *destroy* the whole forest.|eat;drink;read
+should|You are sick. You *should* see a doctor.|were;did;has
+share|I have two apples. I want to *share* them with you.|eat;sleep;cry
+she|This is Maya. *She* is my sister.|He;They;It
+shop|I buy bread at the *shop* near my house.|sky;sea;moon
+fresh|The bread is from this morning. It is *fresh*.|old;angry;tired
+shape|A ball has a round *shape*.|taste;smell;voice
+fashion|She loves new clothes and *fashion*.|bread;milk;water
+research|Scientists do *research* to find answers.|bread;sleep;milk
+check|*Check* your answers before you finish the test.|Eat;Sleep;Drink
+chapter|The book has ten *chapters*. I read the first one.|bottles;windows;chairs
+the|Look at *the* sun!|a;an;some
+through|We walked *through* the park to the bus stop.|of;at;than
+both|Dan and Maya are *both* students.|either;neither;each
+method|This is a good *method* for learning new words.|bread;bottle;chair
+health|Fruit and vegetables are good for your *health*.|bag;car;phone
+author|J.K. Rowling is the *author* of Harry Potter.|doctor;driver;teacher
+phone|I called my mom on the *phone*.|bread;bed;bottle
+photo|I took a *photo* of the sunset with my camera.|song;smell;taste
+graph|The *graph* shows how prices went up.|bread;bed;milk
+phrase|"Thank you very much" is a useful *phrase*.|bread;bottle;chair
+paragraph|The text has three *paragraphs*. Read the first one.|bottles;chairs;beds
+physical|Running is a *physical* activity.|hungry;angry;sleepy
+alphabet|A, B, C, D... The English *alphabet* has 26 letters.|bread;bottle;window
+phase|The project is in its first *phase*. It's just the start.|bread;bottle;window
+physics|In *physics* we learn about light and energy.|bread;breakfast;bottles
+emphasis|The teacher put *emphasis* on reading every day.|bread;bottle;chair
+pharmacy|I bought medicine at the *pharmacy*.|beach;sea;sky
+photograph|This old *photograph* shows my grandparents.|song;smell;taste
+sound|I heard a strange *sound* in the night.|taste;smell;color
+found|I lost my keys, but I *found* them in my bag.|ate;drank;slept
+around|We walked *around* the lake.|of;than;at
+south|Eilat is in the *south* of Israel.|bread;milk;water
+amount|Drink a large *amount* of water every day.|chair;bed;window
+ground|The apple fell from the tree to the *ground*.|sky;sun;moon
+thousand|The car costs fifty *thousand* shekels.|happy;angry;slowly
+note|I wrote a short *note* to my mom: "I'm at the gym."|bread;milk;water
+same|My bag is like your bag. They are the *same*.|different;other;another
+line|Draw a *line* under the new words.|bread;milk;water
+complete|*Complete* the sentences with the correct words.|Eat;Sleep;Drink
+describe|*Describe* your house: how many rooms does it have?|Eat;Sleep;Drink
+state|Texas is a big *state* in the USA.|bread;milk;water
+cause|Smoking can *cause* disease.|eat;drink;sleep
+common|"Cohen" is a *common* name in Israel. Many people have it.|hungry;angry;sleepy
+topic|The *topic* of today's lesson is food.|bread;milk;water
+culture|I want to learn about Japanese food, music and *culture*.|bread;chair;bottle
+basic|This is a *basic* English course for beginners.|hungry;angry;sleepy
+public|The park is *public*. Everyone can go in.|hungry;angry;sleepy
+key|I can't open the door. Where is my *key*?|bread;milk;song
+skill|Reading is an important *skill*.|bread;bottle;chair
+city|Tel Aviv is a big *city*.|bread;bottle;chair
+process|Learning a language is a long *process*.|bread;bottle;chair
+since|I have lived here *since* 2010.|for;ago;until
+notice|Did you *notice* her new haircut?|eat;drink;sleep
+cell|The human body has millions of *cells*.|bottles;windows;chairs
+receive|Did you *receive* my email?|eat;drink;sleep
+certain|I'm *certain* the answer is right.|hungry;angry;sleepy
+percent|Fifty *percent* of the students are girls.|happy;slowly;angry
+recent|This is a *recent* photo. I took it last week.|old;ancient;angry
+might|Take a coat. It *might* be cold later.|were;did;has
+sight|My grandfather has poor *sight*, so he wears glasses.|taste;smell;hearing
+bright|The sun is very *bright* today.|dark;sad;hungry
+flight|Our *flight* to London leaves at six.|bread;milk;song
+fight|The two boys had a *fight* at school.|bread;milk;water
+highlight|*Highlight* the important words with a yellow pen.|Eat;Sleep;Drink
+tight|These shoes are too *tight*. I need a bigger size.|hungry;angry;sad
+slight|I have a *slight* headache, not a bad one.|huge;terrible;hungry
+information|For more *information*, visit our website.|bread;milk;water
+education|*Education* is important for every child.|Bread;Milk;Water
+attention|Listen carefully and pay *attention*.|bread;milk;water
+nation|Israel is a young *nation*.|bread;milk;water
+station|Meet me at the train *station*.|bread;milk;song
+solution|We have a problem. We need a *solution*.|bread;milk;water
+situation|The *situation* is bad. We need help.|bread;milk;water
+population|The *population* of Israel is about ten million.|bread;milk;water
+condition|The old car is in bad *condition*.|bread;milk;song
+function|What is the *function* of the heart? It pumps blood.|bread;milk;song
+definition|Read the *definition* of the word in the dictionary.|bread;milk;water
+decision|Stay or go? It's a hard *decision*.|bread;milk;water
+conclusion|At the end of your essay, write a *conclusion*.|bread;milk;water
+discussion|We had a long *discussion* about the news.|bread;milk;water
+vision|My *vision* is not good, so I wear glasses.|taste;smell;hearing
+expression|"Break a leg" is a funny *expression*. It means "good luck".|bread;milk;water
+permission|You need *permission* from your parents to go on the trip.|bread;milk;water
+session|The morning *session* starts at nine.|bread;milk;water
+division|Six divided by two is three. That is *division*.|bread;milk;water
+occasion|A wedding is a special *occasion*.|bread;milk;water
+mission|The *mission* of the soldiers was to help the village.|bread;milk;water
+tension|Before the exam, there was a lot of *tension* in the room.|bread;milk;water
+of|A cup *of* tea, please.|at;than;into
+to|I go *to* school every day.|of;at;than
+in|The milk is *in* the fridge.|of;at;than
+is|My sister *is* a doctor.|are;am;were
+are|They *are* my friends.|is;am;was
+was|Yesterday *was* Monday.|is;are;were
+were|We *were* at home yesterday.|was;is;am
+and|I like tea *and* coffee.|but;or;because
+that|I think *that* you are right.|than;of;at
+it|I have a new phone. *It* is black.|They;She;He
+they|Dan and Maya are students. *They* study English.|He;She;It
+their|Dan and Maya love *their* dog.|they;them;there
+them|I love my parents. I call *them* every day.|they;their;there
+has|Maya *has* two brothers.|have;are;is
+does|*Does* he speak English?|Do;Are;Is
+could|When I was five, I *could* swim.|can;will;must
+would|I *would* like a cup of tea, please.|will;am;was
+however|The test was hard. *However*, I passed it.|Because;So;And
+therefore|It was raining. *Therefore*, we stayed at home.|Because;But;Although
+although|*Although* it was cold, we went to the beach.|Because;So;Therefore
+result|What was the *result* of the game? 2–1.|bread;milk;water
+at|The class starts *at* 8 o'clock.|of;than;into
+by|I go to work *by* bus.|of;than;at
+as|She works *as* a nurse in a hospital.|than;of;at
+I|My name is Noa. *I* am a teacher.|Me;My;Mine
+you|Dan, can *you* help me?|your;yours;yourself
+he|This is my brother. *He* is ten.|She;It;They
+we|My sister and I are students. *We* study at college.|They;He;She
+its|The dog is hungry. Give it *its* food.|it's;it;is
+his|Dan lost *his* keys.|her;their;my
+her|Maya lost *her* bag.|his;their;he
+been|I have *been* to London two times.|be;was;being
+said|"Hello!" she *said*.|ate;drank;slept
+main idea|The *main idea* of the text is that sleep is important.|bread;bottle;window
+title|The *title* of the book is "Harry Potter".|bread;milk;water
+text|Read the *text* and answer the questions.|bread;milk;water
+passage|Read the *passage* about sleep and answer the questions.|bread;milk;water
+detail|The text gives one small *detail*: the dog's name is Max.|bread;milk;water
+purpose|The *purpose* of the text is to give information.|bread;milk;water
+the passage mainly discusses|*The passage mainly discusses* the problem of stress.|The bread is;The milk is;The water is
+the following|Answer *the following* questions.|the yesterday;the slowly;the hungry
+according to the text|*According to the text*, sleep helps the brain.|Because of the bread;Under the milk;Behind the water
+identify|*Identify* the main idea of the paragraph.|Eat;Sleep;Drink
+mention|The text does not *mention* the price.|eat;drink;sleep
+suggest|The writer *suggests* that we sleep more.|eats;drinks;swims
+refer to|In line 5, what does "it" *refer to*?|eat;drink;sleep
+which of the following|*Which of the following* is true?|Who of the bread;Where of the milk;When of the water
+which statement is correct|*Which statement is correct*? Circle one.|Which bread is hungry;Which milk is tired;Which water is sleepy
+not mentioned|The price is *not mentioned* in the text.|not eaten;not drunk;not slept
+most likely|The man is *most likely* a doctor. He works in a hospital.|most hungry;most angry;most sleepy
+we can learn that|From the text, *we can learn that* exercise is good for us.|we can eat that;we can drink that;we can sleep that
+in order to|She studies hard *in order to* pass the test.|instead of;because of;in front of
+effect|Sugar has a bad *effect* on your teeth.|bread;milk;water
+one reason is|Why do people use phones? *One reason is* to talk to friends.|One bread is;One milk is;One water is
+lead to|Too much sugar can *lead to* health problems.|eat;drink;sleep
+as a result|It rained a lot. *As a result*, the roads were wet.|For example;By the way;At first
+affect|Noise can *affect* your sleep.|eat;drink;swim
+influence|Parents *influence* their children.|eat;drink;sleep
+due to|The game was cancelled *due to* the rain.|instead;so;although
+so that|Speak slowly *so that* everyone understands.|because of;instead of;due to
+similar|My bag is *similar* to yours. They look almost the same.|different;hungry;angry
+compare|*Compare* the two pictures. What is different?|Eat;Sleep;Drink
+contrast|There is a big *contrast* between summer and winter.|bread;milk;water
+unlike|*Unlike* my brother, I love sport.|Like;Same;Also
+instead|I don't drink coffee. I drink tea *instead*.|too;also;as well
+on the other hand|The city is fun. *On the other hand*, it is noisy.|For example;In addition;Because
+in contrast|Dan is tall. *In contrast*, his brother is short.|For example;In addition;Also
+whereas|I like tea, *whereas* my sister likes coffee.|because;so;also
+the same as|My phone is *the same as* yours.|different from;bigger than;better than
+study|A new *study* shows that sleep helps memory.|bread;milk;water
+evidence|There is no *evidence* that he took the money.|bread;milk;water
+factor|Price is an important *factor* when you buy a car.|bread;milk;water
+benefit|Exercise has many health *benefits*.|breads;milks;waters
+advantage|One *advantage* of the city is good buses.|bread;milk;water
+disadvantage|One *disadvantage* of the city is the noise.|bread;milk;water
+decrease|When you sleep more, your stress will *decrease*.|eat;drink;swim
+develop|Children *develop* fast in their first years.|eat;drink;sleep
+improve|Practice every day to *improve* your English.|eat;sleep;cry
+support|My parents always *support* me.|eat;drink;sleep
+provide|The school will *provide* books for every student.|eat;drink;sleep
+require|This job will *require* good English.|eat;drink;sleep
+data|The scientists collected *data* from 500 people.|bread;milk;water
+researcher|The *researcher* studies the brain.|bread;milk;water
+experiment|In the *experiment*, the students tested the water.|bread;milk;song
+fact|It is a *fact* that the earth goes around the sun.|bread;milk;water
+opinion|In my *opinion*, the movie was great.|bread;milk;water
+ability|Birds have the *ability* to fly.|bread;milk;water
+behavior|The child's *behavior* in class is very good.|bread;milk;water
+society|We live in a modern *society*.|bread;milk;water
+significant|There is a *significant* difference between the two results.|hungry;sleepy;angry
+circle|*Circle* the correct answer: a, b or c.|Eat;Sleep;Drink
+match|*Match* the words to the pictures.|Eat;Sleep;Drink
+give an example|*Give an example* of a healthy food.|Eat a bread;Drink a milk;Sleep a water
+false|Is the sentence true or *false*?|hungry;sleepy;angry
+underline|*Underline* the new words in the text.|Eat;Sleep;Drink
+mark|*Mark* the correct answer with an X.|Eat;Sleep;Drink
+fill in the blanks|*Fill in the blanks* with the correct words.|Eat the bread;Drink the milk;Sleep the night
+the correct answer|Choose *the correct answer*: a, b or c.|the hungry bread;the sleepy milk;the angry water
+in your own words|Explain the text *in your own words*.|in your own bread;in your own milk;in your own water
+translate|*Translate* the sentence into Hebrew.|Eat;Sleep;Drink
+statement|Is this *statement* true or false?|bread;milk;water
+below|Read the questions *below*.|ago;than;since
+finally|First we ate, then we talked, and *finally* we went home.|ago;yesterday;tomorrow
+additional|There is an *additional* fee for extra bags.|hungry;sleepy;angry
+in addition|I speak English. *In addition*, I speak French.|However;But;Although
+such as|I like fruit, *such as* apples and bananas.|because of;instead of;in front of
+in conclusion|*In conclusion*, sleep is very important for health.|First of all;For example;At first
+to sum up|*To sum up*, exercise is good for the body and mind.|First of all;For example;At first
+in other words|He is not rich. *In other words*, he has little money.|For example;At first;By the way
+moreover|The flat is cheap. *Moreover*, it is near the sea.|However;But;Although
+this means that|He is a vegetarian. *This means that* he doesn't eat meat.|This bread is;This milk is;This water is`.split('\n').forEach(l => { const [w, ex, d] = l.split('|'); CLZ[w.toLowerCase()] = { ex, d: d.split(';') }; });
+function qClz(word, he, k) {
+  const c = CLZ[word.toLowerCase()]; if (!c) return null;
+  const m = (c.ex.match(/\*([^*]+)\*/) || [])[1]; if (!m) return null;
+  const PROPER = /^(January|February|March|April|May|June|July|August|September|October|November|December|Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|English|Hebrew|French|Arabic|I|I'm|I'll|OK)$/;
+  const cap = /^[A-Z]/.test(m) && !PROPER.test(m), fx = t => PROPER.test(t) ? t : cap ? t[0].toUpperCase() + t.slice(1) : t.replace(/^[A-Z](?=[a-z])/, x => x.toLowerCase());
+  const parts = c.ex.split(/(\*[^*]+\*)/), sent = g => `<span class="en" dir="ltr" lang="en">${parts.map(p => p[0] === '*' ? (g ? '<span class="gap">_____</span>' : `<mark class="hl">${esc(p.slice(1, -1))}</mark>`) : esc(p)).join('')}</span>`;
+  const q = mcq({ prompt: 'השלימי את המשפט', sent: sent(true), opts: uniq([m, ...c.d].map(fx)).map(enOpt), correct: fx(m), reveal: sent(false), rec: k ? [{ k, s: 'ctx' }] : [{ s: 'ctx' }] });
+  q.word = word; q.variant = null; return q;
+}
+function setExtras(items, nCloze = 3) {
+  const out = [], withHe = items.filter(x => x.en && x.he);
+  if (withHe.length >= 3) { const pick = []; for (const e of shuf(withHe)) { if (pick.length >= 5) break; if (pick.some(p => p.he === e.he || overlap(p.he, e.he))) continue; pick.push(e); } if (pick.length >= 3) out.push({ t: 'match', pairs: pick.map(e => ({ en: e.en, he: e.he, k: e.k })), L: shuf(pick.map((_, i) => i)), R: shuf(pick.map((_, i) => i)), done: [], miss: [], selL: null, rec: [] }); }
+  shuf(items.filter(x => CLZ[x.en.toLowerCase()])).slice(0, nCloze).forEach(x => { const q = qClz(x.en, x.he, x.k); if (q) out.push(q); });
+  return out;
+}
+const mixIn = (qs, extra) => { const a = [...qs]; extra.forEach(q => a.splice(1 + Math.floor(Math.random() * a.length), 0, q)); return a; };
+
 /* ===================== QUIZ RUNNER ===================== */
 let Q = null;
 function arraySrc(qs) {
@@ -5994,7 +6795,7 @@ function phonQs(u, n, review) {
 }
 function startUnitPractice(id) {
   const u = UM[id];
-  startQuiz(arraySrc(phonQs(u, 8)), { kind: 'phon', area: 'phon', title: 'תרגול ' + uLabel(u), back: { name: 'unit', u: id }, again: () => startUnitPractice(id) });
+  startQuiz(arraySrc(mixIn(phonQs(u, 8), setExtras(u.words.map(w => ({ en: w.w, he: w.he, k: 'p:' + u.id + ':' + w.w })), 3))), { kind: 'phon', area: 'phon', title: 'תרגול ' + uLabel(u), back: { name: 'unit', u: id }, again: () => startUnitPractice(id) });
 }
 function startUnitReview(id) {
   const u = UM[id];
@@ -6013,7 +6814,7 @@ function sightQuiz(gi, words) {
   const ws = words.map(w => SMAP[w]); const types = shuf(SIGHT_TYPES); const qs = [];
   const n = Math.min(10, Math.max(6, ws.length));
   for (let i = 0; i < n; i++) qs.push(qSight(ws[i % ws.length], types[i % types.length]));
-  startQuiz(arraySrc(shuf(qs)), { kind: 'sight', area: 'sight', title: 'מילים שכיחות: ' + SG[gi].name, tag: 'sight:' + gi, back: { name: 'sight' }, again: () => startSightGroup(gi) });
+  startQuiz(arraySrc(mixIn(shuf(qs), setExtras(ws.map(w => ({ en: w.w, he: w.he, k: 's:' + w.w })), 3))), { kind: 'sight', area: 'sight', title: 'מילים שכיחות: ' + SG[gi].name, tag: 'sight:' + gi, back: { name: 'sight' }, again: () => startSightGroup(gi) });
 }
 function startAcad(ci) {
   const c = AC[ci]; let list = c.items.filter(a => !known('a:' + a.id));
@@ -6025,13 +6826,13 @@ function acadQuiz(ci, ids) {
   const its = ids.map(id => AMAP[id]); const types = shuf(ACAD_TYPES); const qs = [];
   const n = Math.min(10, Math.max(6, its.length));
   for (let i = 0; i < n; i++) qs.push(qAcad(its[i % its.length], types[i % types.length]));
-  startQuiz(arraySrc(shuf(qs)), { kind: 'acad', area: 'acad', title: 'אוצר מילים: ' + AC[ci].name, tag: 'acad:' + ci, back: { name: 'acad' }, again: () => startAcad(ci) });
+  startQuiz(arraySrc(mixIn(shuf(qs), setExtras(its.map(a => ({ en: a.en, he: a.he, k: 'a:' + a.id })), 3))), { kind: 'acad', area: 'acad', title: 'אוצר מילים: ' + AC[ci].name, tag: 'acad:' + ci, back: { name: 'acad' }, again: () => startAcad(ci) });
 }
 function startLesson(id) { V = { name: 'lesson', u: id, step: 1, i: 0, rev: false, tr: {} }; render(true); }
 function lessonPractice(id) {
   const u = UM[id];
   const ws = shuf(u.words.slice(0, 9)); const types = ['listen', 'contains', u.gap ? 'missing' : 'say', 'listen', 'say', 'meaning'];
-  const qs = types.map((t, i) => qPhon(u, t, ws[i], 1));
+  const qs = mixIn(types.map((t, i) => qPhon(u, t, ws[i], 1)), setExtras(u.words.slice(0, 9).map(w => ({ en: w.w, he: w.he, k: 'p:' + u.id + ':' + w.w })), 2));
   startQuiz(arraySrc(qs), { kind: null, title: 'תרגול בשיעור', after: () => { V = { name: 'lesson', u: id, step: 5, i: 0, tr: {} }; render(true); } });
 }
 function startReading(id) {
