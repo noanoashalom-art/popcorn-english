@@ -963,7 +963,7 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bgpick{display:flex;flex-direction:column;gap:8px}.bgpick>b{font-size:.95rem}.bgsw{display:flex;gap:10px;flex-wrap:wrap}.bgsw button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}.bgsw button[aria-pressed=true]{border-color:var(--plum);box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 30%,transparent)}
 .ns-best{display:flex;align-items:center;justify-content:center;gap:5px;margin:0;color:var(--muted)}.ns-best svg{width:16px;height:16px;color:#F2B544}.ns-best b{color:var(--ink)}
 .pathok.best svg{color:#F2B544}
-.btabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .btabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
 .btabs button.on{border-color:var(--plum);background:var(--lav)}.btabs small{color:var(--muted)}
 .bsum{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
@@ -976,10 +976,11 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bc-ex{width:100%;box-sizing:border-box;background:var(--lav);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .bc-ex p{margin:0;font-size:1.15rem;line-height:1.5}
 .bentry-w .h2{margin:0}
-.btiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.btiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
 .btile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;padding:14px 14px 12px;border-radius:22px;border:1px solid color-mix(in srgb,var(--plum) 18%,var(--line));cursor:pointer;font:inherit;color:var(--ink);box-shadow:var(--shadow);min-width:0;transition:transform .15s}
 .btile:active{transform:scale(.98)}
 .btile.bt1{background:radial-gradient(120px 100px at 100% 0%,color-mix(in srgb,var(--pb2) 90%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--pb3) 75%,var(--surface)),color-mix(in srgb,var(--pb1) 60%,var(--surface)))}
+.btile.bt3{background:radial-gradient(120px 100px at 100% 0%,color-mix(in srgb,var(--pb1) 90%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--pb2) 70%,var(--surface)),color-mix(in srgb,var(--pb4) 60%,var(--surface)))}
 .btile.bt2{background:radial-gradient(120px 100px at 100% 0%,color-mix(in srgb,var(--pb4) 90%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--pb1) 70%,var(--surface)),color-mix(in srgb,var(--pb3) 65%,var(--surface)))}
 .bt-ics{display:flex;gap:5px;margin-bottom:6px}
 .bt-ics i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--plum);border:2px solid color-mix(in srgb,var(--plum) 14%,var(--surface));box-shadow:0 2px 6px rgba(60,40,100,.12)}
@@ -3070,7 +3071,1319 @@ worry|לדאוג|Don't *worry*, be happy.
 yet|עדיין, כבר|Have you finished *yet*?
 not yet|עוד לא|"Are you ready?" "*Not yet*."
 yours|שלך|Is this pen *yours*?
-zero|אפס|The temperature is *zero* degrees.`];
+zero|אפס|The temperature is *zero* degrees.`, `absence|היעדרות; חוסר|Her *absence* from class was noticed by the teacher.
+absolute|מוחלט|I have *absolute* trust in my doctor.
+abstract|מופשט|Love is an *abstract* idea; you cannot touch it.
+abuse|התעללות; ניצול לרעה; להתעלל|Drug *abuse* is a serious problem in many cities.
+acceptable|מקובל, קביל|Arriving ten minutes late is not *acceptable*.
+access|גישה; לגשת|All students have *access* to the library computers.
+accompany|ללוות|Children must *accompany* their parents into the museum.
+accordingly|בהתאם לכך|The rules changed, and we acted *accordingly*.
+accurate|מדויק|The map is old and not very *accurate*.
+achieve|להשיג|She worked hard to *achieve* her goals.
+acknowledge|להכיר ב־, להודות ב־|He refused to *acknowledge* his mistake.
+acquire|לרכוש, להשיג|Children *acquire* language very quickly.
+act|לפעול|We must *act* now to save the forest.
+actual|ממשי, בפועל|The *actual* cost was higher than we expected.
+adapt|להסתגל; לעבד|Animals *adapt* to changes in the climate.
+additional|נוסף|There is an *additional* fee for extra bags.
+address|לטפל ב־ (בעיה)|The government must *address* the housing problem.
+adequate|מספק, הולם|The room was small but *adequate* for two people.
+administration|מינהל; ממשל|The college *administration* changed the exam dates.
+adopt|לאמץ|The school decided to *adopt* a new teaching method.
+adjust|להתאים; להסתגל|It took me a week to *adjust* to the new job.
+advance|התקדמות; להתקדם|Medicine has made a great *advance* in recent years.
+advocate|תומך, דובר; לתמוך ב־|She is a strong *advocate* for animal rights.
+affair|עניין, פרשה|The minister refused to talk about the *affair*.
+affect|להשפיע על|Lack of sleep can *affect* your memory.
+afford|להרשות לעצמו|Many young people cannot *afford* to buy an apartment.
+afterwards|לאחר מכן|We had dinner and *afterwards* went for a walk.
+agent|סוכן|A travel *agent* booked our flights.
+aggression|תוקפנות|Some video games may increase *aggression* in children.
+agreement|הסכם; הסכמה|The two countries signed a peace *agreement*.
+agriculture|חקלאות|*Agriculture* uses a lot of water in dry countries.
+aid|סיוע, עזרה|The country sent food *aid* to the flood victims.
+airport|שדה תעופה|We arrived at the *airport* two hours before the flight.
+allow|לאפשר, להרשות|The school does not *allow* phones in exams.
+alter|לשנות|The tailor will *alter* the dress to fit you.
+amongst|בין, בקרב|The idea is popular *amongst* young people.
+analogy|אנלוגיה, הקבלה|He used an *analogy* between the heart and a pump.
+analyze|לנתח|Scientists *analyze* the data before they publish results.
+ancient|עתיק|We visited the *ancient* city of Jerusalem.
+announce|להכריז, להודיע|The company will *announce* the winner tomorrow.
+annual|שנתי|The *annual* meeting takes place every June.
+anxious|חרד, מודאג|She felt *anxious* before her driving test.
+anybody|מישהו, כל אחד|Has *anybody* seen my keys?
+anymore|כבר לא, יותר|He doesn't live here *anymore*.
+anyway|בכל אופן|It was raining, but we went out *anyway*.
+apparent|ברור, נראה לעין|For no *apparent* reason, the car stopped.
+application|בקשה, טופס; יישום|I sent my *application* to three universities.
+appreciate|להעריך|I really *appreciate* your help.
+approach|גישה; להתקרב|We need a new *approach* to the problem.
+appropriate|הולם, מתאים|Jeans are not *appropriate* for a job interview.
+approve|לאשר|The manager has to *approve* your vacation.
+approximately|בערך|The trip takes *approximately* three hours.
+aspect|היבט|Money is one *aspect* of the problem.
+aspire|לשאוף|Many students *aspire* to become doctors.
+assignment|מטלה|The *assignment* is due next Monday.
+assist|לסייע|Nurses *assist* doctors during operations.
+associate|לקשר, להתחבר|People often *associate* the color red with danger.
+assume|להניח|I *assume* you already know the rules.
+attachment|היקשרות; קובץ מצורף|Babies form a strong *attachment* to their mothers.
+attack|התקפה; לתקוף|The city was under *attack* for three days.
+attempt|ניסיון; לנסות|He made an *attempt* to climb the mountain.
+attend|להשתתף, לנכוח|All students must *attend* the first lesson.
+attitude|גישה, יחס|She has a positive *attitude* to life.
+attract|למשוך|Bright colors *attract* bees to flowers.
+audience|קהל|The *audience* clapped at the end of the show.
+authentic|אותנטי, מקורי|The restaurant serves *authentic* Italian food.
+author|סופר, מחבר|Who is the *author* of this book?
+authority|סמכות; רשות|The police have the *authority* to stop cars.
+autonomy|אוטונומיה, עצמאות|Teenagers want more *autonomy* from their parents.
+average|ממוצע|The *average* age of the students is 22.
+avoid|להימנע מ־|Try to *avoid* sugary drinks.
+award|פרס; להעניק|She won an *award* for her research.
+back|לתמוך ב־|Most workers *back* the new plan.
+back up|לגבות (קבצים)|Always *back up* your work on an external drive.
+background|רקע|Students come from different cultural *backgrounds*.
+balance|איזון|It is hard to find a *balance* between work and family.
+ball|נשף; כדור|The prince met her at the royal *ball*.
+ban|איסור; לאסור|There is a *ban* on smoking in public buildings.
+band|להקה|My brother plays guitar in a rock *band*.
+bank|גדה|We sat on the *bank* of the river.
+bar|בר, פאב|They met for a drink at a *bar*.
+barely|בקושי|I could *barely* hear the speaker.
+barrier|מחסום|Language can be a *barrier* to communication.
+basically|ביסודו של דבר, בעצם|*Basically*, the plan is simple.
+battle|קרב|Many soldiers died in the *battle*.
+beach|חוף ים|We spent the day at the *beach*.
+bear|לשאת; לסבול|I can't *bear* the noise any longer.
+beauty|יופי|We admired the *beauty* of the sunset.
+beginning|התחלה|The *beginning* of the movie was slow.
+belief|אמונה|It is a common *belief* that cats have nine lives.
+beneath|מתחת ל־|The treasure was buried *beneath* the tree.
+benefit|תועלת, הטבה|Regular exercise has many health *benefits*.
+bias|הטיה, דעה קדומה|The study showed a *bias* against women.
+bill|חשבון; הצעת חוק|We received a high electricity *bill* this month.
+billion|מיליארד|There are about eight *billion* people in the world.
+bind|לקשור; לחייב|The contract will *bind* both sides.
+biology|ביולוגיה|In *biology* we study living things.
+bird|ציפור|A small *bird* built a nest on our balcony.
+block|לחסום|A fallen tree *blocked* the road.
+bold|נועז; מודגש|It was a *bold* decision to quit his job.
+bond|קשר|There is a strong *bond* between the twins.
+bone|עצם|He broke a *bone* in his arm.
+boundary|גבול|The river forms a natural *boundary* between the two states.
+break|הפסקה|Let's take a ten-minute *break*.
+breath|נשימה|Take a deep *breath* and relax.
+brief|קצר, תמציתי|She gave a *brief* summary of the article.
+budget|תקציב|We need to plan a *budget* for the trip.
+building|בניין|The library is in the tall *building* on the left.
+burn|לשרוף; להישרף|Be careful not to *burn* your hand on the stove.
+cabinet|ממשלה (שרים); ארון|The prime minister met with his *cabinet*.
+calculate|לחשב|Use this formula to *calculate* the area.
+campaign|קמפיין, מסע בחירות|The election *campaign* lasted three months.
+cancer|סרטן|Smoking is a major cause of lung *cancer*.
+candidate|מועמד|There are four *candidates* in the election.
+capable|מסוגל|She is *capable* of running the whole company.
+capacity|קיבולת; יכולת|The stadium has a *capacity* of 30,000 people.
+capture|ללכוד|The police *captured* the thief.
+career|קריירה|He began his *career* as a teacher.
+carefully|בזהירות|Read the instructions *carefully*.
+category|קטגוריה|Put the words into the correct *category*.
+cell|תא|The human body has billions of *cells*.
+cellphone|טלפון סלולרי|Please turn off your *cellphone* in class.
+census|מפקד אוכלוסין|The *census* counts every person in the country.
+central|מרכזי|The hotel is in a *central* location.
+certainly|בהחלט|It will *certainly* rain tomorrow.
+chain|רשת (חנויות); שרשרת|They own a *chain* of supermarkets.
+chairman|יושב ראש|The *chairman* opened the meeting.
+challenge|אתגר|Learning a new language is a big *challenge*.
+change|שינוי|There was a sudden *change* in the weather.
+channel|ערוץ|What *channel* is the news on?
+characteristic|מאפיין|Patience is a *characteristic* of a good teacher.
+charge|לגבות (מחיר)|The hotel will *charge* you for breakfast.
+checklist|רשימת בדיקה|Use the *checklist* before you hand in your essay.
+chemistry|כימיה|We did an experiment in the *chemistry* lab.
+chicken|תרנגולת; עוף|We had roast *chicken* for dinner.
+chief|ראש, מנהל ראשי|The *chief* of police spoke to reporters.
+church|כנסייה|The old *church* has beautiful windows.
+circumstances|נסיבות|Under these *circumstances*, we must cancel the trip.
+cite|לצטט|In your essay, *cite* at least three sources.
+citizen|אזרח|Every *citizen* has the right to vote.
+civil|אזרחי|*Civil* rights protect people from unfair treatment.
+civilized|מתורבת|In a *civilized* society, people respect each other.
+claim|טענה; לטעון|He *claims* that he saw a UFO.
+clarify|להבהיר|Could you *clarify* what you mean?
+classify|למיין, לסווג|Scientists *classify* animals into groups.
+clearly|בבירור|Please speak *clearly*.
+client|לקוח|The lawyer met her *client* in the office.
+colleague|עמית לעבודה|I had lunch with a *colleague* from work.
+collection|אוסף|The museum has a large *collection* of paintings.
+college|מכללה|She studies nursing at *college*.
+combine|לשלב|*Combine* the flour and the eggs.
+commander|מפקד|The *commander* gave the soldiers their orders.
+comment|הערה; להגיב|Thank you for your helpful *comments*.
+commerce|מסחר|The internet changed the world of *commerce*.
+commit|לבצע (פשע); להתחייב|He did not *commit* the crime.
+committee|ועדה|The *committee* will decide next week.
+community|קהילה|Our *community* built a new park.
+comparison|השוואה|There is no *comparison* between the two cars.
+compete|להתחרות|Ten teams will *compete* in the final.
+completely|לגמרי|I *completely* forgot about the meeting.
+complex|מורכב|The human brain is very *complex*.
+component|רכיב|Each *component* of the machine is important.
+compose|להלחין; לחבר|Mozart began to *compose* music as a child.
+comprehend|להבין|It is hard to *comprehend* such a large number.
+comprehensive|מקיף|The book gives a *comprehensive* history of Israel.
+comprise|לכלול, להיות מורכב מ־|The course will *comprise* ten lessons.
+concentrate|להתרכז|I can't *concentrate* with all this noise.
+concept|מושג|The *concept* of time is hard to explain.
+concern|דאגה; לדאוג|There is growing *concern* about air pollution.
+conclusion|מסקנה|What *conclusion* can you draw from the data?
+conduct|לערוך, לנהל|The researchers will *conduct* a survey.
+conference|כנס|She spoke at an international *conference*.
+confident|בטוח בעצמו|He feels *confident* before the exam.
+confirm|לאשר, לוודא|Please *confirm* your booking by email.
+conflict|סכסוך, עימות|The *conflict* between the two groups lasted years.
+consensus|הסכמה כללית|There is a *consensus* that the plan is good.
+consequence|תוצאה, השלכה|Every action has a *consequence*.
+considerable|ניכר, רב|The project cost a *considerable* amount of money.
+consideration|שיקול|Safety is our first *consideration*.
+considered|נחשב|She is *considered* one of the best writers today.
+consist|להיות מורכב (מ־)|The team will *consist* of five students.
+consistent|עקבי|Her results have been *consistent* all year.
+constitution|חוקה|The *constitution* protects freedom of speech.
+construct|לבנות|They plan to *construct* a new bridge.
+consume|לצרוך|Cars *consume* a lot of fuel.
+contain|להכיל|This drink does not *contain* sugar.
+contemporary|בן זמננו, עכשווי|The museum shows *contemporary* art.
+context|הקשר|Guess the meaning of the word from the *context*.
+continuous|רציף, מתמשך|There was *continuous* rain for three days.
+contradict|לסתור|The two reports *contradict* each other.
+contrast|ניגוד|There is a sharp *contrast* between rich and poor.
+contribute|לתרום|Everyone can *contribute* to the discussion.
+convention|כינוס; מוסכמה|A *convention* of doctors met in Eilat.
+convert|להמיר|You can *convert* dollars into shekels at the bank.
+convey|להעביר (מסר)|Pictures can *convey* emotions without words.
+cooperate|לשתף פעולה|The two schools *cooperate* on many projects.
+coordinate|לתאם|She will *coordinate* the volunteers.
+core|גרעין, ליבה|Honesty is at the *core* of our values.
+correspond|להתכתב; להתאים|The numbers *correspond* to the pages in the book.
+council|מועצה|The city *council* voted for the new park.
+count|לספור; להיחשב|Every vote will *count*.
+cover|לסקר; לכסות|Reporters came to *cover* the story.
+creative|יצירתי|She is a very *creative* designer.
+criminal|פושע; פלילי|The *criminal* was sent to prison.
+crisis|משבר|The country faced an economic *crisis*.
+criterion|קריטריון, אמת מידה|Price is the main *criterion* for choosing a phone.
+criticize|לבקר, למתוח ביקורת|It is easy to *criticize* others.
+crucial|מכריע, חיוני|Sleep is *crucial* for good health.
+current|נוכחי, עדכני|What is your *current* address?
+curriculum|תוכנית לימודים|English is part of the school *curriculum*.
+customer|לקוח|The *customer* asked for a refund.
+cut|קיצוץ|The government announced a *cut* in taxes.
+cycle|מחזור|The life *cycle* of a butterfly has four stages.
+daily|יומי|Exercise is part of my *daily* routine.
+damage|נזק; לגרום נזק|The storm caused serious *damage* to the houses.
+data|נתונים|We collected *data* from 500 students.
+debate|ויכוח, דיון|There was a long *debate* about the new law.
+debt|חוב|He is trying to pay off his *debt*.
+decade|עשור|Prices have doubled in the last *decade*.
+decision|החלטה|It was a difficult *decision* to leave home.
+declare|להכריז|The country *declared* independence in 1948.
+decline|ירידה; לרדת|There has been a *decline* in the number of smokers.
+decrease|להקטין; לרדת|The number of birds continues to *decrease*.
+defend|להגן|Soldiers *defend* their country.
+define|להגדיר|Can you *define* the word "freedom"?
+degree|תואר; מעלה|She has a *degree* in economics.
+delegation|משלחת|A *delegation* from Japan visited the factory.
+demand|ביקוש; דרישה|There is a high *demand* for electric cars.
+democracy|דמוקרטיה|In a *democracy*, people choose their leaders.
+demonstrate|להדגים; להפגין|The teacher will *demonstrate* the experiment.
+deny|להכחיש|He *denied* taking the money.
+depart|לצאת, לעזוב|The train will *depart* from platform 2.
+department|מחלקה|She works in the sales *department*.
+depress|לדכא|Grey winter days can *depress* people.
+derive|לגזור, לנבוע|Many English words *derive* from Latin.
+desert|מדבר|Camels can live in the *desert*.
+design|עיצוב; לעצב|I love the *design* of this chair.
+desire|רצון, תשוקה|He had a strong *desire* to travel.
+despite|למרות|*Despite* the rain, the game went on.
+destroy|להרוס|The fire *destroyed* the old house.
+detail|פרט|Describe the picture in *detail*.
+detect|לגלות, לזהות|The test can *detect* the disease early.
+determine|לקבוע|Tests will *determine* the cause of the illness.
+develop|לפתח; להתפתח|Children *develop* quickly in their first years.
+device|מכשיר|A smartphone is a useful *device*.
+devise|להמציא, לתכנן|We need to *devise* a new plan.
+diagram|תרשים|The *diagram* shows the parts of a flower.
+dialogue|שיח, דו־שיח|Read the *dialogue* between the two friends.
+die|למות|Plants *die* without water.
+difference|הבדל|What is the *difference* between the two words?
+differentiate|להבחין, להבדיל|Young children cannot *differentiate* between fact and fiction.
+difficulty|קושי|She had *difficulty* finding a job.
+dilemma|דילמה|I face a *dilemma*: study or work?
+dimension|ממד|The problem has a social *dimension*.
+diminish|להפחית; לפחות|The pain will *diminish* over time.
+direct|ישיר|There is a *direct* flight to London.
+discipline|משמעת; תחום|The teacher keeps strict *discipline* in class.
+discovery|תגלית|The *discovery* of penicillin saved many lives.
+discriminate|להפלות|It is illegal to *discriminate* against women at work.
+disease|מחלה|Heart *disease* is common in older people.
+dish|מנה; צלחת|This *dish* is made with rice and vegetables.
+display|הצגה; להציג|The shop *displays* new clothes in the window.
+dispose|להיפטר מ־|Please *dispose* of your trash properly.
+dissatisfied|לא מרוצה|Many customers were *dissatisfied* with the service.
+distance|מרחק|The *distance* between the two cities is 100 km.
+distinction|הבחנה; הצטיינות|There is a clear *distinction* between the two ideas.
+distribute|לחלק, להפיץ|Volunteers *distribute* food to poor families.
+district|מחוז, אזור|She lives in the northern *district*.
+disturb|להפריע|Please do not *disturb* me while I study.
+diverse|מגוון|Israel has a *diverse* population.
+division|חלוקה; חטיבה|The *division* of the money was fair.
+document|מסמך|Please sign this *document*.
+domain|תחום|Math is not my *domain*.
+domestic|ביתי; מקומי|The *domestic* flights leave from Terminal 1.
+dominant|דומיננטי, שולט|English is the *dominant* language online.
+double|כפול; להכפיל|Prices will *double* next year.
+dozen|תריסר|I bought a *dozen* eggs.
+draft|טיוטה|Write a first *draft* of your essay.
+drawing|ציור, רישום|The child showed me her *drawing*.
+driver|נהג|The bus *driver* stopped at the station.
+drug|תרופה; סם|This *drug* helps people with headaches.
+dual|כפול|He has *dual* citizenship.
+duty|חובה; מכס|It is our *duty* to help others.
+dynamic|דינמי|She is a *dynamic* and energetic leader.
+earn|להרוויח|She *earns* enough money to live alone.
+easily|בקלות|He *easily* passed the test.
+eastern|מזרחי|The sun rises in the *eastern* sky.
+economic|כלכלי|The country is in an *economic* crisis.
+edge|קצה|Don't stand too close to the *edge* of the cliff.
+edit|לערוך|Please *edit* your essay before you send it.
+educate|לחנך|Schools *educate* children for the future.
+effective|יעיל, אפקטיבי|This medicine is very *effective*.
+efficient|יעיל (חוסך זמן ומשאבים)|The new machine is more *efficient* than the old one.
+egg|ביצה|I eat a boiled *egg* for breakfast.
+elect|לבחור (בבחירות)|Citizens *elect* a new parliament every four years.
+electronic|אלקטרוני|We sent the forms in *electronic* form.
+element|רכיב, יסוד|Trust is an important *element* in any relationship.
+elementary|יסודי, בסיסי|She teaches at an *elementary* school.
+eliminate|לחסל, להוציא|We must *eliminate* mistakes from the report.
+elsewhere|במקום אחר|If this shop is closed, we'll buy it *elsewhere*.
+emerge|להופיע, לצוץ|New problems *emerge* every day.
+emergency|מקרה חירום|In an *emergency*, call 101.
+emotion|רגש|She tried to hide her *emotions*.
+emphasize|להדגיש|The teacher *emphasized* the importance of reading.
+employ|להעסיק|The factory *employs* 300 workers.
+enable|לאפשר|The new app will *enable* you to pay by phone.
+encounter|להיתקל ב־|We *encountered* many problems on the trip.
+end|מטרה, תכלית|He used the money for his own *ends*.
+enemy|אויב|The army attacked the *enemy* at night.
+engage|לעסוק; לרתק|Good teachers *engage* their students.
+engineer|מהנדס|My sister is a software *engineer*.
+enhance|לשפר, להגביר|Music can *enhance* your mood.
+ensure|להבטיח, לוודא|Please *ensure* that the door is locked.
+enterprise|מיזם, עסק|She started her own small *enterprise*.
+entire|שלם, כל|I read the *entire* book in one day.
+entitled|זכאי|Workers are *entitled* to a paid vacation.
+entrance|כניסה|Meet me at the main *entrance*.
+entry|כניסה; ערך (במילון)|There is no *entry* without a ticket.
+environmental|סביבתי|Plastic is a serious *environmental* problem.
+equally|באופן שווה|The money was divided *equally* between them.
+equip|לצייד|The school will *equip* every class with a computer.
+equivalent|שווה ערך|One dollar is *equivalent* to about 3.7 shekels.
+era|עידן, תקופה|We live in the digital *era*.
+error|שגיאה|There is an *error* in your calculation.
+escape|להימלט|The prisoner tried to *escape*.
+essential|חיוני|Water is *essential* for life.
+establish|להקים, לייסד|The university was *established* in 1925.
+estimate|הערכה; להעריך|Experts *estimate* that prices will rise.
+ethical|אתי, מוסרי|Is it *ethical* to test drugs on animals?
+ethnic|אתני|The city has many *ethnic* restaurants.
+evaluate|להעריך, לבחון|Teachers *evaluate* students' progress.
+even|אפילו; זוגי|Four is an *even* number.
+event|אירוע|The concert was the biggest *event* of the year.
+eventually|בסופו של דבר|After many attempts, he *eventually* passed the test.
+everywhere|בכל מקום|I looked *everywhere* for my phone.
+evidence|ראיה, הוכחה|There is no *evidence* that he was there.
+evident|ברור, גלוי|It was *evident* that she was tired.
+evolve|להתפתח|Languages *evolve* over time.
+exceed|לחרוג מ־, לעבור|Do not *exceed* the speed limit.
+except|חוץ מ־|Everyone came *except* Dan.
+exchange|החלפה; להחליף|Can I *exchange* this shirt for a bigger one?
+exclude|להוציא, לא לכלול|The price *excludes* taxes, so you will pay more.
+exclusive|בלעדי|The club is *exclusive* to members.
+executive|מנהל בכיר|She is a senior *executive* at a bank.
+exercise|פעילות גופנית|Daily *exercise* is good for the heart.
+exhibit|מוצג; להציג|The museum will *exhibit* her paintings.
+exist|להתקיים|Do aliens really *exist*?
+exit|יציאה|Where is the emergency *exit*?
+expand|להתרחב; להרחיב|The company plans to *expand* abroad.
+expectation|ציפייה|The results were above our *expectations*.
+expense|הוצאה|Rent is my biggest *expense*.
+experience|ניסיון|She has five years of *experience* in teaching.
+experiment|ניסוי|Scientists did an *experiment* on mice.
+expert|מומחה|He is an *expert* in ancient history.
+explicit|מפורש|The instructions were clear and *explicit*.
+exploit|לנצל|Some companies *exploit* their workers.
+explore|לחקור, לגלות|Scientists want to *explore* the deep sea.
+export|ייצוא; לייצא|Israel *exports* fruit to Europe.
+expose|לחשוף|Don't *expose* your skin to the sun for too long.
+expression|ביטוי; הבעה|"Break a leg" is a funny *expression*.
+extend|להאריך|They decided to *extend* the deadline.
+external|חיצוני|The *external* walls of the house are white.
+face|להתמודד עם, לעמוד מול|We must *face* the problem together.
+facilitate|להקל על|Good lighting can *facilitate* reading.
+facility|מתקן|The gym is a modern sports *facility*.
+fact|עובדה|It is a *fact* that water boils at 100°C.
+factor|גורם|Money is an important *factor* in the decision.
+factory|מפעל|My father works in a car *factory*.
+failure|כישלון|The plan was a complete *failure*.
+fairly|די, למדי; בהגינות|The test was *fairly* easy.
+faith|אמונה|He has strong religious *faith*.
+fall|סתיו|The leaves change color in the *fall*.
+familiar|מוכר|Her face looks *familiar*.
+fan|אוהד|He is a big football *fan*.
+farm|חווה|They grow vegetables on their *farm*.
+fashion|אופנה|She loves to follow the latest *fashion*.
+favor|טובה; להעדיף|Can you do me a *favor*?
+feature|מאפיין|The phone has many useful *features*.
+fee|תשלום, אגרה|The entrance *fee* is 20 shekels.
+feel|תחושה|I love the *feel* of soft sand.
+female|נקבה; נשי|Most of the nurses are *female*.
+figure|מספר, נתון; דמות|The latest *figures* show a rise in prices.
+file|קובץ; תיק|Save the *file* before you close the computer.
+financial|כספי, פיננסי|They have serious *financial* problems.
+findings|ממצאים|The *findings* of the study were surprising.
+fire|לפטר|The boss decided to *fire* him.
+firm|חברה, פירמה|She works for a law *firm*.
+firm (adj)|יציב, נחרץ|The bed is *firm* and comfortable.
+fit|בכושר|He runs every day to stay *fit*.
+flexible|גמיש|My working hours are *flexible*.
+flight|טיסה|Our *flight* leaves at six in the morning.
+flow|זרימה; לזרום|Rivers *flow* into the sea.
+focus|מוקד; להתמקד|*Focus* on the main idea of the text.
+folk|עממי|We danced to Israeli *folk* music.
+forest|יער|Many animals live in the *forest*.
+formal|רשמי|Wear *formal* clothes to the wedding.
+format|פורמט, תבנית|Send your work in PDF *format*.
+former|לשעבר, הקודם|He is a *former* president.
+formulate|לנסח|It is hard to *formulate* a clear answer.
+forum|פורום|Students discuss the course in an online *forum*.
+fraction|שבר; חלק קטן|Only a *fraction* of the students failed.
+frame|מסגרת|The painting has a gold *frame*.
+framework|מסגרת|The law provides a *framework* for safety.
+free|חופשי|Israel is a *free* country.
+frequent|תכוף|There are *frequent* buses to Tel Aviv.
+fuel|דלק|The car needs *fuel*.
+fully|במלואו|The hotel is *fully* booked.
+function|תפקוד; לתפקד|What is the *function* of the heart?
+fund|קרן; לממן|The government will *fund* the new hospital.
+fundamental|יסודי, בסיסי|Freedom of speech is a *fundamental* right.
+further|נוסף; רחוק יותר|For *further* information, visit our website.
+furthermore|יתרה מזו|The flat is cheap. *Furthermore*, it is near the sea.
+gain|לרכוש; להרוויח|You can *gain* experience by volunteering.
+gate|שער|The plane leaves from *gate* 12.
+gender|מגדר|The job is open to all, regardless of *gender*.
+generally|בדרך כלל, באופן כללי|I *generally* go to bed at eleven.
+generate|לייצר|Wind turbines *generate* electricity.
+generation|דור|The younger *generation* uses social media a lot.
+gentle|עדין|She is very *gentle* with the baby.
+gentleman|ג'נטלמן, אדון|He is a real *gentleman*.
+geography|גאוגרפיה|In *geography* we learned about rivers.
+global|גלובלי, עולמי|Climate change is a *global* problem.
+goal|מטרה|My *goal* is to finish my degree.
+god|אל, אלוהים|The ancient Greeks believed in many *gods*.
+gold|זהב|She wears a *gold* ring.
+goods|סחורות|The ship carries *goods* to Europe.
+govern|למשול|The party will *govern* for four years.
+grant|מענק|She received a *grant* to study abroad.
+graph|גרף|The *graph* shows the rise in temperature.
+greatly|במידה רבה|Your help is *greatly* appreciated.
+group|קבוצה|Work in a *group* of four students.
+growth|צמיחה|Economic *growth* was slow this year.
+guard|שומר; לשמור|A *guard* stands at the entrance.
+guess|ניחוש|Make a *guess* if you don't know the answer.
+guest|אורח|We have *guests* for dinner tonight.
+guide|מדריך; להדריך|Our tour *guide* spoke three languages.
+gun|אקדח, רובה|The police officer carried a *gun*.
+hand|למסור|Please *hand* me the salt.
+handle|לטפל ב־; ידית|She knows how to *handle* difficult customers.
+hardware|חומרה|The computer *hardware* needs an upgrade.
+head|ראש, מנהל|She is the *head* of the department.
+hearing|שימוע; שמיעה|The court *hearing* is next week.
+heaven|גן עדן|Many people believe in *heaven*.
+hell|גיהינום|The trip was *hell*; everything went wrong.
+hence|לכן|He was sick, *hence* his absence.
+hero|גיבור|The firefighter was a real *hero*.
+hierarchy|היררכיה|There is a strict *hierarchy* in the army.
+highlight|להדגיש; גולת הכותרת|*Highlight* the key words in yellow.
+highly|מאוד; ברמה גבוהה|She is a *highly* skilled doctor.
+hill|גבעה|The house is on top of a *hill*.
+hire|לשכור; להעסיק|We *hired* a car for the weekend.
+historical|היסטורי|The film is based on *historical* events.
+hole|חור|There is a *hole* in my sock.
+homemaker|עקרת בית, מנהל משק בית|She is a full-time *homemaker*.
+hopeful|מלא תקווה|We are *hopeful* that he will recover.
+horizontal|אופקי|Draw a *horizontal* line across the page.
+horse|סוס|She learned to ride a *horse*.
+host|מארח; להנחות|Who will *host* the party this year?
+human being|בן אדם|Every *human being* deserves respect.
+human|אנושי|To make mistakes is *human*.
+humanities|מדעי הרוח|She studies *humanities*, including history and philosophy.
+hypothesis|השערה|The experiment proved his *hypothesis*.
+ice|קרח|Put some *ice* in my drink.
+ideal|אידיאלי|This is the *ideal* place for a picnic.
+idealist|אידיאליסט|He is an *idealist* who wants to change the world.
+identical|זהה|The twins are *identical*.
+identification|זיהוי; תעודה מזהה|Please show your *identification* at the door.
+ignore|להתעלם|Don't *ignore* the warning signs.
+illegal|לא חוקי|Parking here is *illegal*.
+illness|מחלה|He missed work because of *illness*.
+illustrate|להמחיש; לאייר|The teacher used a story to *illustrate* her point.
+image|תמונה; דימוי|The *image* on the screen was blurry.
+imagination|דמיון|Children have a rich *imagination*.
+immediate|מיידי|We need an *immediate* answer.
+immigrate|להגר (אל)|Many families *immigrate* to Israel every year.
+immoral|לא מוסרי|Stealing is *immoral*.
+impact|השפעה|Social media has a big *impact* on teenagers.
+implementation|יישום, ביצוע|The *implementation* of the plan will take a year.
+implication|השלכה; משמעות|What are the *implications* of the new law?
+implicit|מרומז|There was an *implicit* threat in his words.
+import|ייבוא; לייבא|Israel *imports* cars from Japan.
+importance|חשיבות|Never forget the *importance* of sleep.
+impose|להטיל (מס, עונש)|The government will *impose* a new tax.
+impress|להרשים|She wanted to *impress* her new boss.
+improvement|שיפור|There is a big *improvement* in your writing.
+incentive|תמריץ|A bonus is an *incentive* to work harder.
+incident|תקרית|The police are investigating the *incident*.
+including|כולל|The price is 100 shekels, *including* tax.
+income|הכנסה|Their monthly *income* is quite low.
+increasingly|יותר ויותר|It is *increasingly* difficult to find work.
+independence|עצמאות|Israel celebrates its *independence* in spring.
+index|מפתח, אינדקס|Look for the topic in the *index* at the back of the book.
+indicate|להצביע על|The results *indicate* a problem.
+indirect|עקיף|He gave an *indirect* answer.
+individually|באופן אישי, כל אחד לחוד|The teacher spoke to each student *individually*.
+industry|תעשייה|The tourism *industry* is growing.
+inevitable|בלתי נמנע|Change is *inevitable*.
+inferior|נחות|The cheap phone is *inferior* to the expensive one.
+influence|השפעה; להשפיע|Parents have a strong *influence* on their children.
+inform|ליידע|Please *inform* us of any changes.
+informal|לא רשמי|The meeting was relaxed and *informal*.
+infrastructure|תשתית|The country needs better *infrastructure*, like roads and trains.
+inherent|טבוע, מובנה|There are *inherent* risks in every sport.
+initial|ראשוני|My *initial* reaction was surprise.
+initiative|יוזמה|She took the *initiative* and organized the trip.
+injury|פציעה|He missed the game because of an *injury*.
+innovation|חדשנות|Israel is known for *innovation* in technology.
+input|קלט; תשומה|We need your *input* on the new design.
+inquire|לברר, לשאול|I called to *inquire* about the price.
+insight|תובנה|The book gives *insight* into the life of a soldier.
+insist|להתעקש|She *insisted* on paying for dinner.
+instant|מיידי; רגע|The new product was an *instant* success.
+institute|מכון|She works at a research *institute*.
+instruction|הוראה|Follow the *instructions* carefully.
+instrument|כלי (נגינה, מדידה)|Do you play a musical *instrument*?
+insurance|ביטוח|Do you have health *insurance*?
+integrate|לשלב|The school tries to *integrate* new immigrants.
+integrity|יושרה|A judge must have *integrity*.
+intellectual|אינטלקטואלי|Chess is an *intellectual* game.
+intelligence|מודיעין|Military *intelligence* warned about the attack.
+intend|להתכוון|I *intend* to finish the work today.
+intense|עז, אינטנסיבי|The heat was *intense*.
+interact|לתקשר, לפעול הדדית|Children *interact* with each other in the playground.
+interest|ריבית; עניין|The bank charges high *interest* on loans.
+internal|פנימי|The heart is an *internal* organ.
+interpret|לפרש; לתרגם בעל פה|How do you *interpret* this poem?
+intervention|התערבות|Without medical *intervention*, he would have died.
+introduce|להנהיג; להציג|The school will *introduce* a new uniform.
+invention|המצאה|The telephone was an important *invention*.
+invest|להשקיע|He *invested* his money in a new company.
+investigate|לחקור|The police will *investigate* the crime.
+invisible|בלתי נראה|Air is *invisible*.
+involvement|מעורבות|Parent *involvement* helps children succeed.
+iron|ברזל; מגהץ|The gate is made of *iron*.
+irresponsible|חסר אחריות|It is *irresponsible* to drive so fast.
+Islam|אסלאם|*Islam* is one of the world's major religions.
+joint|משותף|They have a *joint* bank account.
+journal|כתב עת; יומן|The study was published in a medical *journal*.
+journalist|עיתונאי|The *journalist* interviewed the minister.
+Judaism|יהדות|*Judaism* is one of the oldest religions.
+judgment|שיפוט; פסק דין|Use your own *judgment*.
+jump|לקפוץ|The cat can *jump* onto the table.
+just|צודק, הוגן|It was a *just* decision.
+justify|להצדיק|How can you *justify* such high prices?
+key|מפתח, מרכזי|Exercise is a *key* factor in good health.
+kill|להרוג|Smoking can *kill* you.
+king|מלך|The *king* lived in a large palace.
+kit|ערכה|Keep a first aid *kit* in your car.
+kitchen|מטבח|We eat breakfast in the *kitchen*.
+knee|ברך|He hurt his *knee* playing football.
+knowledge|ידע|Reading increases your *knowledge*.
+label|תווית; לתייג|Read the *label* before you take the medicine.
+labor|עבודה; כוח עבודה|The factory needs cheap *labor*.
+lack|חוסר|*Lack* of sleep makes it hard to concentrate.
+land|לנחות|The plane will *land* at noon.
+landscape|נוף|The desert *landscape* is beautiful.
+language|שפה|English is an international *language*.
+largely|במידה רבה|The project was *largely* successful.
+last|להימשך|The meeting will *last* two hours.
+late|המנוח; מאוחר|The book was written by the *late* president.
+latter|האחרון (מבין שניים)|Tea or coffee? I prefer the *latter*.
+laughter|צחוק|The room was full of *laughter*.
+law|חוק; משפטים|It is against the *law* to drive without a license.
+leadership|מנהיגות|The team improved under her *leadership*.
+leaf|עלה|A yellow *leaf* fell from the tree.
+lean|רזה; להישען|Don't *lean* on the door.
+leg|רגל|I broke my *leg* skiing.
+legal|חוקי, משפטי|Is it *legal* to park here?
+length|אורך|The *length* of the room is five meters.
+level|רמה|What *level* of English do you have?
+lift|להרים|Can you help me *lift* this box?
+lift (n)|מעלית|Take the *lift* to the fifth floor.
+light|קל (משקל)|The bag is *light* and easy to carry.
+lips|שפתיים|She painted her *lips* red.
+list|רשימה|Make a shopping *list*.
+literature|ספרות|She studies English *literature*.
+local|מקומי|We buy vegetables from *local* farmers.
+locate|לאתר, למקם|The app helps you *locate* your phone.
+logic|היגיון|There is no *logic* in his argument.
+long-term|ארוך טווח|Smoking has *long-term* effects on health.
+looks|מראה חיצוני|Don't judge people by their *looks*.
+loss|אובדן; הפסד|The company had a big *loss* this year.
+lovely|מקסים, נחמד|We had a *lovely* time at the beach.
+lower|להוריד; תחתון|Please *lower* your voice.
+luckily|למרבה המזל|*Luckily*, nobody was hurt.
+madam|גבירתי|Can I help you, *madam*?
+maintain|לשמור על, לתחזק|It is important to *maintain* a healthy weight.
+major|עיקרי, מרכזי|Traffic is a *major* problem in big cities.
+male|זכר; גברי|Most of the soldiers are *male*.
+manage|לנהל|She *manages* a team of ten people.
+manner|אופן, דרך|He spoke in a calm *manner*.
+manners|נימוסים|It is bad *manners* to talk with your mouth full.
+manufacture|לייצר|The company *manufactures* cars.
+market|שוק|The *market* for electric cars is growing.
+marriage|נישואין|Their *marriage* lasted fifty years.
+mass|המוני|Television is a form of *mass* media.
+master|אמן, מומחה; לשלוט ב־|It takes years to *master* a language.
+mean|ממוצע|The *mean* of 2, 4 and 6 is 4.
+measure|למדוד; צעד|Use a ruler to *measure* the line.
+mechanism|מנגנון|The *mechanism* of the clock is very old.
+media|תקשורת, מדיה|The *media* reported the story all day.
+medical|רפואי|She needs *medical* care.
+membership|חברות (במועדון)|*Membership* in the gym costs 200 shekels a month.
+mental|נפשי, שכלי|*Mental* health is as important as physical health.
+merely|רק, גרידא|It was *merely* a joke.
+metal|מתכת|The chair is made of *metal*.
+method|שיטה|This is a new *method* for learning vocabulary.
+mile|מייל|The beach is a *mile* from the hotel.
+military|צבאי|He did his *military* service in the navy.
+minimal|מזערי|The damage was *minimal*.
+minister|שר|The *minister* of education visited our school.
+minority|מיעוט|A *minority* of students voted against the plan.
+mirror|מראה|She looked at herself in the *mirror*.
+miss|להתגעגע; להחמיץ|I *miss* my family when I travel.
+mission|משימה|The *mission* of the soldiers was to protect the village.
+mobile|נייד|I bought a new *mobile* phone.
+mode|אופן, מצב|Put your phone on silent *mode*.
+model|דגם; מודל|This is a *model* of the solar system.
+modify|לשנות, להתאים|We need to *modify* the plan a little.
+monitor|לפקח, לעקוב; מסך|Doctors *monitor* the patient's heart.
+moral|מוסרי|It is a *moral* duty to help people in need.
+moreover|יתרה מזאת|The car is cheap. *Moreover*, it uses little fuel.
+mostly|בעיקר|The students are *mostly* from the north.
+motive|מניע|The police don't know the *motive* for the crime.
+motor|מנוע|The boat has an electric *motor*.
+movement|תנועה|The women's *movement* fought for equal rights.
+multiple|מרובה|There are *multiple* answers to this question.
+municipal|עירוני|The *municipal* library is open on Fridays.
+murder|רצח|He was arrested for *murder*.
+mutual|הדדי|They have *mutual* respect for each other.
+myth|מיתוס|It is a *myth* that we use only 10% of our brain.
+name|לקרוא בשם; למנות|They *named* their son David.
+natural|טבעי|This juice is made from *natural* ingredients.
+nearly|כמעט|It is *nearly* midnight.
+necessarily|בהכרח|Expensive food is not *necessarily* healthy.
+neck|צוואר|She wore a scarf around her *neck*.
+need|צורך|There is a *need* for more teachers.
+negative|שלילי|Stress has a *negative* effect on sleep.
+negotiate|לנהל משא ומתן|The workers will *negotiate* with the manager.
+net|נטו; רשת|My *net* salary is lower than my gross salary.
+network|רשת|The company has a *network* of shops.
+neutral|ניטרלי|Switzerland stayed *neutral* in the war.
+nevertheless|אף על פי כן|It was cold. *Nevertheless*, we went swimming.
+norm|נורמה|Working from home is now the *norm*.
+normally|בדרך כלל|I *normally* walk to work.
+northern|צפוני|Haifa is in *northern* Israel.
+nose|אף|He has a cold and a red *nose*.
+notion|מושג, רעיון|The *notion* that money brings happiness is wrong.
+novel|רומן|She is reading a *novel* by a famous author.
+nuclear|גרעיני|*Nuclear* weapons are very dangerous.
+numerous|רבים|I have visited Paris *numerous* times.
+nurse|אח/ות|The *nurse* gave me an injection.
+object|להתנגד|Many residents *object* to the new road.
+objective|מטרה; אובייקטיבי|The *objective* of the course is to improve writing.
+oblige|לחייב|The law *obliges* drivers to wear seat belts.
+observe|לצפות, להבחין|Scientists *observe* the behavior of animals.
+obtain|להשיג|You must *obtain* a visa before you travel.
+obvious|ברור, מובן מאליו|The answer is *obvious*.
+occasion|הזדמנות, אירוע|A wedding is a special *occasion*.
+occasionally|מדי פעם|We *occasionally* eat out.
+occupy|לכבוש; לתפוס|The army *occupied* the city.
+occur|להתרחש|Earthquakes *occur* without warning.
+ocean|אוקיינוס|The Pacific is the largest *ocean*.
+offend|לפגוע, להעליב|I didn't mean to *offend* you.
+offender|עבריין|The young *offender* was sent to a special school.
+offense|עבירה; עלבון|Driving without a license is an *offense*.
+officer|קצין; שוטר|A police *officer* stopped the car.
+ongoing|מתמשך|The investigation is *ongoing*.
+opening|פתיחה|The *opening* of the new mall was a big event.
+oppose|להתנגד|Many people *oppose* the new law.
+option|אפשרות|We have two *options*: wait or leave.
+organization|ארגון|She works for a charity *organization*.
+origin|מקור, מוצא|What is the *origin* of this word?
+otherwise|אחרת|Hurry up, *otherwise* you'll miss the bus.
+outcome|תוצאה|What was the *outcome* of the meeting?
+outline|ראשי פרקים; תיאור כללי|Write an *outline* before you write the essay.
+output|תפוקה|The factory increased its *output*.
+overall|בסך הכול, כולל|*Overall*, the trip was a success.
+own|להחזיק, להיות בעל|They *own* a house by the sea.
+package|חבילה|A *package* arrived for you this morning.
+pain|כאב|I have a *pain* in my back.
+paint|צבע; לצבוע|We need to *paint* the kitchen.
+parliament|פרלמנט|The *parliament* passed a new law.
+part|תפקיד (בהצגה)|She got the main *part* in the play.
+participate|להשתתף|All students must *participate* in the discussion.
+particularly|במיוחד|I *particularly* like Italian food.
+partly|באופן חלקי|The road is *partly* closed.
+passage|קטע|Read the *passage* and answer the questions.
+passive|פסיבי|He took a *passive* role in the discussion.
+pattern|דפוס|Can you see a *pattern* in the numbers?
+pay|שכר, משכורת|The *pay* is good, but the hours are long.
+peace|שלום|The two countries signed a *peace* treaty.
+pepper|פלפל|Add salt and *pepper* to the soup.
+per|ל־ (לכל)|The tickets cost 50 shekels *per* person.
+perceive|לתפוס, להבין|People *perceive* the same event in different ways.
+percent|אחוז|Fifty *percent* of the students are women.
+perform|להופיע; לבצע|The band will *perform* tonight.
+period|תקופה|He lived in Paris for a short *period*.
+permanent|קבוע|She is looking for a *permanent* job.
+permit|היתר; להתיר|You need a *permit* to build a house.
+personal|אישי|Please don't ask *personal* questions.
+personality|אישיות|She has a warm *personality*.
+perspective|נקודת מבט|Try to see the problem from a different *perspective*.
+persuade|לשכנע|I tried to *persuade* him to come with us.
+phase|שלב|The project is in its final *phase*.
+phenomenon|תופעה|The northern lights are a natural *phenomenon*.
+physical|פיזי, גופני|*Physical* activity is good for the brain.
+physics|פיזיקה|Einstein changed the world of *physics*.
+pilot|טייס|The *pilot* landed the plane safely.
+place|לשים, למקם|*Place* the book on the shelf.
+planet|כוכב לכת|Earth is the third *planet* from the sun.
+planning|תכנון|Good *planning* saves time.
+plant|מפעל|The workers at the power *plant* went on strike.
+plastic|פלסטיק|Plastic bags are bad for the sea.
+play|מחזה|We saw a *play* at the theater.
+pleasure|הנאה|Reading gives me great *pleasure*.
+pocket|כיס|He put his keys in his *pocket*.
+point|נקודה, טענה|That's a good *point*.
+point (v)|להצביע|Don't *point* at people.
+policy|מדיניות|The company has a strict *policy* on safety.
+politics|פוליטיקה|She is interested in *politics*.
+pool|בריכה|The hotel has a swimming *pool*.
+population|אוכלוסייה|The *population* of Israel is about ten million.
+positive|חיובי|She has a *positive* attitude.
+possess|להחזיק, להיות בעל|He does not *possess* a car.
+possibly|ייתכן, אולי|It will *possibly* rain tomorrow.
+post|פוסט; לפרסם|She wrote a *post* on social media.
+potential|פוטנציאלי; פוטנציאל|He has great *potential* as a singer.
+pour|למזוג; לשפוך|*Pour* the milk into the cup.
+poverty|עוני|Many families live in *poverty*.
+practical|מעשי|She gave me some *practical* advice.
+practically|כמעט; למעשה|The bottle is *practically* empty.
+precise|מדויק|Please give me the *precise* time.
+prepare|להכין|*Prepare* for the exam early.
+presentation|מצגת; הצגה|She gave a *presentation* about her project.
+president|נשיא|The *president* gave a speech.
+press|העיתונות|The *press* reported the story.
+press (v)|ללחוץ|*Press* the green button to start.
+pretty|די (למדי)|The test was *pretty* easy.
+prevent|למנוע|Washing hands can *prevent* disease.
+previous|קודם|I liked his *previous* book better.
+pride|גאווה|She spoke with *pride* about her children.
+primary|יסודי; עיקרי|My son is in *primary* school.
+principal|מנהל בית ספר|The *principal* spoke to all the students.
+principle|עיקרון|Honesty is an important *principle*.
+prior|קודם, מוקדם|No *prior* experience is needed for this job.
+prison|כלא|He spent five years in *prison*.
+probable|סביר|It is *probable* that prices will rise.
+problematic|בעייתי|The situation is *problematic*.
+proceed|להמשיך, להתקדם|Please *proceed* to gate 5.
+process|תהליך|Learning is a slow *process*.
+produce|לייצר|The factory *produces* 500 cars a day.
+profession|מקצוע|Teaching is a noble *profession*.
+profile|פרופיל|Update your *profile* on the website.
+profit|רווח|The company made a large *profit*.
+progress|התקדמות|She is making good *progress* in English.
+project|לצפות, לחזות|Experts *project* that the population will grow.
+promise|הבטחה|He made a *promise* to call every day.
+promote|לקדם|They hired a company to *promote* the new product.
+properly|כראוי|Make sure the door is *properly* closed.
+property|רכוש; נכס|Please don't touch other people's *property*.
+proportion|יחס, חלק|A large *proportion* of the students are women.
+propose|להציע|I *propose* that we meet on Monday.
+prospect|סיכוי, אפשרות|There is little *prospect* of finding a job here.
+protection|הגנה|Sunscreen gives *protection* from the sun.
+protest|מחאה; למחות|Thousands joined the *protest* against the law.
+provision|אספקה; הוראה|The *provision* of clean water is essential.
+psychology|פסיכולוגיה|She studies *psychology* at university.
+publish|לפרסם (ספר, מאמר)|He hopes to *publish* his first book next year.
+pull|למשוך|*Pull* the door to open it.
+pursue|לרדוף אחר; לחתור ל־|She decided to *pursue* a career in law.
+quality|איכות|The *quality* of the food is excellent.
+quantity|כמות|We need a large *quantity* of water.
+race|גזע|Discrimination based on *race* is illegal.
+radical|קיצוני, רדיקלי|They want *radical* changes in the system.
+random|אקראי|The computer chose a *random* number.
+range|טווח, מגוון|The shop sells a wide *range* of products.
+rapid|מהיר|There has been *rapid* growth in technology.
+rate|שיעור, קצב|The unemployment *rate* fell last year.
+rating|דירוג|The hotel has a five-star *rating*.
+ratio|יחס|The *ratio* of boys to girls is 1 to 2.
+rational|רציונלי|Let's make a *rational* decision.
+rationale|הנמקה, רציונל|What is the *rationale* behind the new rule?
+react|להגיב|How did she *react* to the news?
+readily|בקלות; ברצון|The information is *readily* available online.
+reality|מציאות|Sometimes *reality* is different from our dreams.
+reasonable|סביר, הגיוני|The price is *reasonable*.
+recall|להיזכר|I can't *recall* his name.
+receipt|קבלה|Keep the *receipt* in case you want to return it.
+reception|קבלה (במלון); קליטה|Leave your key at *reception*.
+recognition|הכרה|She received *recognition* for her work.
+recommend|להמליץ|I *recommend* this restaurant.
+recover|להחלים|He needs time to *recover* after the operation.
+recruit|לגייס|The company wants to *recruit* new workers.
+reduce|להפחית|Try to *reduce* the amount of sugar you eat.
+refer|להפנות; להתייחס|The doctor will *refer* you to a specialist.
+reflect|לשקף; להרהר|The results *reflect* hard work.
+reform|רפורמה|The government announced an education *reform*.
+refugee|פליט|The *refugee* fled from the war.
+refuse|לסרב|He *refused* to answer the question.
+regard|להחשיב; להתייחס|I *regard* her as my best friend.
+regarding|בנוגע ל־|I have a question *regarding* the exam.
+regime|משטר|The *regime* did not allow free elections.
+region|אזור|The Galilee is a beautiful *region*.
+regulation|תקנה|There are strict safety *regulations* in the factory.
+reinforce|לחזק|Practice will *reinforce* what you learned.
+reject|לדחות|The university *rejected* his application.
+relationship|מערכת יחסים|They have a good *relationship*.
+relative|קרוב משפחה|We visited a *relative* in Haifa.
+release|לשחרר; להוציא לאור|The band will *release* a new album soon.
+relevant|רלוונטי|Only include *relevant* information in your essay.
+relief|הקלה|It was a *relief* to hear that she was safe.
+rely|לסמוך|You can *rely* on me.
+represent|לייצג|She will *represent* our school in the competition.
+require|לדרוש|This job will *require* a lot of patience.
+research|מחקר|She is doing *research* on the brain.
+resident|תושב|The *residents* complained about the noise.
+resist|להתנגד, לעמוד בפני|I can't *resist* chocolate.
+resolve|לפתור|The two sides managed to *resolve* the conflict.
+resource|משאב|Water is a precious *resource*.
+respectively|בהתאמה|Dan and Maya are 20 and 22, *respectively*.
+respond|להגיב, להשיב|Please *respond* to my email.
+restrict|להגביל|The new law will *restrict* smoking in public places.
+retain|לשמור, לשמר|It is hard to *retain* all this information.
+reveal|לגלות, לחשוף|She refused to *reveal* her secret.
+review|סקירה; לחזור על|*Review* your notes before the test.
+revise|לתקן, לשכתב|Please *revise* your essay and send it again.
+revolution|מהפכה|The French *Revolution* began in 1789.
+ring|זירה|The boxers entered the *ring*.
+ritual|טקס|Lighting candles is a Friday night *ritual*.
+rock|סלע|We sat on a big *rock* by the sea.
+roll|לגלגל; להתגלגל|The ball *rolled* down the hill.
+roof|גג|There are solar panels on the *roof*.
+root|שורש|The tree has deep *roots*.
+route|מסלול|We took the scenic *route* to Eilat.
+row|שורה|We sat in the front *row*.
+rural|כפרי|They moved from the city to a *rural* area.
+rush|למהר|There is no need to *rush*.
+safety|בטיחות|Wear a helmet for your *safety*.
+salary|משכורת|She gets a monthly *salary*.
+sample|דגימה|The doctor took a blood *sample*.
+sanctions|סנקציות|The UN imposed *sanctions* on the country.
+satisfy|לספק, להשביע רצון|Nothing can *satisfy* him.
+scale|קנה מידה; סולם|Rate the movie on a *scale* of 1 to 10.
+scenario|תרחיש|In the worst *scenario*, we will lose everything.
+scene|סצנה; זירה|The last *scene* of the movie was sad.
+scenery|נוף|The *scenery* in the north is beautiful.
+scheme|תוכנית, מיזם|The government started a new *scheme* to help students.
+science|מדע|She loves *science*, especially chemistry.
+score|ציון|What was your *score* on the test?
+screen|מסך|Don't sit too close to the *screen*.
+secondly|שנית|Firstly, it's too expensive. *Secondly*, it's too big.
+section|חלק, סעיף|Read the first *section* of the article.
+sector|מגזר|She works in the public *sector*.
+secure|בטוח, מאובטח|Keep your password in a *secure* place.
+seek|לחפש, לבקש|You should *seek* medical advice.
+select|לבחור|*Select* the correct answer.
+senior|בכיר; קשיש|She is a *senior* manager.
+sensitive|רגיש|My skin is very *sensitive* to the sun.
+separate|נפרד|Keep the eggs in a *separate* box.
+sequence|רצף, סדר|Put the pictures in the correct *sequence*.
+series|סדרה|I'm watching a new TV *series*.
+seriously|ברצינות|Please take this *seriously*.
+servant|משרת|The king had many *servants*.
+setting|רקע, מקום התרחשות|The *setting* of the story is a small village.
+settle|להתיישב; ליישב|They decided to *settle* in the Negev.
+severe|חמור|There was a *severe* storm last night.
+shadow|צל|The tree cast a long *shadow*.
+shake|לנער; לרעוד|*Shake* the bottle before you open it.
+share|לשתף; לחלוק|*Share* the cake with your brother.
+ship|ספינה|The *ship* sailed across the ocean.
+short-term|קצר טווח|This is only a *short-term* solution.
+shot|זריקה; ירייה|The nurse gave me a flu *shot*.
+shoulder|כתף|He carried the bag on his *shoulder*.
+sight|ראייה; מראה|My grandmother has poor *sight*.
+signal|אות; לאותת|There is no phone *signal* here.
+significant|משמעותי|There was a *significant* rise in prices.
+sir|אדוני|Can I help you, *sir*?
+skill|מיומנות|Reading is an important *skill*.
+slight|קל, קלוש|I have a *slight* headache.
+slip|להחליק|Be careful not to *slip* on the wet floor.
+snow|שלג|There was *snow* on Mount Hermon.
+software|תוכנה|You need to update your *software*.
+soldier|חייל|The *soldier* was on guard all night.
+sole|יחיד, בלעדי|He is the *sole* owner of the company.
+solution|פתרון|We need to find a *solution* to this problem.
+somehow|איכשהו|*Somehow*, we finished on time.
+somewhat|במידה מסוימת|I was *somewhat* surprised.
+somewhere|איפשהו|I left my keys *somewhere* in the house.
+soul|נשמה|She put her heart and *soul* into the project.
+source|מקור|What is the *source* of this information?
+southern|דרומי|Eilat is in *southern* Israel.
+spatial|מרחבי|Architects need good *spatial* skills.
+specialize|להתמחות|She wants to *specialize* in children's medicine.
+specify|לפרט|Please *specify* the size you need.
+speech|נאום|The president gave a long *speech*.
+spirit|רוח|The team has a great *spirit*.
+spot|מקום, נקודה|This is a nice *spot* for a picnic.
+spread|להתפשט; להפיץ|The fire *spread* quickly.
+stable|יציב|The patient is now in *stable* condition.
+stairs|מדרגות|Take the *stairs*, not the elevator.
+stand|לסבול|I can't *stand* the heat.
+stare|לבהות|Don't *stare* at people.
+statistics|סטטיסטיקה|*Statistics* show that crime is falling.
+status|מעמד|Doctors have high social *status*.
+steal|לגנוב|Someone tried to *steal* my bike.
+steel|פלדה|The bridge is made of *steel*.
+stereotype|סטריאוטיפ|It is a *stereotype* that all teenagers are lazy.
+stimulate|לעורר, לגרות|Games can *stimulate* children's thinking.
+stock|מלאי; מניה|The shop has a large *stock* of shoes.
+stone|אבן|The old house is built of *stone*.
+storm|סערה|The *storm* knocked down many trees.
+strategy|אסטרטגיה|We need a new *strategy* to win.
+strength|כוח, חוזק|He doesn't have the *strength* to lift it.
+stress|לחץ; להדגיש|Exams cause a lot of *stress*.
+stretch|למתוח; להימתח|*Stretch* your legs after a long flight.
+strongly|בתוקף, מאוד|I *strongly* disagree with you.
+structure|מבנה|The *structure* of the essay is clear.
+struggle|מאבק; להיאבק|It was a *struggle* to finish on time.
+studio|סטודיו|The singer recorded the song in a *studio*.
+subjective|סובייקטיבי|Taste in music is very *subjective*.
+subsequent|שלאחר מכן|The problem got worse in *subsequent* years.
+substance|חומר|Water is a liquid *substance*.
+substantial|משמעותי, ניכר|She received a *substantial* amount of money.
+success|הצלחה|The party was a great *success*.
+suffer|לסבול|Many people *suffer* from back pain.
+sufficient|מספיק|We have *sufficient* food for a week.
+sugar|סוכר|I drink my tea without *sugar*.
+suit|חליפה|He wore a black *suit* to the wedding.
+suit (law)|תביעה משפטית|She filed a *suit* against the company.
+sum|סכום|He paid a large *sum* of money for the car.
+summarize|לסכם|*Summarize* the article in three sentences.
+supply|אספקה; לספק|The farm *supplies* milk to the city.
+surely|בוודאי|*Surely* you don't believe that story!
+surface|פני השטח|Oil floats on the *surface* of the water.
+surgery|ניתוח|He needs *surgery* on his knee.
+surround|להקיף|Mountains *surround* the town.
+survey|סקר|We did a *survey* of 200 students.
+survive|לשרוד|Only a few people *survived* the crash.
+suspect|חשוד; לחשוד|The police arrested a *suspect*.
+sustain|לקיים, לשמר|We need to *sustain* the growth of the economy.
+symbol|סמל|The dove is a *symbol* of peace.
+system|מערכת|The school has a new grading *system*.
+table|טבלה|The *table* shows the results of the survey.
+talk|הרצאה; שיחה|She gave a *talk* about climate change.
+target|יעד, מטרה|Our *target* is to sell 100 cars this month.
+task|משימה|Complete the *task* in ten minutes.
+taste|טעם (אישי)|She has good *taste* in clothes.
+teaching|הוראה|*Teaching* is a difficult job.
+tear|דמעה|A *tear* ran down her face.
+tear (v)|לקרוע|Don't *tear* the page.
+technical|טכני|We had a *technical* problem with the computer.
+technique|טכניקה|She learned a new painting *technique*.
+technology|טכנולוגיה|*Technology* changes our lives.
+temperature|טמפרטורה|The *temperature* today is 30 degrees.
+temporary|זמני|This is only a *temporary* job.
+tendency|נטייה|He has a *tendency* to talk too much.
+term|מונח; סמסטר|"Photosynthesis" is a scientific *term*.
+terms|תנאים|Read the *terms* of the contract carefully.
+territory|שטח, טריטוריה|The army controls the *territory*.
+theater|תיאטרון|We saw a play at the *theater*.
+theme|נושא מרכזי|Love is the main *theme* of the novel.
+theory|תיאוריה|Darwin's *theory* of evolution changed science.
+thereby|ובכך|He trained hard, *thereby* improving his results.
+threat|איום|Pollution is a *threat* to our health.
+thus|לכן, כך|He was ill and *thus* missed the exam.
+tie|עניבה; קשר|He wore a red *tie*.
+tiny|זעיר|The baby has *tiny* fingers.
+tip|טיפ, עצה|Here's a *tip*: read the questions first.
+tired|עייף|I'm *tired* after the long day.
+tone|טון|Her *tone* was angry.
+tooth|שן|I have a pain in my *tooth*.
+totally|לגמרי|I *totally* agree with you.
+touch|מגע; לגעת|Don't *touch* the hot plate.
+tough|קשה, קשוח|It was a *tough* decision.
+track|מסילה; מסלול|The train left the *track*.
+tradition|מסורת|Lighting candles on Hanukkah is a *tradition*.
+transfer|העברה; להעביר|I want to *transfer* money to my son.
+transform|לשנות לגמרי|The internet *transformed* the way we work.
+transmit|לשדר; להעביר|Mosquitoes can *transmit* diseases.
+transport|תחבורה; להוביל|Trucks *transport* goods across the country.
+travel|נסיעה, טיול|*Travel* broadens the mind.
+trek|מסע רגלי|We went on a three-day *trek* in the mountains.
+trend|מגמה|The new *trend* is working from home.
+trial|משפט; ניסוי|The *trial* will begin next month.
+troops|כוחות צבא|The *troops* returned home.
+truly|באמת|I am *truly* sorry.
+trust|אמון|*Trust* is important in a relationship.
+truth|אמת|Always tell the *truth*.
+twice|פעמיים|I go to the gym *twice* a week.
+typical|טיפוסי|It was a *typical* winter day.
+unable|לא מסוגל|I was *unable* to sleep last night.
+unemployed|מובטל|He has been *unemployed* for six months.
+unfortunately|לצערי|*Unfortunately*, the shop is closed.
+union|איגוד|The workers' *union* called a strike.
+unique|ייחודי|Every person is *unique*.
+unite|לאחד; להתאחד|The crisis helped to *unite* the people.
+universe|יקום|The *universe* is very old.
+university|אוניברסיטה|She studies law at the *university*.
+unlikely|לא סביר|It is *unlikely* to snow in Tel Aviv.
+upper|עליון|The bedrooms are on the *upper* floor.
+urban|עירוני|More people live in *urban* areas today.
+use|שימוש|This machine is for professional *use*.
+valid|תקף|Your passport is *valid* for ten years.
+value|ערך|The *value* of the house has gone up.
+variety|מגוון|The shop sells a *variety* of fruits.
+vary|להשתנות, לגוון|Prices *vary* from shop to shop.
+vehicle|כלי רכב|Park your *vehicle* in the parking lot.
+version|גרסה|Download the latest *version* of the app.
+vertical|אנכי|Draw a *vertical* line.
+via|דרך, באמצעות|We flew to New York *via* London.
+victim|קורבן|The *victim* was taken to the hospital.
+victory|ניצחון|The team celebrated its *victory*.
+video|סרטון|Watch the *video* and answer the questions.
+violent|אלים|He became *violent* when he was angry.
+virtual|וירטואלי|We had a *virtual* meeting on Zoom.
+virtue|מעלה, מידה טובה|Patience is a *virtue*.
+visible|נראה, גלוי|The mountain is *visible* from here.
+vision|ראייה; חזון|She has a clear *vision* for the future.
+visitor|מבקר|The museum has many *visitors* every day.
+vital|חיוני|Water is *vital* for life.
+volume|נפח; עוצמת קול|Turn down the *volume*, please.
+voluntary|התנדבותי, רצוני|Attendance at the meeting is *voluntary*.
+volunteer|מתנדב; להתנדב|She is a *volunteer* at the hospital.
+vote|קול (בבחירות); להצביע|Every *vote* counts.
+wave|גל|A big *wave* hit the boat.
+way|דרך, אופן|There is more than one *way* to solve the problem.
+weak|חלש|I felt *weak* after the illness.
+weapon|נשק|Carrying a *weapon* is illegal here.
+weekend|סוף שבוע|What are you doing this *weekend*?
+welfare|רווחה|The government spends a lot on social *welfare*.
+western|מערבי|The sun sets in the *western* sky.
+whereas|ואילו, בעוד ש־|I like tea, *whereas* my sister likes coffee.
+whom|את מי, למי|To *whom* should I send the letter?
+wicked|מרושע|The *wicked* witch hated Snow White.
+widely|באופן נרחב|English is *widely* spoken around the world.
+width|רוחב|Measure the *width* of the table.
+wild|טבע פראי; פראי|These animals live in the *wild*.
+will|רצון|Where there's a *will*, there's a way.
+willing|מוכן, בעל רצון|Are you *willing* to help?
+wine|יין|They drank red *wine* with dinner.
+wing|כנף|The bird hurt its *wing*.
+winner|זוכה, מנצח|The *winner* gets a prize.
+withdraw|לסגת; למשוך|The army will *withdraw* from the area.
+witness|עד; לחזות ב־|The *witness* saw the accident.
+workshop|סדנה|We took a writing *workshop*.
+writer|סופר|He is a famous *writer*.
+yard|חצר|The children play in the *yard*.
+youth|נעורים; צעירים|I remember my *youth* in Haifa.
+zone|אזור|This is a no-parking *zone*.
+Asian|אסייתי|We ate at an *Asian* restaurant.
+British|בריטי|He speaks with a *British* accent.
+Catholic|קתולי|The pope is the head of the *Catholic* Church.
+Chinese|סיני|*Chinese* is spoken by over a billion people.
+European|אירופי|France is a *European* country.
+German|גרמני|He drives a *German* car.
+Christmas|חג המולד|*Christmas* is on December 25th.
+Easter|פסחא|*Easter* is a Christian holiday in spring.
+chief of staff|ראש מטה|The *chief of staff* met with the generals.
+present|להציג|She will *present* her project to the class.
+restaurant|מסעדה|We had dinner at a fish *restaurant*.
+a degree of|מידה מסוימת של|You need *a degree of* confidence to succeed.
+a handful of|קומץ, מעט|Only *a handful of* students came to the lecture.
+about to|עומד ל־|I was *about to* call you when you rang.
+aimed at|מכוון ל־|These activities are *aimed at* older people.
+all in all|בסך הכול|*All in all*, it was a good year.
+all sorts of|כל מיני|The shop sells *all sorts of* things.
+all the way|כל הדרך|We walked *all the way* home.
+among other things|בין היתר|*Among other things*, we talked about the exam.
+as a matter of fact|למעשה|*As a matter of fact*, I've never been to Eilat.
+as a whole|בכללותו|The country *as a whole* is doing well.
+as follows|כדלקמן|The rules are *as follows*: no phones, no food.
+as for|באשר ל־|*As for* the money, we'll talk about it later.
+as though|כאילו|He looked *as though* he hadn't slept.
+at a time|בכל פעם|Climb the stairs one step *at a time*.
+at first sight|ממבט ראשון|It was love *at first sight*.
+at risk|בסיכון|Children who don't sleep enough are *at risk*.
+at the expense of|על חשבון|He succeeded *at the expense of* his health.
+at times|לעיתים|*At times*, the work is boring.
+attached to|קשור ל־ (רגשית)|She is very *attached to* her grandmother.
+be the case|להיות המצב|Many people think he is rich, but that is not *the case*.
+be to blame|אשם|The driver *was to blame* for the accident.
+bear in mind|לזכור, לקחת בחשבון|*Bear in mind* that the shop closes at six.
+better off|במצב טוב יותר|You'd be *better off* taking the train.
+blow up|לפוצץ; להתפוצץ|The bomb could *blow up* at any moment.
+bound to|בטוח ש־, עתיד ל־|It's *bound to* rain this weekend.
+break down|להתקלקל; להתמוטט|Our car *broke down* on the highway.
+break off|לנתק, להפסיק|They decided to *break off* the talks.
+break out|לפרוץ|A fire *broke out* in the kitchen.
+break up|להיפרד|They *broke up* after two years together.
+bring up|לגדל; להעלות (נושא)|She *brought up* three children alone.
+by contrast|לעומת זאת|The city is noisy. *By contrast*, the village is quiet.
+by far|בהרבה, ללא ספק|She is *by far* the best student in the class.
+by means of|באמצעות|They crossed the river *by means of* a small boat.
+by no means|בשום אופן לא|The test was *by no means* easy.
+by now|עד עכשיו|He should be home *by now*.
+call for|לדרוש, לקרוא ל־|The workers *call for* higher wages.
+can tell|יכול להבחין|I *can tell* that you are tired.
+care for|לטפל ב־|Nurses *care for* the sick.
+carry on|להמשיך|Please *carry on* with your work.
+catch up|להשלים פער, להדביק|I missed a week of school and need to *catch up*.
+check out|לבדוק; לעזוב מלון|*Check out* this new website!
+clean up|לנקות, לסדר|Please *clean up* your room.
+close down|לסגור (עסק)|The factory will *close down* next year.
+come across|להיתקל ב־|I *came across* an old photo of my parents.
+come down with|לחלות ב־|I think I'm *coming down with* the flu.
+come on!|נו!, קדימה!|*Come on*! We're going to be late!
+come out|לצאת לאור|Her new book will *come out* in May.
+come over|לבוא לבקר|Why don't you *come over* for dinner?
+come true|להתגשם|Her dream of becoming a doctor *came true*.
+come up with|להמציא, להעלות (רעיון)|She *came up with* a great idea.
+common sense|שכל ישר|Use your *common sense*!
+concerned with|עוסק ב־|The book is *concerned with* family life.
+consist of|מורכב מ־|The team will *consist of* five players.
+contrary to|בניגוד ל־|*Contrary to* popular belief, bats are not blind.
+cope with|להתמודד עם|It is hard to *cope with* so much stress.
+cut off|לנתק|They *cut off* our electricity.
+do so|לעשות זאת|If you want to leave, you may *do so* now.
+in the course of|במהלך|*In the course of* the year, we read ten books.
+end up|למצוא את עצמו בסוף|We got lost and *ended up* in the wrong city.
+even so|למרות זאת|It was expensive. *Even so*, we bought it.
+except for|למעט|Everyone came *except for* Dan.
+fail to|לא להצליח ל־|He *failed to* finish on time.
+figure out|להבין, לפענח|I can't *figure out* how this machine works.
+fond of|אוהב, מחבב|She is very *fond of* animals.
+for good|לתמיד|He left the country *for good*.
+for life|לכל החיים|They became friends *for life*.
+for long|לזמן רב|I can't stay *for long*.
+for some time|במשך זמן מה|I haven't seen her *for some time*.
+for the moment|לעת עתה|*For the moment*, we will stay here.
+for the sake of|למען|They stayed together *for the sake of* the children.
+free from|חופשי מ־|The food is *free from* sugar.
+from time to time|מדי פעם|We meet *from time to time*.
+full-time|משרה מלאה|She works *full-time* at the bank.
+get away with|לצאת בלי עונש|He cheated and *got away with* it.
+get into|להיכנס ל־; להתקבל ל־|She hopes to *get into* medical school.
+get it|להבין|I explained it twice, but he didn't *get it*.
+get on your nerves|לעלות על העצבים|His loud music *gets on my nerves*.
+get on with|להסתדר עם; להמשיך|I *get on with* my neighbors very well.
+get out|לצאת|*Get out* of the car now!
+get over|להתגבר על|It took her months to *get over* the illness.
+get through|לעבור (תקופה קשה)|We will *get through* this together.
+get to|להגיע ל־|How do I *get to* the station?
+give back|להחזיר|Please *give back* my book.
+give in|להיכנע|Don't *give in* to pressure.
+give out|לחלק|The teacher will *give out* the tests.
+go for it!|לך על זה!|You want to be a singer? *Go for it*!
+go into|להיכנס ל־ (פרטים)|I don't want to *go into* details.
+go off|לצלצל (שעון מעורר); להתפוצץ|My alarm *goes off* at six.
+go over|לעבור על|Let's *go over* the answers together.
+go through|לעבור (חוויה)|She *went through* a difficult time.
+good for you!|כל הכבוד לך!|You passed? *Good for you*!
+grow up|לגדול, להתבגר|I *grew up* in a small village.
+hand out|לחלק|*Hand out* the papers, please.
+hand over|למסור|*Hand over* the keys.
+hang on|רגע, חכה|*Hang on*, I'll be right back.
+hold back|לעצור, לרסן|She tried to *hold back* her tears.
+hold on|להחזיק; לחכות|*Hold on* tight!
+hold up|לעכב|Sorry I'm late, I was *held up* in traffic.
+how come|איך זה ש־|*How come* you're not at work?
+what about|מה לגבי|*What about* going to the beach?
+I suppose so|אני מניח שכן|"Can I come?" "*I suppose so*."
+had better|כדאי ש־|You *had better* hurry.
+if only|לו רק|*If only* I had more time!
+if so|אם כן|Are you free? *If so*, let's meet.
+if you like|אם תרצה|We can go now, *if you like*.
+I'm afraid|אני חושש ש־, לצערי|*I'm afraid* I can't come.
+in a way|במובן מסוים|*In a way*, you are right.
+in advance|מראש|Book your tickets *in advance*.
+in case of|במקרה של|*In case of* fire, use the stairs.
+in detail|בפירוט|Describe the picture *in detail*.
+in favor of|בעד|Most people are *in favor of* the plan.
+in full|במלואו|Please write your name *in full*.
+in itself|כשלעצמו|The idea *in itself* is good.
+in need of|זקוק ל־|The house is *in need of* repair.
+in part|בחלקו|The success is *in part* thanks to you.
+in practice|בפועל|*In practice*, the rule is rarely used.
+in public|בפומבי|Don't shout *in public*.
+in relation to|ביחס ל־|Prices are high *in relation to* salaries.
+in return|בתמורה|He helped me and asked nothing *in return*.
+in short|בקיצור|*In short*, the trip was a disaster.
+in terms of|מבחינת|*In terms of* price, this phone is the best.
+in that case|במקרה כזה|"It's raining." "*In that case*, let's stay home."
+in the first place|מלכתחילה|Why did you agree *in the first place*?
+in the form of|בצורה של|Help came *in the form of* money.
+in the light of|לאור|*In the light of* the results, we changed the plan.
+in the long run|בטווח הארוך|Healthy food will save money *in the long run*.
+in the meantime|בינתיים|Dinner will be ready soon. *In the meantime*, have a drink.
+in this respect|מבחינה זו|*In this respect*, the two cities are similar.
+in view of|לאור, בהתחשב ב־|*In view of* the weather, the game was cancelled.
+with regard to|בנוגע ל־|I'm writing *with regard to* your letter.
+it would appear|נראה ש־|*It would appear* that we are lost.
+it's a good thing|טוב ש־|*It's a good thing* you brought an umbrella.
+just about|כמעט|I've *just about* finished.
+just as|בדיוק כמו|She is *just as* smart as her brother.
+just in case|ליתר ביטחון|Take a coat, *just in case*.
+keep on|להמשיך|He *kept on* talking during the movie.
+keep up|לעמוד בקצב; להמשיך|Great work! *Keep up* the good work.
+let alone|שלא לדבר על|He can't boil an egg, *let alone* cook dinner.
+line up|לעמוד בתור|Please *line up* at the door.
+look down on|להתנשא על|Don't *look down on* people with less money.
+look out for|לחפש, לשים עין על|*Look out for* the red house on the left.
+look out!|זהירות!|*Look out*! There's a car coming!
+made up of|מורכב מ־|The class is *made up of* 20 students.
+make a difference|לשנות, להשפיע|Every vote can *make a difference*.
+make out|להבחין; להבין|I can't *make out* what he's saying.
+make up your mind|להחליט|*Make up your mind*: tea or coffee?
+make up|להמציא; להשלים|He *made up* a story about a dragon.
+make use of|לנצל, להשתמש ב־|*Make use of* the library.
+move on|להמשיך הלאה|It's time to *move on* to the next topic.
+never heard of|לא שמע מעולם על|I've *never heard of* that singer.
+next-door|שכן, הסמוך|Our *next-door* neighbors are very friendly.
+no such thing|אין דבר כזה|There is *no such thing* as a free lunch.
+no wonder|אין פלא|You didn't sleep? *No wonder* you're tired.
+nothing but|רק, שום דבר מלבד|He eats *nothing but* pizza.
+now and then|מדי פעם|I see him *now and then*.
+old fashioned|מיושן|Her clothes are a bit *old fashioned*.
+on and off|לסירוגין|It rained *on and off* all day.
+on average|בממוצע|*On average*, students sleep six hours.
+on behalf of|בשם|I'm writing *on behalf of* the whole class.
+on board|על הסיפון, במטוס|All passengers are *on board*.
+on the contrary|להפך|"Are you bored?" "*On the contrary*, I'm having fun."
+on the grounds of|על בסיס, בנימוק ש־|He was fired *on the grounds of* bad behavior.
+open up|לפתוח; להיפתח (רגשית)|It took time for her to *open up* to me.
+or so|בערך|It takes an hour *or so*.
+or something|או משהו כזה|Let's watch a movie *or something*.
+other than|מלבד|*Other than* Dan, nobody knew.
+out of date|לא עדכני, פג תוקף|This map is *out of date*.
+owing to|בשל|The flight was delayed *owing to* bad weather.
+part-time|משרה חלקית|She works *part-time* while she studies.
+pass away|הלך לעולמו (נפטר)|Her grandfather *passed away* last year.
+pass on|להעביר הלאה|Please *pass on* the message to your sister.
+pay attention|לשים לב|*Pay attention* to the teacher.
+pay off|להשתלם; לפרוע|All your hard work will *pay off*.
+point out|להצביע על, לציין|She *pointed out* a mistake in my essay.
+prior to|לפני|*Prior to* the exam, read the instructions.
+provided that|בתנאי ש־|You can go out *provided that* you finish your homework.
+put down|להניח; לרשום|*Put down* your pens.
+put forward|להעלות (הצעה)|She *put forward* an interesting idea.
+put off|לדחות|Don't *put off* your homework until tomorrow.
+put on|ללבוש|*Put on* your coat. It's cold.
+put together|להרכיב|We *put together* the new table.
+put up|לארח|Our friends can *put up* two guests in their flat.
+put up with|לסבול, להשלים עם|I can't *put up with* the noise anymore.
+refer to|להתייחס ל־|Which page are you *referring to*?
+regardless of|ללא קשר ל־|Everyone can join, *regardless of* age.
+related to|קשור ל־|Is this problem *related to* the last one?
+rely on|לסמוך על|You can *rely on* me.
+result in|להביא ל־, לגרום ל־|The storm *resulted in* heavy damage.
+run into|להיתקל ב־|I *ran into* an old friend at the mall.
+run out of|להיגמר|We've *run out of* milk.
+run over|לדרוס|A car almost *ran over* the cat.
+set off|לצאת לדרך|We *set off* early in the morning.
+set out|לצאת; לפרט|They *set out* on a long journey.
+settle down|להתיישב, להשתקע|After years of travel, he wants to *settle down*.
+shake hands|ללחוץ ידיים|The two leaders *shook hands*.
+shake your head|לנענע בראש|She *shook her head* to say no.
+short of|חסר, במחסור ב־|We are *short of* money this month.
+in the short term|בטווח הקצר|*In the short term*, prices will rise.
+show up|להופיע, להגיע|He didn't *show up* for the meeting.
+shut down|לסגור; לכבות|The computer will *shut down* in five minutes.
+shut up|לשתוק|Tell him to *shut up*.
+slow down|להאט|*Slow down*! You're driving too fast.
+so as to|כדי|She left early *so as to* catch the bus.
+so-called|המכונה, כביכול|The *so-called* expert knew nothing.
+stand for|לייצג, ראשי תיבות של|What does "UN" *stand for*?
+stand out|לבלוט|Her red dress made her *stand out*.
+stand up for|לעמוד לצד, להגן על|Always *stand up for* your friends.
+stand up to|לעמוד מול|She had the courage to *stand up to* the bully.
+start out|להתחיל|He *started out* as a waiter.
+straight away|מיד|Call me *straight away*.
+such as|כגון|I like fruit *such as* apples and pears.
+sum up|לסכם|Let me *sum up* the main points.
+supposed to|אמור ל־|You are *supposed to* be at work.
+take advantage of|לנצל|*Take advantage of* the sale.
+take back|להחזיר; לקחת חזרה|I want to *take back* what I said.
+take for granted|לקבל כמובן מאליו|Many people *take for granted* the things they have.
+take off|להמריא; להוריד בגד|The plane will *take off* at noon.
+take on|לקבל על עצמו|She agreed to *take on* the new project.
+take over|להשתלט; לקבל אחריות|A bigger company *took over* the firm.
+take turns|להתחלף|The children *take turns* on the swing.
+take up|להתחיל (תחביב); לתפוס (מקום)|He *took up* running last year.
+that sort of thing|דברים כאלה|I like painting, drawing, *that sort of thing*.
+that's it|זהו|*That's it* for today. See you tomorrow.
+the idea of|הרעיון של|I don't like *the idea of* working at night.
+the main thing|העיקר|*The main thing* is that you're safe.
+the other day|לפני כמה ימים|I saw her *the other day*.
+the other way around|להפך|It's not my fault; it's *the other way around*.
+the thing is|העניין הוא ש־|*The thing is*, I don't have enough money.
+these days|בימינו|*These days*, everyone has a phone.
+things like that|דברים כאלה|I enjoy music, movies, *things like that*.
+think over|לשקול|*Think over* my offer and call me.
+throw up|להקיא|He felt sick and *threw up*.
+to date|עד כה|*To date*, we have received 50 applications.
+to some extent|במידה מסוימת|*To some extent*, I agree with you.
+turn back|לחזור על עקבותיו|It got dark, so we *turned back*.
+turn down|לדחות; להנמיך|She *turned down* the job offer.
+turn off|לכבות|*Turn off* the lights when you leave.
+turn on|להדליק|*Turn on* the TV.
+turn out|להתברר|The test *turned out* to be easy.
+turn into|להפוך ל־|The caterpillar will *turn into* a butterfly.
+turn to|לפנות אל|You can always *turn to* me for help.
+turn up|להגביר; להופיע|*Turn up* the volume, please.
+up and down|למעלה ולמטה|The children jumped *up and down*.
+up to date|עדכני|Keep your software *up to date*.
+well-being|רווחה, שלום|Exercise is good for your *well-being*.
+who cares?!|למי אכפת?!|We lost? *Who cares*? It's just a game.
+with respect to|בנוגע ל־|*With respect to* your question, I'll answer later.
+with a view to|במטרה ל־|He is studying *with a view to* becoming a lawyer.
+work out|להתאמן; להסתדר; לפתור|I *work out* at the gym three times a week.
+worth|שווה|This book is *worth* reading.
+would you like|האם תרצה|*Would you like* some tea?
+write down|לרשום|*Write down* the new words.`];
 const BEMO = {}; `about=💬
 above=⬆️
 across=↔️
@@ -4326,7 +5639,24 @@ const BAND_CATS = [`אנשים ומשפחה|baby;boy;girl;man;woman;child;childr
 זמן ותדירות|century;moment;calendar;holiday;festival;future;recent;previous;at present;forever;long ago;ever;ever since;so far;during;at first;at once;once again;finally;final;frequently;as soon as;all the time;in time;on time;at the same time;by the time;as long as;no longer;yet;not yet;since;used to;be used to;usual;as usual;regular;ordinary;normal;until;up to
 דעות והרגשות|opinion;in my opinion;point of view;agree;think;consider;suppose;imagine;wonder;realize;doubt;no doubt;certain;definitely;probably;absolutely;indeed;actually;prefer;would rather;rather;hate;feel like;look forward to;disappointed;exciting;awful;horrible;terrible;excellent;perfect;famous;popular;strange;odd;crazy;silly;stupid;mad;clever;intelligent;lucky;fun;dramatic;serious;comfortable;ugly;loud;silent;silence;noise;voice;dream;surprise;secret;treasure;trick;trouble
 פעלים חשובים|accept;admit;add;advise;advice;aim;become;belong to;bother;cancel;carry;cause;change;check;choose;choice;climb;collect;compare;complain;complete;connect;connection;continue;control;under control;cover;deal with;depend on;dig;disappear;discuss;discussion;divide;drop;encourage;expect;express;fix;follow;force;get rid of;give up;hide;hit;identify;include;increase;involved;issue;lead;lead to;let;limit;look after;look for;lose;mention;mind;never mind;notice;occur;predict;protect;prove;raise;receive;recognize;remind;rise;risk;safe;danger;in danger;dangerous;seem;shoot;stick;go on strike;suggest;suggestion;surprise;take care of;take into account;take part in;take place;tend to;throw;touch;treat;wave;warn;win;beat;race;prize;team;match;crowd;dance;tune;blow;ring;crime;sound;shape;circle;line;top;bottom;size;thick;card;case;load;key;item;dance
-מילות קישור וביטויים|according to;fortunately;although;however;therefore;in addition to;apart from;except;instead of;in spite of;due to;as a result of;because of;so that;in order to;unless;even;even if;as if;whether;either… or;neither… nor;both… and;not only;on the one hand;on the other hand;in general;general;in particular;particular;especially;mainly;main;basic;basis;based on;first of all;the following;and so on;as far as;by accident;by chance;on purpose;purpose;reason;result;effect;in any case;in common;common;no matter;no idea;on condition that;condition;chance;opportunity;alternative;advantage;difference;make a difference;make an effort;make sure;have to do with;else;exact;exactly;extremely;hardly;quite;altogether;on the whole;the whole;the rest;whatever;whose;mine;yours;ours;theirs;on my own;be likely to;could;may;might;must;should;ought to;would;any time;anywhere;among;along with;against;after all;go ahead;equal;similar to;specific;proper;necessary;available;aware;able;ability;active;activity;independent;useful;modern;original;sort;sort of;set;sort out;more or less;a little;a couple of;absent;communication;conversation;design;detail;detailed;thought;let`];
+מילות קישור וביטויים|according to;fortunately;although;however;therefore;in addition to;apart from;except;instead of;in spite of;due to;as a result of;because of;so that;in order to;unless;even;even if;as if;whether;either… or;neither… nor;both… and;not only;on the one hand;on the other hand;in general;general;in particular;particular;especially;mainly;main;basic;basis;based on;first of all;the following;and so on;as far as;by accident;by chance;on purpose;purpose;reason;result;effect;in any case;in common;common;no matter;no idea;on condition that;condition;chance;opportunity;alternative;advantage;difference;make a difference;make an effort;make sure;have to do with;else;exact;exactly;extremely;hardly;quite;altogether;on the whole;the whole;the rest;whatever;whose;mine;yours;ours;theirs;on my own;be likely to;could;may;might;must;should;ought to;would;any time;anywhere;among;along with;against;after all;go ahead;equal;similar to;specific;proper;necessary;available;aware;able;ability;active;activity;independent;useful;modern;original;sort;sort of;set;sort out;more or less;a little;a couple of;absent;communication;conversation;design;detail;detailed;thought;let`, `מחקר ומדע|biology;calculate;cell;chemistry;conduct;data;demonstrate;detect;diagram;discovery;evidence;experiment;explore;fact;figure;findings;geography;graph;hypothesis;index;indicate;innovation;invention;investigate;measure;method;model;observe;phenomenon;physics;psychology;research;sample;science;source;statistics;substance;survey;table;technique;theory
+חשיבה וניתוח|abstract;analogy;analyze;approach;aspect;assume;belief;bias;category;characteristic;circumstances;claim;clarify;classify;comparison;component;concept;conclusion;consideration;considered;context;contradict;contrast;core;criterion;criticize;debate;decision;define;deny;derive;detail;determine;difference;differentiate;dilemma;distinction;domain;element;emphasize;end;error;expectation;factor;feature;formulate;frame;framework;function;goal;guess;implication;importance;insight;interpret;judgment;justify;logic;mechanism;mode;motive;notion;object;objective;option;pattern;perceive;perspective;point;principle;rationale;reality;reflect;regard;scenario;solution;specify;strategy;structure;system;target;tendency;theme;truth;way
+חינוך ולימודים|application;assignment;attend;award;checklist;cite;college;comprehend;concentrate;conference;curriculum;degree;discipline;draft;educate;elementary;evaluate;focus;humanities;institute;instruction;knowledge;language;literature;novel;outline;passage;primary;review;revise;score;section;skill;specialize;summarize;task;teaching;term;university;workshop
+כלכלה ועבודה|afford;benefit;bill;budget;career;chain;charge;client;commerce;consume;customer;cut;debt;demand;department;distribute;earn;economic;employ;enterprise;exchange;expense;experience;export;factory;fee;financial;fire;firm;fuel;fund;gain;goods;grant;growth;hire;import;incentive;income;industry;insurance;interest;invest;labor;manufacture;market;motor;need;negotiate;net;organization;output;package;pay;planning;plant;produce;profession;profit;promote;property;provision;receipt;recruit;resource;salary;sector;stock;supply;terms;unemployed;union;use;value
+ממשל, חוק ופוליטיקה|administration;affair;agreement;authority;autonomy;ban;boundary;cabinet;campaign;candidate;census;citizen;civil;committee;consensus;constitution;council;declare;delegation;democracy;district;domestic;duty;elect;entitled;establish;govern;hearing;hierarchy;identification;immigrate;impose;independence;infrastructure;intervention;king;law;leadership;legal;minister;mission;municipal;oblige;oppose;parliament;permit;policy;politics;population;president;protest;recognition;reform;refugee;regime;regulation;represent;restrict;revolution;sanctions;scheme;territory;trial;unite;vote;withdraw
+חברה ותרבות|aid;background;ball;band;bar;beauty;bond;church;civilized;collection;community;compete;compose;convention;design;drawing;ethnic;event;exhibit;faith;fan;fashion;folk;gender;generation;god;group;guest;heaven;hell;host;instrument;involvement;Islam;Judaism;kit;looks;manner;manners;marriage;membership;minority;movement;myth;norm;occasion;opening;paint;part;perform;play;poverty;race;relationship;ring;ritual;row;scene;soul;status;stereotype;studio;suit;taste;theater;tie;welfare;Asian;British;Catholic;Chinese;European;German;Christmas;Easter
+גוף, בריאות ורגשות|absence;anxious;attachment;attitude;bone;breath;cancer;concern;confident;depress;desire;die;disease;dissatisfied;disturb;drug;emergency;emotion;exercise;feel;fit;hopeful;illness;imagination;injury;jump;knee;laughter;lean;leg;lips;medical;mental;miss;neck;nose;offend;pain;personality;physical;pleasure;pride;react;recover;relief;respond;satisfy;sensitive;shot;shoulder;sight;spirit;strength;stress;suffer;surgery;survive;tear;tired;tooth;touch;trust;vision;weak;will;willing
+טבע, מקום וסביבה|agriculture;airport;bank;beach;beneath;bird;building;burn;chicken;construct;depart;desert;dish;dispose;eastern;edge;egg;entrance;entry;environmental;exit;facility;fall;farm;flight;forest;gate;gold;hill;hole;horse;ice;iron;kitchen;land;landscape;leaf;lift (n);locate;metal;mirror;northern;ocean;pepper;place;planet;plastic;pocket;pool;pour;reception;region;rock;roof;root;route;rural;scenery;setting;settle;shadow;ship;snow;southern;spatial;spot;stairs;steel;stone;storm;sugar;surface;surround;temperature;track;transport;travel;trek;universe;urban;vehicle;wave;western;wild;wine;wing;yard;zone;restaurant
+שינוי, תהליך וזמן|adapt;adjust;advance;alter;ancient;annual;beginning;break;change;consequence;contemporary;continuous;convert;current;cycle;daily;decade;decline;develop;emerge;era;evolve;flow;former;frequent;historical;immediate;impact;implementation;improvement;influence;initial;instant;last;late;long-term;modify;occur;ongoing;origin;outcome;period;permanent;phase;previous;prior;process;progress;project;prospect;rush;sequence;short-term;spread;subsequent;success;temporary;tradition;transfer;transform;trend;vary;weekend;youth
+כמות, מידה והשוואה|additional;adequate;approximately;average;balance;billion;capacity;comprise;considerable;consist;contain;decrease;dimension;diminish;distance;division;double;dozen;dual;entire;equivalent;estimate;exceed;expand;extend;fraction;further;horizontal;lack;length;level;lower;mean;mile;minimal;multiple;numerous;per;percent;proportion;quality;quantity;range;rate;rating;ratio;reduce;scale;stretch;substantial;sufficient;sum;tiny;twice;upper;variety;vertical;volume;width
+תקשורת, מדיה וטכנולוגיה|access;announce;audience;back up;cellphone;channel;comment;convey;correspond;cover;device;dialogue;display;document;edit;electronic;expression;file;format;forum;hardware;highlight;illustrate;image;inform;input;inquire;journal;label;list;mass;media;mobile;monitor;network;post;presentation;press;profile;promise;publish;refer;release;reveal;screen;series;signal;software;speech;symbol;talk;technology;tip;tone;transmit;version;video;virtual;present
+פעלים חשובים|accompany;achieve;acknowledge;acquire;act;address;adopt;affect;allow;appreciate;approve;aspire;assist;associate;attempt;attract;avoid;back;bear;bind;block;capture;combine;commit;confirm;contribute;cooperate;coordinate;count;devise;eliminate;enable;encounter;engage;enhance;ensure;equip;exclude;exist;expose;face;facilitate;favor;generate;hand;handle;ignore;impress;initiative;insist;integrate;intend;interact;introduce;lift;maintain;manage;name;obtain;own;participate;persuade;point (v);possess;prepare;press (v);prevent;proceed;propose;pull;pursue;recall;recommend;refuse;reinforce;reject;rely;require;retain;roll;seek;select;shake;share;slip;stand;stare;stimulate;sustain;tear (v)
+תארים ותיאורים|absolute;acceptable;accurate;actual;apparent;appropriate;authentic;bold;brief;capable;central;complex;comprehensive;consistent;creative;crucial;direct;diverse;dominant;dynamic;effective;efficient;essential;evident;exclusive;explicit;external;familiar;firm (adj);flexible;formal;free;fundamental;gentle;global;human;ideal;identical;implicit;indirect;inevitable;inferior;informal;inherent;intellectual;intense;internal;invisible;joint;key;light;local;lovely;major;mutual;natural;negative;neutral;obvious;passive;personal;positive;potential;practical;precise;probable;problematic;radical;random;rapid;rational;reasonable;relevant;separate;severe;significant;slight;sole;stable;subjective;technical;tough;typical;unable;unique;unlikely;valid;visible;vital;voluntary
+מילות קישור ותארי פועל|accordingly;afterwards;amongst;anymore;anyway;barely;basically;carefully;certainly;clearly;completely;despite;easily;elsewhere;equally;even;eventually;everywhere;except;fairly;fully;furthermore;generally;greatly;hence;highly;including;increasingly;individually;largely;latter;luckily;merely;moreover;mostly;nearly;necessarily;nevertheless;normally;occasionally;otherwise;overall;particularly;partly;possibly;practically;pretty;properly;readily;regarding;respectively;secondly;seriously;somehow;somewhat;somewhere;strongly;surely;thereby;thus;totally;truly;unfortunately;via;whereas;widely
+אנשים ותפקידים|advocate;agent;anybody;author;chairman;chief;colleague;commander;driver;engineer;executive;expert;female;gentleman;guide;head;hero;homemaker;human being;idealist;journalist;madam;male;master;nurse;officer;pilot;principal;relative;resident;senior;servant;sir;soldier;visitor;volunteer;whom;winner;witness;writer;chief of staff
+סכסוך, ביטחון ומוסר|abuse;aggression;attack;barrier;battle;challenge;conflict;criminal;crisis;damage;defend;destroy;difficulty;discriminate;enemy;escape;ethical;exploit;failure;guard;gun;illegal;immoral;incident;integrity;intelligence;irresponsible;just;kill;loss;military;moral;murder;nuclear;occupy;offender;offense;peace;prison;protection;resist;resolve;safety;secure;steal;struggle;suit (law);suspect;threat;troops;victim;victory;violent;virtue;weapon;wicked
+ביטויים שימושיים|a degree of;a handful of;about to;aimed at;all in all;all sorts of;all the way;among other things;as a matter of fact;as a whole;as follows;as for;as though;at a time;at first sight;at risk;at the expense of;at times;attached to;be the case;be to blame;bear in mind;better off;bound to;by contrast;by far;by means of;by no means;by now;can tell;come on!;common sense;concerned with;consist of;contrary to;cope with;do so;in the course of;even so;except for;fail to;fond of;for good;for life;for long;for some time;for the moment;for the sake of;free from;from time to time;full-time;go for it!;good for you!;how come;what about;I suppose so;had better;if only;if so;if you like;I'm afraid;in a way;in advance;in case of;in detail;in favor of;in full;in itself;in need of;in part;in practice;in public;in relation to;in return;in short;in terms of;in that case;in the first place;in the form of;in the light of;in the long run;in the meantime;in this respect;in view of;with regard to;it would appear;it's a good thing;just about;just as;just in case;let alone;look out!;made up of;never heard of;next-door;no such thing;no wonder;nothing but;now and then;old fashioned;on and off;on average;on behalf of;on board;on the contrary;on the grounds of;or so;or something;other than;out of date;owing to;part-time;prior to;provided that;regardless of;related to;shake hands;shake your head;short of;in the short term;so as to;so-called;straight away;such as;supposed to;that sort of thing;that's it;the idea of;the main thing;the other day;the other way around;the thing is;these days;things like that;to date;to some extent;up and down;up to date;well-being;who cares?!;with respect to;with a view to;worth;would you like
+פעלים מורכבים (Phrasal verbs)|blow up;break down;break off;break out;break up;bring up;call for;care for;carry on;catch up;check out;clean up;close down;come across;come down with;come out;come over;come true;come up with;cut off;end up;figure out;get away with;get into;get it;get on your nerves;get on with;get out;get over;get through;get to;give back;give in;give out;go into;go off;go over;go through;grow up;hand out;hand over;hang on;hold back;hold on;hold up;keep on;keep up;line up;look down on;look out for;make a difference;make out;make up your mind;make up;make use of;move on;open up;pass away;pass on;pay attention;pay off;point out;put down;put forward;put off;put on;put together;put up;put up with;refer to;rely on;result in;run into;run out of;run over;set off;set out;settle down;show up;shut down;shut up;slow down;stand for;stand out;stand up for;stand up to;start out;sum up;take advantage of;take back;take for granted;take off;take on;take over;take turns;take up;think over;throw up;turn back;turn down;turn off;turn on;turn out;turn into;turn to;turn up;work out;write down`];
 const BANDS = BAND_RAW.map((raw, bi) => {
   const words = raw.split('\n').map((l, i) => { const [enw, he, ex, cd] = l.split('|'); const marks = (ex.match(/\*[^*]+\*/g) || []).map(x => x.slice(1, -1)); return { b: bi + 1, i, en: enw, say: enw.replace(/\s*\(.*?\)/g, '').replace(/…/g, ' '), he, ex, plain: ex.replace(/\*/g, ''), mark: marks.length === 1 ? marks[0] : null, cd: cd ? cd.split(';') : null, k: 'b:' + (bi + 1) + ':' + i }; });
   const byEn = {}; words.forEach(w => { byEn[w.en.toLowerCase()] = w; });
@@ -4338,10 +5668,10 @@ const BANDS = BAND_RAW.map((raw, bi) => {
     for (let j = 0; j < ns; j++) { const part = ws.slice(Math.round(j * ws.length / ns), Math.round((j + 1) * ws.length / ns)); if (!part.length) continue; part.cat = name; part.n = j + 1; part.of = ns; c.sets.push(sets.length); part.forEach(w => { w.set = sets.length; }); sets.push(part); }
     cats.push(c);
   });
-  return { id: bi + 1, name: 'Band ' + (bi + 1), he: bi ? 'רמה בינונית' : 'רמה בסיסית', words, sets, cats };
+  return { id: bi + 1, name: 'Band ' + (bi + 1), he: ['רמה בסיסית', 'רמה בינונית', 'רמה מתקדמת'][bi], words, sets, cats };
 });
 const BW = k => { const p = k.split(':'); const B = BANDS[+p[1] - 1]; return B && B.words[+p[2]]; };
-const bandRec = () => P.bandc || (P.bandc = { 1: {}, 2: {} });
+const bandRec = () => P.bandc || (P.bandc = { 1: {}, 2: {}, 3: {} });
 const bSetName = (B, si) => { const st = B.sets[si]; return st.cat + (st.of > 1 ? ' ' + st.n : ''); };
 const bSetBest = (bid, si) => (bandRec()[bid] || {})[si];
 const bKnown = w => known(w.k);
@@ -4372,7 +5702,7 @@ function qBand(w, type, setW) {
   } else if (type === 'cloze') {
     let ds;
     if (w.cd) ds = w.cd;
-    else { const other = BANDS[w.b - 1].words.filter(x => x.mark && x.set !== w.set && x.mark.toLowerCase() !== w.mark.toLowerCase() && bWordsN(w, x)); ds = uniq(shuf(other).map(x => x.mark)).slice(0, 3); }
+    else { const other = BANDS[w.b - 1].words.filter(x => x.mark && x.set !== w.set && x.mark.toLowerCase() !== w.mark.toLowerCase() && bWordsN(w, x)); ds = uniq(shuf(other).map(x => x.mark)).slice(0, 3); if (ds.length < 3) { const near = BANDS[w.b - 1].words.filter(x => x.mark && x.set !== w.set && x.mark.toLowerCase() !== w.mark.toLowerCase() && Math.abs(x.mark.split(' ').length - w.mark.split(' ').length) <= 1); ds = uniq([...ds, ...shuf(near).map(x => x.mark)]).slice(0, 3); } }
     const PROPER = /^(January|February|March|April|May|June|July|August|September|October|November|December|Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|English|Hebrew|French|Arabic|I|I'm|I'll|OK)$/, atStart = /^[A-Z]/.test(w.mark) && !PROPER.test(w.mark), fx = t => PROPER.test(t) ? t : atStart ? bCap(t) : bLow(t);
     q = mcq({ prompt: 'השלימי את המשפט', sent: bSent(w, 'gap'), opts: uniq([w.mark, ...ds].map(fx)).map(enOpt), correct: fx(w.mark), reveal: bSent(w), rec: [{ k: w.k, s: 'ctx' }] });
   } else q = mcq({ prompt: 'מה פירוש המילה המסומנת במשפט?', sent: bSent(w), audio: w.plain, autoplay: false, opts: [w.he, ...bDist(w, 3, 'he', setW).map(x => x.he)].map(heOpt), correct: w.he, rec: [{ k: w.k, s: 'ctx' }] });
@@ -4423,6 +5753,12 @@ const CI = {
   globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z',
   bus: 'M6 4h12a2 2 0 0 1 2 2v10H4V6a2 2 0 0 1 2-2zM4 11h16M7.5 19v-3M16.5 19v-3M7.5 14h.01M16.5 14h.01',
   bulb: 'M9 18h6m-5 3h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z',
+  flask: 'M9 3h6M10 3v6L4.5 18.5A1.6 1.6 0 0 0 6 21h12a1.6 1.6 0 0 0 1.5-2.5L14 9V3M7 15h10',
+  scale: 'M12 4v16M5 20h14M4 8h16M7 8l-3 6a3 3 0 0 0 6 0zM17 8l-3 6a3 3 0 0 0 6 0z',
+  shield: 'M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z',
+  gov: 'M3 10h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18M12 3l9 5H3z',
+  coin: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM14.5 9c-.5-1-1.5-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.9 2.5 2-1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6v1.5M12 16.5V18',
+  ruler: 'M4 16L16 4l4 4L8 20zM8 12l2 2M11 9l2 2M14 6l2 2',
   link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'
 };
 const CATS_UI = {
@@ -4431,12 +5767,16 @@ const CATS_UI = {
   'מקומות ודרכים': ['pin', '#2F8A63'], 'מקומות ותחבורה': ['bus', '#2F8A63'], 'מיקום וכיוון': ['compass', '#2A8C8C'], 'רגשות ותיאורים': ['smile', '#D99A1C'], 'דעות והרגשות': ['bulb', '#D99A1C'],
   'צבעים וטבע': ['leaf', '#4E9A3C'], 'עולם, טבע ומזג אוויר': ['globe', '#4E9A3C'], 'פעלים בסיסיים': ['bolt', '#9361D1'], 'פעלים חשובים': ['bolt', '#9361D1'], 'תקשורת ודיבור': ['chat', '#4F79C2'],
   'מילות שאלה וקישור': ['question', '#7A6E9E'], 'מילות קישור וביטויים': ['link', '#7A6E9E'], 'כמויות ומספרים': ['hash', '#B5527F'], 'עוד מילים שימושיות': ['sparkle', '#8C6BC8'],
-  'תרבות, ספורט ופנאי': ['ticket', '#D0546A'], 'קניות וכסף': ['cart', '#C4831A'], 'עבודה וטכנולוגיה': ['laptop', '#3E6DB5']
+  'תרבות, ספורט ופנאי': ['ticket', '#D0546A'],
+  'מחקר ומדע': ['flask', '#2A8C8C'], 'חשיבה וניתוח': ['bulb', '#6E4FB0'], 'חינוך ולימודים': ['book', '#6E4FB0'], 'כלכלה ועבודה': ['coin', '#C4831A'], 'ממשל, חוק ופוליטיקה': ['gov', '#3E6DB5'],
+  'חברה ותרבות': ['people', '#C2557F'], 'גוף, בריאות ורגשות': ['heart', '#D0546A'], 'טבע, מקום וסביבה': ['leaf', '#4E9A3C'], 'שינוי, תהליך וזמן': ['clock', '#3E6DB5'], 'כמות, מידה והשוואה': ['ruler', '#B5527F'],
+  'תקשורת, מדיה וטכנולוגיה': ['laptop', '#4F79C2'], 'תארים ותיאורים': ['sparkle', '#D99A1C'], 'מילות קישור ותארי פועל': ['link', '#7A6E9E'], 'אנשים ותפקידים': ['people', '#B07A2A'], 'סכסוך, ביטחון ומוסר': ['shield', '#7A6E9E'],
+  'ביטויים שימושיים': ['chat', '#4F79C2'], 'פעלים מורכבים (Phrasal verbs)': ['bolt', '#9361D1'], 'קניות וכסף': ['cart', '#C4831A'], 'עבודה וטכנולוגיה': ['laptop', '#3E6DB5']
 };
 const catUI = n => { const c = CATS_UI[n] || ['sparkle', '#8C6BC8']; return { ic: SVGI(CI[c[0]]), col: c[1] }; };
 function bandTile(B) {
   const r = bandRec()[B.id] || {}, kn = B.words.filter(bKnown).length, done = B.sets.filter((_, i) => (r[i] || 0) >= 0.8).length;
-  const icons = (B.id === 1 ? ['people', 'cup', 'house', 'clock'] : ['globe', 'laptop', 'ticket', 'bulb']);
+  const icons = [['people', 'cup', 'house', 'clock'], ['globe', 'laptop', 'ticket', 'bulb'], ['flask', 'scale', 'link', 'book']][B.id - 1];
   return `<button class="btile bt${B.id}" data-act="bopen" data-b="${B.id}"><span class="bt-ics" aria-hidden="true">${icons.map((k, j) => `<i style="--j:${j}">${SVGI(CI[k])}</i>`).join('')}</span><span class="bt-name en">${B.name}</span><span class="bt-sub">${B.he} · ${B.words.length} מילים · ${B.cats.length} נושאים</span><span class="bt-prog">${bar(B.sets.length ? done / B.sets.length : 0)}<small>${done}/${B.sets.length} סטים</small></span></button>`;
 }
 function bNext() {
