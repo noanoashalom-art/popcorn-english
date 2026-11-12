@@ -7711,6 +7711,7 @@ const LV = [
   { name: 'קוראת עצמאית', sight: [8, 9], acad: [5, 6], dict: [], read: ['t5', 't6'], pas: ['p2'] }
 ];
 let PN = null, NS = null;
+const STEP_SECTIONS = ['sight', 'acad', 'dict', 'phon', 'unit', 'read', 'games', 'band', 'library', 'lib'];
 const PCACHE = {};
 function ensurePath() { ensurePas(); if (P && !P.path) P.path = { done: {}, lv: {} }; if (P && !P.path.lv) P.path.lv = {}; }
 function levelNodes(k) {
@@ -7720,8 +7721,8 @@ function levelNodes(k) {
   for (let i = 0; i < 3; i++) { if (L.sight[i] != null) oth.push({ t: 'sg', id: L.sight[i] }); if (L.dict[i] != null) oth.push({ t: 'dc', id: L.dict[i] }); if (L.acad[i] != null) oth.push({ t: 'ac', id: L.acad[i] }); }
   const content = []; let pi = 0, oi = 0;
   while (pi < ph.length || oi < oth.length) { if (pi < ph.length) content.push(ph[pi++]); if (oi < oth.length) content.push(oth[oi++]); }
-  const out = P && P.noPhon ? [] : [{ t: 'stage', id: k }]; let c = 0, m = 0;
-  content.forEach(n => { out.push(n); if (++c % 4 === 0 && c < content.length) out.push({ t: 'mix', id: m++ }); });
+  const out = P && P.noPhon ? [] : [{ t: 'stage', id: k }]; let c = 0, m = 0, pc = 0, r = 0;
+  content.forEach(n => { out.push(n); if (n.t === 'pl' && ++pc % 2 === 0 && (k > 0 || pc > 2)) out.push({ t: 'rv', id: r++ }); if (++c % 4 === 0 && c < content.length) out.push({ t: 'mix', id: m++ }); });
   L.read.forEach(id => out.push({ t: 'rd', id }));
   if (L.strat) out.push({ t: 'st', id: 0 });
   (L.pas || []).forEach(id => out.push({ t: 'ps', id }));
@@ -7770,10 +7771,11 @@ const pathCurrent = () => pathInfo().cur;
 const findNode = key => { const [k] = key.split(':'); return levelNodes(+k).find(n => n.key === key); };
 function nodeTitle(n) {
   return n.t === 'st' ? 'אסטרטגיות קריאה' : n.t === 'ps' ? PASM[n.id].he : n.t === 'stage' ? 'בוחן צלילים' : n.t === 'pl' ? 'הצליל ' + uLabel(UM[n.id]) : n.t === 'sg' ? SG[n.id].name : n.t === 'ac' ? AC[n.id].name
-    : n.t === 'dc' ? (n.id === 'tech' ? 'מדריך המילון' : DLM[n.id].short) : n.t === 'rd' ? TEXTS.find(t => t.id === n.id).he : n.t === 'mix' ? 'תרגול משולב' : 'בוחן סוף שלב';
+    : n.t === 'dc' ? (n.id === 'tech' ? 'מדריך המילון' : DLM[n.id].short) : n.t === 'rd' ? TEXTS.find(t => t.id === n.id).he : n.t === 'mix' ? 'תרגול משולב' : n.t === 'rv' ? 'חזרה: צלילים ומילים' : 'בוחן סוף שלב';
 }
-const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים שכיחות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', boss: 'בוחן' };
+const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים שכיחות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', rv: 'חזרה', boss: 'בוחן' };
 const PIC = {
+  rv: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4m0 1h10l-2 3.5L16 12H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   mix: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l8 10h4M4 17h4l2.5-3M13.5 10L16 7h4m-2-2l2 2-2 2m0 6l2 2-2 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   crown: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l-1-9 5 4 4-6 4 6 5-4-1 9z" fill="currentColor"/><rect x="4" y="18" width="16" height="2.5" rx="1" fill="currentColor"/></svg>',
@@ -7787,11 +7789,12 @@ const PIC = {
 const PL_SHORT = { e: 'a_e', ck: 'k', sc: 'ce', ool: 'oo', oos: 'oo', oi: 'oi' };
 function nodeIcon(n) {
   if (n.t === 'pl') { const t = PL_SHORT[n.id] || UM[n.id].name.toLowerCase(); return `<span class="pn-txt en ${t.length > 3 ? 'sm' : ''}">${esc(t)}</span>`; }
-  return { st: PIC.bulb, ps: PIC.doc, stage: PIC.flag, sg: I.cards, ac: I.cap, dc: DICT_ICON, rd: I.book, mix: PIC.mix, boss: PIC.crown }[n.t];
+  return { st: PIC.bulb, ps: PIC.doc, stage: PIC.flag, sg: I.cards, ac: I.cap, dc: DICT_ICON, rd: I.book, mix: PIC.mix, rv: PIC.rv, boss: PIC.crown }[n.t];
 }
 function nodeDesc(n) {
   if (n.t === 'stage') return `כמה שאלות על הצלילים ${STAGES[n.id].map(id => uLabel(UM[id])).join(', ')}. מה שכבר יודעת, מדלגים.`;
   if (n.t === 'pl') return P.units[n.id].st === 'nt' ? 'עוד לא בדקנו את הצליל הזה. התחילי בבוחן קצר: אם תצליחי, נדלג על השיעור.' : `שיעור קצר: הכלל, הקשבה, קריאה לבד ותרגול. ${UM[n.id].he}`;
+  if (n.t === 'rv') return 'חזרה קצרה על הצלילים והמילים מהשלבים הקודמים, כדי שלא יישכחו.';
   if (n.t === 'sg') return 'כרטיסיות ותרגול קצר: ' + SG[n.id].words.slice(0, 6).map(w => w.w).join(', ') + '…';
   if (n.t === 'ac') return 'מילים וביטויים מתוך שאלות ומבחנים: ' + AC[n.id].items.slice(0, 4).map(a => a.en).join(', ') + '…';
   if (n.t === 'dc') return n.id === 'tech' ? 'איך מחפשים מילה במילון אלקטרוני, קוראים ערך ומוצאים הגייה.' : DLM[n.id].rule;
@@ -7805,6 +7808,19 @@ const hasQuick = n => (n.t === 'pl' && P.units[n.id].st === 'nt') || n.t === 'sg
 
 /* question sets for mixed and checkpoint steps */
 const bankQ = id => rnd(LBANKS[id].flatMap(b => BANKS[b].items))();
+function rvQs(n) {
+  const nodes = []; for (let k = 0; k <= n.k; k++) { const ls = levelNodes(k); for (const x of ls) { if (x.key === n.key) break; nodes.push(x); } }
+  const pl = nodes.filter(x => x.t === 'pl').map(x => x.id), last = pl.slice(-2), older = pl.slice(0, -2);
+  const pickU = shuf(older.length >= 2 ? older : pl).slice(0, 4).concat(shuf(last).slice(0, older.length >= 2 ? 1 : 0));
+  const out = [], words = [];
+  pickU.forEach(id => { const u = UM[id], s = P.units[id], lv = Math.max(2, s.lvl || 2), w = rnd(unitWords(u, lv)); const q = qPhon(u, rnd(['listen', 'contains', 'say', 'meaning']), w, lv); q.review = true; out.push(q); words.push({ en: w.w, he: w.he, k: 'p:' + id + ':' + w.w }); });
+  const sws = nodes.filter(x => x.t === 'sg').flatMap(x => SG[x.id].words);
+  sample(sws, 2).forEach(w => { out.push(qSight(w, rnd(['meaning', 'reverse', 'listen']))); words.push({ en: w.w, he: w.he, k: 's:' + w.w }); });
+  const acs = nodes.filter(x => x.t === 'ac').flatMap(x => AC[x.id].items);
+  sample(acs, 2).forEach(a => { out.push(qAcad(a, rnd(['meaning', 'reverse']))); words.push({ en: a.en, he: a.he, k: 'a:' + a.id }); });
+  const extra = pl.flatMap(id => sample(UM[id].words, 2).map(w => ({ en: w.w, he: w.he, k: 'p:' + id + ':' + w.w })));
+  return mixIn(shuf(out), setExtras([...words, ...extra], 2));
+}
 function mixQs(k) {
   const L = LV[k], out = [], add = q => { if (q) out.push(q); };
   const upto = STAGES.slice(0, k + 1).flat();
@@ -7846,7 +7862,7 @@ function acadQuick(ci) {
 function startNode(n, quick) {
   if (!n) return;
   const thr = n.t === 'boss' ? 0.8 : n.t === 'rd' ? 0.5 : quick ? 0.85 : n.t === 'dc' && n.id === 'tech' ? 0.83 : 0.6;
-  const tag = { stage: 'stage:' + n.id, pl: (quick || P.units[n.id] && P.units[n.id].st === 'nt' ? 'ucheck:' : 'pl:') + n.id, sg: 'sight:' + n.id, ac: 'acad:' + n.id, dc: 'dict:' + n.id, rd: 'read:' + n.id, st: 'strat', ps: 'pas:' + n.id, mix: 'mix:' + n.key, boss: 'boss:' + n.k }[n.t];
+  const tag = { stage: 'stage:' + n.id, pl: (quick || P.units[n.id] && P.units[n.id].st === 'nt' ? 'ucheck:' : 'pl:') + n.id, sg: 'sight:' + n.id, ac: 'acad:' + n.id, dc: 'dict:' + n.id, rd: 'read:' + n.id, st: 'strat', ps: 'pas:' + n.id, mix: 'mix:' + n.key, rv: 'rv:' + n.key, boss: 'boss:' + n.k }[n.t];
   PN = { key: n.key, tag, thr, again: nodeState(n) !== 'todo' }; ensurePath(); P.path.at = n.key; save();
   const o = (title, extra = {}) => ({ kind: 'mixed', title, tag, back: { name: 'home', scrollPath: true }, again: () => startNode(n, quick), ...extra });
   if (n.t === 'stage') startStageCheck(n.id);
@@ -7858,6 +7874,7 @@ function startNode(n, quick) {
   else if (n.t === 'st') go('strat');
   else if (n.t === 'ps') go('passage', { id: n.id });
   else if (n.t === 'mix') startQuiz(arraySrc(mixQs(n.k)), o('תרגול משולב'));
+  else if (n.t === 'rv') startQuiz(arraySrc(rvQs(n)), o('חזרה: צלילים ומילים'));
   else startQuiz(arraySrc(bossQs(n.k)), o('בוחן סוף שלב ' + (n.k + 1)));
 }
 function startJump(k) {
@@ -8348,7 +8365,10 @@ function go(v, extra = {}) { V = { name: v, ...extra }; render(true); }
 const ACT = {
   say: el => TTS.say(el.dataset.t, el.dataset.s === '1', el.closest('[data-hl]') || el),
   slow: () => { SLOW = !SLOW; try { localStorage.setItem(KEY + '-slow', SLOW ? '1' : '0'); } catch (e) { } render(); },
-  go: el => { if (el.dataset.u) go(el.dataset.v, { u: el.dataset.u }); else go(el.dataset.v); },
+  go: el => {
+    if (PN && !el.closest('#nav') && STEP_SECTIONS.includes(el.dataset.v)) { PN = null; go('home', { scrollPath: true }); return; }
+    if (el.dataset.u) go(el.dataset.v, { u: el.dataset.u }); else go(el.dataset.v);
+  },
   newp: () => {
     const inp = document.getElementById('pname'); const name = (inp.value || '').trim();
     if (!name) { inp.focus(); toast('כתבי שם או כינוי'); return; }
@@ -8433,7 +8453,7 @@ const ACT = {
   qnext: () => nextQ(),
   qhelp: () => { Q.q.showHelp = !Q.q.showHelp; render(); },
   reflash: () => { const el = document.getElementById('flashw'); if (el) { el.classList.remove('gone'); setTimeout(() => el.classList.add('gone'), 1400); } },
-  qexit: () => { const o = Q.o; clearInterval(timerH); clearTimeout(AUTO); tourEnd(); Q = null; if (o.diag) { save(); toast(o.label && P.sc ? 'אפשר לחזור לבוחן מתי שתרצי.' : 'הבוחן נשמר. אפשר להמשיך מתי שתרצי.'); go(P.diag.done ? 'home' : 'diagintro'); } else if (o.back) go(o.back.name, o.back); else go('home'); },
+  qexit: () => { const o = Q.o; clearInterval(timerH); clearTimeout(AUTO); tourEnd(); Q = null; if (o.diag) { save(); toast(o.label && P.sc ? 'אפשר לחזור לבוחן מתי שתרצי.' : 'הבוחן נשמר. אפשר להמשיך מתי שתרצי.'); go(P.diag.done ? 'home' : 'diagintro'); } else if (PN && o.tag === PN.tag) { PN = null; go('home', { scrollPath: true }); } else if (o.back) go(o.back.name, o.back); else go('home'); },
   again: () => { if (V.sum && V.sum.pn) PN = V.sum.pn; V.o.again(); },
   back: () => { const b = V.o.back; b ? go(b.name, b) : go('home'); },
   unit: el => go('unit', { u: el.dataset.id }),
