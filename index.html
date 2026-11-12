@@ -1009,6 +1009,9 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .nophon{display:flex;gap:10px;align-items:flex-start;text-align:start;font-size:.9rem;color:var(--muted);max-width:420px;margin:4px auto 0;cursor:pointer}.nophon input{width:20px;height:20px;accent-color:var(--plum);flex:none;margin-top:2px}
 .ps-tog{display:flex;gap:10px;align-items:center;font-size:.95rem;cursor:pointer}.ps-tog input{width:20px;height:20px;accent-color:var(--plum)}
 .dskip{gap:6px}.dskip svg{width:16px;height:16px;transform:scaleX(-1)}
+.vnudge{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:20px;border:1px solid color-mix(in srgb,#E2B33C 40%,var(--line));background:linear-gradient(150deg,color-mix(in srgb,var(--pb4) 85%,var(--surface)),color-mix(in srgb,var(--pb2) 55%,var(--surface)));box-shadow:var(--shadow)}
+.vn-pop{font-size:2rem;line-height:1;flex:none;animation:pop .4s ease-out}
+.vn-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.vn-t p{margin:0;color:var(--ink);font-size:.93rem;line-height:1.5}.vn-t .btns{justify-content:flex-start;margin-top:4px}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -5718,7 +5721,7 @@ function bandSetQs(bid, si) {
   out.push(...sample(ws, 3).map(w => qBand(w, rnd(['reverse', 'listen']), ws)));
   return out;
 }
-function startBandSet(bid, si) { P.bandAt = bid; V = { name: 'bcards', bid, si, i: 0, flip: false, again: [] }; render(true); }
+function startBandSet(bid, si) { P.bandAt = bid; P.bandDay = today(); V = { name: 'bcards', bid, si, i: 0, flip: false, again: [] }; render(true); }
 function startBandQuiz(bid, si) {
   startQuiz(arraySrc(bandSetQs(bid, si)), { kind: 'band', area: 'band', title: BANDS[bid - 1].name + ' · ' + bSetName(BANDS[bid - 1], si), back: { name: 'band', bid }, again: () => startBandQuiz(bid, si),
     onFinish: sm => { const r = bandRec(); r[bid] = r[bid] || {}; const sc = sm.n ? sm.ok / sm.n : 0; const prev = r[bid][si]; r[bid][si] = Math.max(prev || 0, sc); sm.bset = { best: r[bid][si], rec: prev != null && sc > prev, pass: sc >= 0.8, next: si + 1 < BANDS[bid - 1].sets.length ? si + 1 : null, bid }; } });
@@ -7114,6 +7117,19 @@ function doNext(ns) {
   else if (ns.a === 'rd') { V = { name: 'text', id: ns.id, tr: {} }; render(true); }
 }
 
+function vocabWeak() {
+  const r = P.diag && P.diag.res, m = r && r.mean ? Object.values(r.mean) : [];
+  const dm = m.length ? m.filter(Boolean).length / m.length : null, sp = skillPct('mean');
+  return (dm != null && dm < 0.7) || (sp != null && sp < 65);
+}
+function vocabNudge() {
+  if (!vocabWeak() || (P.vnudge && P.vnudge > now())) return '';
+  const r = P.bandc || {}, started = [1, 2].some(b => r[b] && Object.keys(r[b]).length);
+  if (P.bandDay === today()) return '';
+  return `<section class="block"><div class="vnudge"><span class="vn-pop" aria-hidden="true">🍿</span><div class="vn-t"><b>${started ? 'עוד סט אחד היום?' : '10 דקות של מילים ביום = קריאה הרבה יותר קלה'}</b>
+    <p>${started ? 'כל סט מוסיף לך מילים שלא תצטרכי לחפש במבחן. ממשיכות מאיפה שעצרת ב־<span class="en">Band 1</span> וב־<span class="en">Band 2</span>.' : 'כל מילה שאת מכירה היא מילה שלא צריך לחפש במבחן. ברשימות <span class="en">Band 1</span> ו־<span class="en">Band 2</span> של משרד החינוך מחכים לך כרטיסיות פופקורן, משחקי התאמה ומשפטים קצרים. סט אחד ביום, וזה מצטבר מהר!'}</p>
+    <div class="btns"><button class="btn sm" data-act="vngo">${started ? 'לסט הבא' : 'כן, תראו לי איפה זה'}</button><button class="btn sm ghost" data-act="vnlater">אחר כך</button></div></div></div></section>`;
+}
 VIEWS.home = () => {
   if (!P.diag.done) return VIEWS.diagintro();
   ensureDict();
@@ -7123,6 +7139,7 @@ VIEWS.home = () => {
   const skills = Object.keys(SK_NAMES).map(k => [k, skillPct(k)]);
   const st = streak();
   return `<section class="block greet"><div class="greet-row"><div class="greet-txt"><h1 class="h1">היי ${esc(P.name)}</h1><p class="muted">${st > 1 ? `${I.flame}${st} ימים ברצף · ` : ''}${Math.round(pr.all * 100)}%</p></div><div class="starbank">${I.star}<b>${P.stars || 0}</b><small>כוכבים</small></div></div>${bar(pr.all, 'thick')}</section>
+  ${vocabNudge()}
   <section class="block path-wrap"><div class="path-top"><h2 class="h2">${PIC.route}<span>המסלול שלי</span></h2><span class="ptb">${dkKeys().length ? `<button class="btn sm soft" data-act="dkall">חזרה: לא ידעתי · ${dkKeys().length}</button>` : ''}${due ? `<button class="btn sm soft" data-act="mixed">חזרה יומית</button>` : ''}</span></div>${pathHtml()}</section>
   <section class="block">${lbMini()}</section>
   <section class="block card prog"><h2 class="h2">הישגים <small class="muted">${Object.keys(ACH).filter(k => P.ach[k]).length}/${Object.keys(ACH).length}</small></h2>
@@ -8227,6 +8244,7 @@ const TOURS = {
   pick: [['.pk-box, [data-act=ppick]', 'בחרי שתיים'], ['[data-act=pcheck]', 'בדיקה']],
   v_band: [['.bset.cur, .bset', 'כל סט = 10 מילים'], ['.btabs', 'Band 1 או Band 2']],
   v_bcards: [['.bc-top .spk', 'הקשיבי'], ['.bc-ex', 'המילה במשפט'], ['[data-act=bdk]', 'לא יודעת? נתרגל אותה']],
+  bandgo: [['.btile.bt1', 'מתחילות כאן: Band 1. בכל סט 10 מילים, בערך 10 דקות'], ['.btile.bt2', 'אחר כך ממשיכות ל־Band 2'], ['.btile.bt1', 'מומלץ: סט אחד ביום. נתראה כאן מחר!']],
   pstar: [['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה']],
   v_cards: [['.flip', 'הפכי'], ['[data-act=cknow]', 'יודעת'], ['[data-act=cagain]', 'לא יודעת']],
   v_lesson: [['.lesson-card .btn.soft, .lesson-card .spk', 'הקשיבי'], ['[data-act=lnext]', 'הבא']],
@@ -8238,7 +8256,7 @@ const TOURS = {
   v_games: [['.gtile', 'בחרי משחק']],
   v_read: [['.book', 'בחרי ספר']],
   v_dict: [['.dstep.cur, .dstep', 'מתחילים כאן']],
-  home: [['.pnode.cur', 'מתחילים כאן'], ['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה'], ['.starchip', 'כוכבים על כל הצלחה'], ['#lbmini', 'לוח המובילות'], ['#nav', 'עוד תרגול ומשחקים'], ['.helpbtn', 'עזרה בכל עמוד']],
+  home: [['.vnudge', 'טיפ: תרגול מילים קצר כל יום'], ['.pnode.cur', 'מתחילים כאן'], ['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה'], ['.starchip', 'כוכבים על כל הצלחה'], ['#lbmini', 'לוח המובילות'], ['#nav', 'עוד תרגול ומשחקים'], ['.helpbtn', 'עזרה בכל עמוד']],
   quiz: [['.qcard .spk, .listen-pad .spk', 'הקשבה'], ['.opts, .aopts', 'בוחרים תשובה'], ['.dk', 'לא בטוחה? כאן']]
 };
 function tourKey() {
@@ -8476,6 +8494,12 @@ const ACT = {
   },
   diagskip: () => { P.diag.done = true; P.diag.skipped = true; P.diag.state = null; P.rlvl = P.rlvl || 1; save(); toast('מתחילות מהשלב הראשון'); go('home'); },
   nophon: el => { P.noPhon = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noPhon ? 'תרגולי הקריאה הוסרו מהמסלול' : 'תרגולי הקריאה חזרו למסלול'); render(); },
+  vngo: () => {
+    const r = P.bandc || {}, started = [1, 2].some(b => r[b] && Object.keys(r[b]).length);
+    if (started) { const bid = (r[1] && bCurSet(1) >= 0) ? 1 : 2, si = bCurSet(bid); if (si >= 0) { startBandSet(bid, si); return; } }
+    go('sight'); setTimeout(() => { const e = document.querySelector('.btiles'); if (e) e.scrollIntoView({ block: 'center' }); setTimeout(() => startTour('bandgo'), 350); }, 150);
+  },
+  vnlater: () => { P.vnudge = now() + 2 * 864e5; save(); render(); },
   bopen: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(true); },
   btab: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(); },
   bset: el => startBandSet(+el.dataset.b, +el.dataset.i),
