@@ -1008,6 +1008,7 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .printbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.printbar svg{width:18px;height:18px}.printbar .btn{text-decoration:none}
 .nophon{display:flex;gap:10px;align-items:flex-start;text-align:start;font-size:.9rem;color:var(--muted);max-width:420px;margin:4px auto 0;cursor:pointer}.nophon input{width:20px;height:20px;accent-color:var(--plum);flex:none;margin-top:2px}
 .ps-tog{display:flex;gap:10px;align-items:center;font-size:.95rem;cursor:pointer}.ps-tog input{width:20px;height:20px;accent-color:var(--plum)}
+.dskip{gap:6px}.dskip svg{width:16px;height:16px;transform:scaleX(-1)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -6874,7 +6875,7 @@ VIEWS.dtech = () => {
   }
   const nav = s < TSTEPS.length - 1 ? `<div class="btns end">${s > 0 ? '<button class="btn ghost" data-act="dtprev">הקודם</button>' : ''}<button class="btn" data-act="dtnext">הבא</button></div>`
     : `<button class="btn big-btn playbtn" data-act="dtquiz">${I.play}<span>לתרגול</span></button>`;
-  return head + `<section class="block">${body}${nav}</section>`;
+  return head + `<section class="block">${body}${nav}</section><section class="block center"><button class="btn ghost dskip" data-act="dskip">דלג על השלב ${I.arrow}</button></section>`;
 };
 VIEWS.dlesson = () => {
   ensureDict(); const L = DLM[V.id], D = P.dict[L.id], i = DORDER.indexOf(L.id); V.rev = V.rev || {};
@@ -6893,7 +6894,8 @@ VIEWS.dlesson = () => {
     <p class="rule-d">${esc(L.rule)}</p>${L.tips ? `<ul class="dtips">${L.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${extra}
     <button class="btn big-btn playbtn" data-act="dprac" data-id="${L.id}">${I.play}<span>לתרגול</span></button>
     ${D.st === 'nt' && L.id !== 'pos' ? `<button class="link small dquickl" data-act="dquick" data-id="${L.id}">כבר יודעת? בוחן קצר</button>` : ''}
-  </section>`;
+  </section>
+  <section class="block center"><button class="btn ghost dskip" data-act="dskip">דלג על השלב ${I.arrow}</button></section>`;
 };
 
 /* ===================== LEARNING PATH ===================== */
@@ -7727,6 +7729,12 @@ Object.assign(ACT, {
   dtech: () => go('dtech', { st: 0 }),
   dscroll: () => { const el = document.getElementById('dlessons'); if (el) el.scrollIntoView({ behavior: 'smooth' }); },
   dles: el => go('dlesson', { id: el.dataset.id }),
+  dskip: () => {
+    ensureDict(); const order = ['tech', ...DORDER, ...DEXTRA], cur = V.name === 'dtech' ? 'tech' : V.id;
+    const nx = order[order.indexOf(cur) + 1];
+    if (!nx || DEXTRA.includes(nx) && !DEXTRA.includes(cur)) { go('dict'); return; }
+    if (nx === 'tech') go('dtech', { st: 0 }); else go('dlesson', { id: nx });
+  },
   dprac: el => startDictPractice(el.dataset.id),
   dquick: el => startDictQuick(el.dataset.id),
   dreview: el => startDictReview(el.dataset.id),
