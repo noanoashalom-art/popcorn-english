@@ -960,6 +960,25 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bgpick{display:flex;flex-direction:column;gap:8px}.bgpick>b{font-size:.95rem}.bgsw{display:flex;gap:10px;flex-wrap:wrap}.bgsw button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}.bgsw button[aria-pressed=true]{border-color:var(--plum);box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 30%,transparent)}
 .ns-best{display:flex;align-items:center;justify-content:center;gap:5px;margin:0;color:var(--muted)}.ns-best svg{width:16px;height:16px;color:#F2B544}.ns-best b{color:var(--ink)}
 .pathok.best svg{color:#F2B544}
+.bentry{display:flex;align-items:center;gap:12px;width:100%;text-align:start;padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:linear-gradient(120deg,color-mix(in srgb,var(--pb3) 70%,var(--surface)),color-mix(in srgb,var(--pb1) 70%,var(--surface)));box-shadow:var(--shadow);cursor:pointer;color:var(--ink);font:inherit}
+.be-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--surface);color:var(--plum);flex:none}.be-ic svg{width:26px;height:26px}
+.be-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.be-t small{color:var(--muted)}
+.be-go svg{width:20px;height:20px;color:var(--plum);transform:scaleX(-1)}
+.btabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
+.btabs button.on{border-color:var(--plum);background:var(--lav)}.btabs small{color:var(--muted)}
+.bsum{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.bsum-n{display:flex;flex-direction:column;align-items:center;min-width:80px}.bsum-n b{font-size:1.6rem;font-variant-numeric:tabular-nums}.bsum-n small{font-size:.9rem;color:var(--muted)}.bsum-n span{font-size:.82rem;color:var(--muted)}
+.bsum-b{flex:1;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.bset{display:flex;flex-direction:column;gap:4px;text-align:start;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-width:0}
+.bset.cur{border:2px solid var(--plum)}.bset.ok{background:var(--good-bg)}.bset.lr{background:var(--warn-bg)}
+.bs-n{font-weight:600}.bs-w{color:var(--muted);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.bs-sc{font-size:.8rem;display:flex;align-items:center;gap:3px;color:var(--good);font-weight:600}.bs-sc svg{width:14px;height:14px}.bset.lr .bs-sc{color:var(--warn)}.bs-sc.now{color:var(--plum)}
+.bcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.bc-top{display:flex;flex-direction:column;align-items:center;gap:8px}
+.bc-ex{width:100%;box-sizing:border-box;background:var(--lav);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bc-ex p{margin:0;font-size:1.15rem;line-height:1.5}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -1612,7 +1631,7 @@ function lockedUnits() {
 }
 function wordOK(w, except) { const lw = String(w).toLowerCase(); return !lockedUnits().some(id => id !== except && UM[id].rx.test(lw)); }
 const okPool = (arr, min = 6, get = x => x) => { const f = arr.filter(x => wordOK(get(x))); return f.length >= min ? f : arr; };
-const keyWord = k => { const p = k.split(':'); return p[0] === 'a' ? (AMAP[p[1]] ? AMAP[p[1]].en : '') : p[p.length - 1]; };
+const keyWord = k => { const p = k.split(':'); if (p[0] === 'b') { const w = BW(k); return w ? w.say : ''; } return p[0] === 'a' ? (AMAP[p[1]] ? AMAP[p[1]].en : '') : p[p.length - 1]; };
 function dueKeys() {
   const t = now(); return Object.keys(P.items).filter(k => { const it = P.items[k]; return it.b >= 1 && it.d <= t; })
     .sort((a, b) => P.items[a].b - P.items[b].b || P.items[a].d - P.items[b].d);
@@ -1726,6 +1745,7 @@ function qFromKey(k) {
   if (p[0] === 's') { const wo = SMAP[p[1]]; return wo ? qSight(wo, rnd(SIGHT_TYPES)) : null; }
   if (p[0] === 'a') { const it = AMAP[p[1]]; return it ? qAcad(it, rnd(ACAD_TYPES)) : null; }
   if (p[0] === 'm') return ALLW[p[1]] ? qMeanWord(p[1]) : null;
+  if (p[0] === 'b') { const w = BW(k); return w ? qBand(w, rnd(B_TYPES)) : null; }
   return null;
 }
 function newKeys() {
@@ -1792,6 +1812,1302 @@ function startDk(keys) {
   if (!qs.length) { toast('אין כרגע מה לחזור עליו'); go('home'); return; }
   qs.forEach(q => { const was = q.onAns; q.onAns = ok => { if (was) was(ok); if (ok && P.dk) delete P.dk[q.dkk]; }; });
   startQuiz(arraySrc(shuf(qs)), { kind: 'mixed', title: 'חזרה על מה שלא ידעתי', back: { name: 'home' }, again: () => startDk() });
+}
+
+/* ===================== BAND 1 / BAND 2 word lists (Ministry of Education lexis) ===================== */
+const BAND_RAW = [`about|על, בנושא|The book is *about* a little dog.
+above|מעל|The picture is *above* the bed.
+across|מעבר ל־, לרוחב|We walked *across* the street.
+action|פעולה|We need *action*, not words.
+address|כתובת|What is your *address*?
+afraid|מפחד|My sister is *afraid* of dogs.
+after|אחרי|We play football *after* school.
+afternoon|אחר הצהריים|I sleep in the *afternoon*.
+again|שוב|Please say it *again*.
+age|גיל|What is the *age* of your son?
+ago|לפני (בזמן)|I came here two years *ago*.
+agree|להסכים|I *agree* with you.
+all|כל ה־|*All* the students are here.
+almost|כמעט|It is *almost* ten o'clock.
+alone|לבד|She lives *alone*.
+already|כבר|I have *already* eaten.
+also|גם|He is *also* a teacher.
+always|תמיד|I *always* drink coffee in the morning.
+angry|כועס|Dad was *angry* with me.
+animal|חיה|The cat is my favorite *animal*.
+another|עוד אחד, אחר|Can I have *another* cup of tea?
+answer|תשובה; לענות|I know the *answer*.
+any|כלשהו|Do you have *any* questions?
+anyone|מישהו, כל אחד|Is *anyone* at home?
+anything|משהו, כל דבר|I didn't buy *anything*.
+appear|להופיע|Stars *appear* at night.
+arrive|להגיע|The bus will *arrive* at five.
+ask|לשאול|Can I *ask* a question?
+ask for|לבקש|She *asked for* help.
+away|הרחק, משם|Go *away*!
+baby|תינוק|The *baby* is sleeping.
+back|בחזרה; גב|Come *back* soon!
+bad|רע|The weather is *bad* today.
+bag|תיק|My books are in my *bag*.
+be|להיות|I want to *be* a doctor.
+beautiful|יפה|What a *beautiful* flower!
+because|כי, בגלל ש־|I am tired *because* I worked all day.
+because of|בגלל|We stayed home *because of* the rain.
+bed|מיטה|I go to *bed* at eleven.
+before|לפני|Wash your hands *before* you eat.
+begin|להתחיל|The class will *begin* at nine.
+behind|מאחורי|The cat is *behind* the door.
+believe|להאמין|I *believe* you.
+beside|ליד|Sit *beside* me.
+best|הכי טוב|She is my *best* friend.
+better|טוב יותר|This book is *better* than that one.
+between|בין|The shop is *between* the bank and the park.
+big|גדול|They live in a *big* house.
+birthday|יום הולדת|Happy *birthday*!
+a bit of|קצת|I need *a bit of* help.
+black|שחור|He has a *black* car.
+blue|כחול|The sky is *blue*.
+board|לוח|The teacher wrote on the *board*.
+body|גוף|Sport is good for your *body*.
+book|ספר|I am reading a good *book*.
+bored|משועמם|I am *bored* at home.
+boring|משעמם|The movie was *boring*.
+bottle|בקבוק|Can I have a *bottle* of water?
+box|קופסה|The toys are in the *box*.
+boy|ילד, בן|The *boy* is ten years old.
+bread|לחם|We eat *bread* every day.
+break|לשבור|Don't *break* the glass!
+breakfast|ארוחת בוקר|I eat eggs for *breakfast*.
+bring|להביא|*Bring* your book to class.
+brother|אח|My *brother* is older than me.
+brown|חום|She has *brown* eyes.
+build|לבנות|They want to *build* a new school.
+bus|אוטובוס|I go to work by *bus*.
+busy|עסוק|I am very *busy* today.
+but|אבל|I like tea, *but* I don't like coffee.
+buy|לקנות|I want to *buy* a new phone.
+by the way|דרך אגב|*By the way*, where is your car?
+call|להתקשר; לקרוא|I will *call* you tonight.
+can|יכול|I *can* swim.
+capital|עיר בירה; אות גדולה|Paris is the *capital* of France.
+car|מכונית|My *car* is red.
+take care|שמור על עצמך|Goodbye, and *take care*!
+careful|זהיר|Be *careful* on the road.
+cat|חתול|The *cat* is drinking milk.
+catch|לתפוס|*Catch* the ball!
+center|מרכז|The hotel is in the *center* of the city.
+chair|כיסא|Please sit on the *chair*.
+change|לשנות|I want to *change* my plans.
+cheap|זול|This shirt is very *cheap*.
+child|ילד|Every *child* needs love.
+children|ילדים|The *children* are playing outside.
+chocolate|שוקולד|I love *chocolate*.
+class|כיתה; שיעור|Our *class* starts at eight.
+classroom|כיתת לימוד|The *classroom* is on the second floor.
+clean|לנקות; נקי|Please *clean* your room.
+clear|ברור; בהיר|The answer is *clear*.
+close|לסגור|*Close* the door, please.
+closed|סגור|The shop is *closed* on Saturday.
+coffee|קפה|I drink *coffee* every morning.
+cold|קר|It is *cold* outside.
+color|צבע|What *color* is your bag?
+come|לבוא|*Come* here, please.
+come back|לחזור|When will you *come back*?
+computer|מחשב|I work on the *computer*.
+cool|קריר|The evening is *cool*.
+copy|להעתיק|Don't *copy* my answers!
+cost|לעלות (מחיר)|How much does it *cost*?
+count|לספור|Can you *count* to ten?
+country|ארץ, מדינה|Israel is a small *country*.
+of course|כמובן|*Of course* I will help you.
+cross|לחצות|*Cross* the street carefully.
+cry|לבכות|The baby started to *cry*.
+cut|לחתוך|*Cut* the bread, please.
+dad|אבא|My *dad* is a doctor.
+dark|חשוך; כהה|It is *dark* at night.
+date|תאריך|What is the *date* today?
+daughter|בת|Their *daughter* is five.
+day|יום|Have a good *day*!
+dear|יקר (בפתיחת מכתב)|*Dear* Sarah, thank you for the letter.
+decide|להחליט|I can't *decide* what to wear.
+dictionary|מילון|Look up the word in the *dictionary*.
+different|שונה|We are very *different*.
+difficult|קשה|The test was *difficult*.
+do|לעשות|What do you *do* on Fridays?
+doctor|רופא|I need to see a *doctor*.
+dog|כלב|My *dog* likes to run.
+door|דלת|Open the *door*, please.
+down|למטה|Sit *down*, please.
+draw|לצייר|She likes to *draw* animals.
+dress|שמלה|She is wearing a red *dress*.
+drink|לשתות|*Drink* some water.
+drive|לנהוג|Can you *drive* a car?
+dry|יבש|My hair is *dry* now.
+each|כל אחד|*Each* student has a book.
+early|מוקדם|I get up *early*.
+ears|אוזניים|Dogs have big *ears*.
+easy|קל|The test was *easy*.
+eat|לאכול|Let's *eat* dinner.
+email|דוא"ל, אימייל|I sent you an *email*.
+end|סוף|This is the *end* of the story.
+in the end|בסוף|*In the end*, we went home.
+English|אנגלית|I study *English* at college.
+enjoy|ליהנות|I *enjoy* reading.
+enough|מספיק|We have *enough* food.
+enter|להיכנס|Please *enter* the room.
+evening|ערב|See you this *evening*.
+every|כל|I go to the gym *every* day.
+everybody|כולם|*Everybody* likes music.
+everyone|כולם|*Everyone* is here.
+everything|הכול|*Everything* is fine.
+example|דוגמה|Give me an *example*.
+for example|לדוגמה|I like fruit, *for example* apples.
+excuse me|סליחה|*Excuse me*, where is the bank?
+exercise|תרגיל; פעילות גופנית|Do *exercise* 3 on page 10.
+expensive|יקר (במחיר)|This car is too *expensive*.
+extra|נוסף|I need *extra* time.
+eyes|עיניים|She has blue *eyes*.
+face|פנים|Wash your *face*.
+in fact|למעשה|*In fact*, I don't like coffee.
+fair|הוגן|That's not *fair*!
+fall|ליפול|Be careful, don't *fall*.
+family|משפחה|I have a big *family*.
+far|רחוק|The school is not *far* from here.
+fast|מהר; מהיר|He runs very *fast*.
+father|אב|My *father* works in a bank.
+favorite|אהוב ביותר|Blue is my *favorite* color.
+feel|להרגיש|I *feel* happy today.
+a few|כמה, מעט|I have *a few* friends here.
+film|סרט|We saw a good *film*.
+find|למצוא|I can't *find* my keys.
+find out|לגלות, לברר|Let's *find out* the answer.
+fine|בסדר; טוב|I'm *fine*, thank you.
+finish|לסיים|*Finish* your homework.
+fire|אש|Don't play with *fire*.
+first|ראשון|This is my *first* day at college.
+flower|פרח|She gave me a *flower*.
+fly|לעוף; לטוס|Birds *fly* in the sky.
+food|אוכל|The *food* is good here.
+foot|כף רגל|My *foot* hurts.
+for|בשביל, עבור|This is *for* you.
+forget|לשכוח|Don't *forget* your bag.
+free|חופשי; חינם|Are you *free* tonight?
+friend|חבר|He is my good *friend*.
+from|מ־|I am *from* Haifa.
+in front of|מול, לפני|The car is *in front of* the house.
+full|מלא|The bus is *full*.
+funny|מצחיק|He told a *funny* story.
+game|משחק|Let's play a *game*.
+garden|גינה|We sit in the *garden*.
+get|לקבל; להשיג|I *get* many emails.
+girl|ילדה, בחורה|The *girl* is reading.
+give|לתת|*Give* me the pen, please.
+glad|שמח|I'm *glad* to see you.
+glass|כוס; זכוכית|Can I have a *glass* of water?
+go|ללכת, לנסוע|Let's *go* home.
+go on|להמשיך|*Go on*, tell me more.
+going to|הולך ל־ (עתיד)|I am *going to* study tonight.
+good|טוב|This is a *good* idea.
+good at|טוב ב־|She is *good at* math.
+goodbye|להתראות|*Goodbye*, see you tomorrow.
+grade|ציון; כיתה|I got a good *grade* on the test.
+great|נהדר|That's a *great* idea!
+green|ירוק|The grass is *green*.
+grow|לגדול; לגדל|Children *grow* fast.
+guess|לנחש|Can you *guess* my age?
+hair|שיער|She has long *hair*.
+half|חצי|I ate *half* of the cake.
+hand|יד|Raise your *hand*.
+hang|לתלות|*Hang* your coat here.
+happen|לקרות|What will *happen* next?
+happy|שמח|I am *happy* today.
+hard|קשה; בחוזקה|The work is *hard*.
+hat|כובע|He is wearing a *hat*.
+have|יש ל־|I *have* two sisters.
+have to|חייב|I *have to* go now.
+head|ראש|My *head* hurts.
+hear|לשמוע|I can't *hear* you.
+hello|שלום|*Hello*, how are you?
+help|לעזור; עזרה|Can you *help* me?
+here|כאן|Come *here*.
+high|גבוה|The wall is very *high*.
+hold|להחזיק|*Hold* my hand.
+home|בית|I go *home* at four.
+hope|לקוות|I *hope* you feel better.
+hot|חם|It is *hot* today.
+hour|שעה|The class is one *hour* long.
+house|בית|They live in a big *house*.
+how|איך|*How* are you?
+hundred|מאה|There are a *hundred* students here.
+hungry|רעב|I am *hungry*.
+idea|רעיון|I have an *idea*.
+if|אם|*If* it rains, we will stay home.
+immediately|מייד|Come here *immediately*!
+important|חשוב|This is very *important*.
+impossible|בלתי אפשרי|It is *impossible* to finish today.
+inside|בפנים|Let's go *inside*.
+interested in|מתעניין ב־|I am *interested in* art.
+interesting|מעניין|This is an *interesting* book.
+into|לתוך|He jumped *into* the water.
+invite|להזמין|I want to *invite* you to my party.
+job|עבודה, משרה|She has a new *job*.
+just|רק; בדיוק|She is *just* a baby.
+keep|לשמור|*Keep* the change.
+kid|ילד|The *kids* are in the park.
+kind|סוג|What *kind* of music do you like?
+kind of|די, במידה מסוימת|I'm *kind of* tired.
+know|לדעת; להכיר|I *know* the answer.
+large|גדול|We need a *large* table.
+last|אחרון; שעבר|This is the *last* question.
+last night|אמש|I slept well *last night*.
+late|מאוחר|Don't be *late*!
+learn|ללמוד|I want to *learn* English.
+leave|לעזוב|I *leave* the house at seven.
+left|שמאל|Turn *left* at the corner.
+less|פחות|I want *less* sugar.
+at least|לפחות|Sleep *at least* seven hours.
+lesson|שיעור|The *lesson* is very interesting.
+let's|בואו נ־|*Let's* go to the beach.
+letter|מכתב; אות|I wrote a *letter* to my cousin.
+lie|לשקר|Don't *lie* to me.
+lie down|לשכב|I need to *lie down*.
+life|חיים|*Life* is beautiful.
+light|אור|Turn on the *light*.
+like|לאהוב, לחבב; כמו|I *like* pizza.
+listen|להקשיב|*Listen* to the teacher.
+little|קטן; מעט|A *little* girl is crying.
+live|לגור; לחיות|I *live* in Tel Aviv.
+long|ארוך|It was a *long* day.
+look|להסתכל|*Look* at the board.
+at last|סוף סוף|*At last*, the bus came!
+a lot of|הרבה|I have *a lot of* work.
+make|לעשות, להכין|I *make* tea for my mom.
+man|איש, גבר|The *man* is tall.
+many|הרבה (נספרים)|I have *many* books.
+how many|כמה (נספרים)|*How many* students are in the class?
+it doesn't matter|לא משנה|*It doesn't matter*, we can go tomorrow.
+what's the matter|מה קרה?|*What's the matter*? You look sad.
+maybe|אולי|*Maybe* it will rain.
+me|אותי, לי|Call *me* later.
+mean|להתכוון; פירושו|What does this word *mean*?
+meaning|משמעות, פירוש|What is the *meaning* of this word?
+meet|לפגוש|Nice to *meet* you.
+meeting|פגישה|I have a *meeting* at ten.
+memory|זיכרון|I have a good *memory*.
+message|הודעה|I got your *message*.
+middle|אמצע|Stand in the *middle* of the room.
+milk|חלב|The baby drinks *milk*.
+minute|דקה|Wait a *minute*, please.
+in a minute|תוך דקה|I'll be there *in a minute*.
+mistake|טעות|I made a *mistake*.
+mix|לערבב|*Mix* the eggs and the sugar.
+mom|אמא|My *mom* is a teacher.
+at the moment|כרגע|I'm busy *at the moment*.
+money|כסף|I don't have much *money*.
+month|חודש|I visit my family every *month*.
+moon|ירח|The *moon* is bright tonight.
+more|יותר, עוד|I want *more* cake.
+morning|בוקר|Good *morning*!
+most|רוב; הכי|*Most* students like the class.
+mother|אם|My *mother* cooks very well.
+mouth|פה|Open your *mouth*.
+move|לזוז; לעבור דירה|We want to *move* to a new city.
+movie|סרט|Let's watch a *movie*.
+much|הרבה (לא נספרים)|I don't have *much* time.
+how much|כמה (מחיר/כמות)|*How much* is this shirt?
+music|מוזיקה|I listen to *music* every day.
+my|שלי|This is *my* bag.
+myself|בעצמי|I did it *myself*.
+name|שם|What is your *name*?
+near|קרוב|The park is *near* my house.
+need|להזדקק, צריך|I *need* a new pen.
+neighbor|שכן|My *neighbor* has a big dog.
+never|אף פעם|I *never* drink coffee at night.
+new|חדש|I have a *new* phone.
+news|חדשות|I watch the *news* every evening.
+next|הבא|See you *next* week.
+next to|ליד|Sit *next to* me.
+nice|נחמד|She is very *nice*.
+night|לילה|Good *night*!
+no problem|אין בעיה|*No problem*, I can help.
+nobody|אף אחד|*Nobody* was at home.
+no-one|אף אחד|*No-one* knows the answer.
+not|לא|I am *not* tired.
+notebook|מחברת|Write it in your *notebook*.
+nothing|כלום|There is *nothing* in the box.
+now|עכשיו|I am busy *now*.
+number|מספר|What is your phone *number*?
+often|לעיתים קרובות|I *often* go to the beach.
+OK|בסדר|*OK*, let's start.
+old|זקן; ישן|My car is very *old*.
+how old|בן כמה|*How old* are you?
+on|על|The book is *on* the table.
+once|פעם אחת|I go to the gym *once* a week.
+once upon a time|היה היה פעם|*Once upon a time* there was a king.
+only|רק|I have *only* ten shekels.
+open|לפתוח; פתוח|*Open* your books.
+or|או|Tea *or* coffee?
+other|אחר|Where are the *other* students?
+our|שלנו|This is *our* house.
+ourselves|בעצמנו|We built it *ourselves*.
+out|בחוץ, החוצה|Let's go *out* tonight.
+over|מעל; נגמר|The game is *over*.
+own|של עצמי|I have my *own* room.
+page|עמוד|Open your book to *page* 20.
+paper|נייר|Write your name on the *paper*.
+parents|הורים|My *parents* live in Haifa.
+part|חלק|This is the best *part* of the movie.
+past|עבר|Don't think about the *past*.
+pay|לשלם|I want to *pay* by card.
+pen|עט|Can I use your *pen*?
+pencil|עיפרון|Write with a *pencil*.
+people|אנשים|Many *people* came to the party.
+perhaps|אולי|*Perhaps* he is sick.
+person|אדם|She is a very nice *person*.
+pick up|להרים; לאסוף|Please *pick up* the paper.
+picture|תמונה|Look at this *picture*.
+piece|חתיכה|Can I have a *piece* of cake?
+place|מקום|This is a nice *place*.
+plan|תוכנית; לתכנן|What is your *plan* for today?
+play|לשחק; לנגן|The kids *play* in the park.
+please|בבקשה|Sit down, *please*.
+poor|עני; מסכן|They are a *poor* family.
+possible|אפשרי|Is it *possible* to come tomorrow?
+practice|לתרגל|I *practice* English every day.
+problem|בעיה|We have a *problem*.
+project|פרויקט|We are working on a new *project*.
+pupil|תלמיד|Every *pupil* has a book.
+push|לדחוף|*Push* the door.
+put|לשים|*Put* your bag here.
+question|שאלה|Can I ask a *question*?
+quick|מהיר|Can I ask a *quick* question?
+quiet|שקט|Please be *quiet*.
+radio|רדיו|I listen to the *radio* in the car.
+read|לקרוא|I *read* a book every week.
+ready|מוכן|Are you *ready*?
+real|אמיתי|Is this a *real* diamond?
+really|באמת|I *really* like this song.
+red|אדום|She has a *red* bag.
+remember|לזכור|I can't *remember* his name.
+rest|לנוח|You need to *rest*.
+return|לחזור; להחזיר|Please *return* the book tomorrow.
+rich|עשיר|He is a *rich* man.
+right|ימין; נכון|Turn *right* at the bank.
+right now|ממש עכשיו|I need it *right now*.
+all right|בסדר|Are you *all right*?
+road|כביש, דרך|Don't play on the *road*.
+room|חדר|My *room* is small.
+round|עגול|The table is *round*.
+rule|כלל, חוק|This is the first *rule*.
+run|לרוץ|I *run* every morning.
+sad|עצוב|Why are you *sad*?
+the same|אותו דבר, זהה|We have *the same* bag.
+say|לומר|What did you *say*?
+school|בית ספר|The *school* is near my house.
+second|שני|This is my *second* year at college.
+see|לראות|I can *see* the sea from here.
+send|לשלוח|*Send* me a message.
+sentence|משפט|Read the *sentence* aloud.
+short|קצר; נמוך|The movie was *short*.
+shout|לצעוק|Don't *shout* at me!
+show|להראות|*Show* me your picture.
+shut|לסגור|*Shut* the window, please.
+sick|חולה|I am *sick* today.
+side|צד|Walk on the left *side*.
+sign|שלט; סימן|Read the *sign* on the door.
+simple|פשוט|The question is *simple*.
+sing|לשיר|She likes to *sing*.
+sister|אחות|My *sister* is a nurse.
+sit|לשבת|*Sit* here, please.
+size|מידה, גודל|What *size* are your shoes?
+sky|שמיים|The *sky* is blue.
+sleep|לישון|I *sleep* eight hours a night.
+slow|איטי|The bus is very *slow*.
+small|קטן|I live in a *small* town.
+smart|חכם|She is a *smart* student.
+smile|חיוך; לחייך|She has a nice *smile*.
+so|אז; כל כך|I was tired, *so* I went to bed.
+some|קצת, כמה|I want *some* water.
+somebody|מישהו|*Somebody* is at the door.
+something|משהו|I want to tell you *something*.
+sometimes|לפעמים|I *sometimes* walk to work.
+son|בן|Their *son* is a student.
+song|שיר|This is my favorite *song*.
+soon|בקרוב|See you *soon*.
+sorry|מצטער|I'm *sorry* I'm late.
+speak|לדבר|Do you *speak* English?
+special|מיוחד|Today is a *special* day.
+spell|לאיית|How do you *spell* your name?
+sport|ספורט|Football is my favorite *sport*.
+start|להתחיל|Let's *start* the lesson.
+still|עדיין|I *still* live with my parents.
+story|סיפור|Tell me a *story*.
+straight|ישר|Go *straight* and then turn left.
+strong|חזק|He is very *strong*.
+student|סטודנט|I am a *student* at the college.
+suddenly|פתאום|*Suddenly*, the lights went out.
+sun|שמש|The *sun* is hot today.
+supper|ארוחת ערב|We eat *supper* at seven.
+sure|בטוח|Are you *sure*?
+take|לקחת|*Take* an umbrella.
+talk|לדבר, לשוחח|Can we *talk*?
+tall|גבוה|My brother is very *tall*.
+tea|תה|Would you like some *tea*?
+teach|ללמד|She likes to *teach* children.
+telephone|טלפון|The *telephone* is ringing.
+television|טלוויזיה|We watch *television* in the evening.
+tell|לספר; להגיד|*Tell* me the truth.
+test|מבחן|I have a *test* tomorrow.
+than|מאשר|He is taller *than* me.
+thank you|תודה|*Thank you* for your help.
+then|אז, אחר כך|First eat, *then* go out.
+there|שם|Put it *there*.
+there is|יש|*There is* a cat in the garden.
+these|אלה|*These* shoes are new.
+thing|דבר|I have one more *thing* to say.
+think|לחשוב|I *think* you are right.
+this|זה, זאת|*This* is my friend.
+those|ההם|*Those* books are mine.
+time|זמן; פעם|I don't have *time* now.
+today|היום|*Today* is Sunday.
+together|ביחד|Let's work *together*.
+tomorrow|מחר|See you *tomorrow*.
+tonight|הלילה, הערב|What are you doing *tonight*?
+too|גם; מדי|This bag is *too* heavy.
+too much|יותר מדי|I ate *too much*.
+town|עיירה|I live in a small *town*.
+tree|עץ|There is a big *tree* in the garden.
+trip|טיול, נסיעה|We are going on a *trip*.
+truck|משאית|A big *truck* is on the road.
+true|נכון, אמיתי|Is it *true*?
+try|לנסות|*Try* again.
+turn|לפנות; להסתובב|*Turn* left at the light.
+under|מתחת|The cat is *under* the bed.
+understand|להבין|I don't *understand*.
+until|עד|Wait *until* five o'clock.
+up|למעלה|Stand *up*, please.
+use|להשתמש|Can I *use* your phone?
+usually|בדרך כלל|I *usually* get up at seven.
+vacation|חופשה|We are on *vacation*.
+very|מאוד|It is *very* cold.
+wait|לחכות|*Wait* for me!
+walk|ללכת ברגל|I *walk* to work.
+wall|קיר|There is a picture on the *wall*.
+want|לרצות|I *want* to go home.
+wash|לשטוף, לרחוץ|*Wash* your hands.
+watch|לצפות; שעון יד|I *watch* TV every evening.
+water|מים|Drink a lot of *water*.
+way|דרך|This is the *way* to the station.
+wear|ללבוש|I *wear* glasses.
+week|שבוע|I work five days a *week*.
+welcome|ברוך הבא|*Welcome* to our home!
+you're welcome|בבקשה (בתשובה לתודה)|"Thank you!" "*You're welcome*."
+well|היטב; ובכן|She sings *well*.
+well done|כל הכבוד|*Well done*! You passed the test.
+as well|גם|I want tea *as well*.
+what|מה|*What* is your name?
+when|מתי; כאשר|*When* is your birthday?
+where|איפה|*Where* do you live?
+which|איזה|*Which* bag is yours?
+while|בזמן ש־|I listen to music *while* I work.
+white|לבן|The wall is *white*.
+who|מי|*Who* is that man?
+why|למה|*Why* are you late?
+will|(זמן עתיד)|I *will* call you tomorrow.
+window|חלון|Open the *window*, please.
+wish|משאלה; לאחל|I *wish* you good luck.
+with|עם|I live *with* my parents.
+without|בלי|I drink coffee *without* sugar.
+woman|אישה|The *woman* is a doctor.
+wonderful|נפלא|We had a *wonderful* time.
+word|מילה|I don't know this *word*.
+work|לעבוד; עבודה|I *work* in a bank.
+world|עולם|It is the biggest city in the *world*.
+worse|גרוע יותר|Today the weather is *worse*.
+worst|הכי גרוע|This is the *worst* movie ever.
+write|לכתוב|*Write* your name here.
+wrong|לא נכון|Your answer is *wrong*.
+what a pity|חבל|You can't come? *What a pity*!
+year|שנה|I have lived here for one *year*.
+yellow|צהוב|The sun is *yellow*.
+yes|כן|*Yes*, I can.
+yesterday|אתמול|I saw him *yesterday*.
+young|צעיר|She is very *young*.
+your|שלך|Is this *your* pen?
+winter|חורף|It rains in the *winter*.
+summer|קיץ|It is very hot in the *summer*.
+spring|אביב|Flowers grow in the *spring*.
+autumn|סתיו|Leaves fall in the *autumn*.
+Sunday|יום ראשון|I start work on *Sunday*.
+Monday|יום שני|I have English on *Monday*.
+Friday|יום שישי|We visit grandma on *Friday*.
+Saturday|שבת|The shop is closed on *Saturday*.
+January|ינואר|It is cold in *January*.
+December|דצמבר|My birthday is in *December*.`, `ability|יכולת|She has the *ability* to learn fast.
+able|מסוגל|Are you *able* to come tomorrow?
+absent|נעדר|Two students were *absent* today.
+absolutely|בהחלט, לגמרי|You are *absolutely* right.
+accept|לקבל, להסכים|I *accept* your offer.
+by accident|במקרה, בטעות|I broke the cup *by accident*.
+according to|לפי, על פי|*According to* the news, it will rain.
+account|חשבון|I opened a bank *account*.
+take into account|להביא בחשבון|You must *take into account* the cost.
+act|לפעול; לשחק (בהצגה)|My dog is *acting* strangely.
+active|פעיל|My grandmother is very *active*.
+activity|פעילות|Swimming is a good *activity* for children.
+actually|למעשה, בעצם|*Actually*, I don't like tea.
+add|להוסיף|*Add* some salt to the soup.
+in addition to|בנוסף ל־|*In addition to* English, she speaks French.
+admit|להודות|He didn't want to *admit* his mistake.
+adult|מבוגר|The ticket costs 50 shekels for an *adult*.
+advantage|יתרון|Living near the sea is a big *advantage*.
+advertise|לפרסם|They *advertise* their shop on the internet.
+advertisement|פרסומת, מודעה|I saw an *advertisement* for a new phone.
+advice|עצה|Can you give me some *advice*?
+advise|לייעץ|I *advise* you to study more.
+afford|להרשות לעצמו (כספית)|I can't *afford* a new car.
+after all|אחרי הכול|Don't be angry, *after all* he is only a child.
+against|נגד|Are you for or *against* the plan?
+ahead|קדימה, לפני|The road *ahead* is closed.
+go ahead|קדימה, בבקשה (תתחיל)|"Can I ask a question?" "*Go ahead*."
+aim|לכוון; מטרה|We *aim* to finish by Friday.
+air|אוויר|We need fresh *air*.
+alive|חי, בחיים|The fish is still *alive*.
+along|לאורך|We walked *along* the beach.
+along with|יחד עם|She came *along with* her sister.
+in alphabetical order|לפי סדר האלף בית|Write the names *in alphabetical order*.
+alternative|חלופה|Is there an *alternative* to this plan?
+although|למרות ש־|*Although* it was cold, we went out.
+altogether|בסך הכול; לגמרי|*Altogether*, we paid 200 shekels.
+among|בין (רבים)|She was *among* the best students.
+amount|כמות|We need a large *amount* of water.
+announcement|הודעה, הכרזה|The teacher made an *announcement*.
+any time|בכל זמן|Call me *any time*.
+anywhere|בכל מקום, לשום מקום|I can't find my keys *anywhere*.
+apart from|חוץ מ־|*Apart from* Dan, everyone came.
+apartment|דירה|They live in a small *apartment*.
+apologize|להתנצל|You should *apologize* to her.
+appearance|מראה חיצוני; הופעה|Don't judge people by their *appearance*.
+apply to|להגיש מועמדות ל־; לחול על|I want to *apply to* the university.
+area|אזור|This *area* is very quiet.
+argue|להתווכח|My brothers always *argue*.
+argument|ויכוח; טיעון|They had a loud *argument*.
+army|צבא|He served in the *army* for three years.
+around|מסביב; בערך|We walked *around* the city.
+arrange|לארגן, לסדר|Can you *arrange* a meeting?
+arrangement|הסדר, סידור|We made an *arrangement* to meet at six.
+art|אמנות|I love modern *art*.
+article|מאמר, כתבה|I read an *article* in the newspaper.
+as soon as|ברגע ש־|Call me *as soon as* you arrive.
+as if|כאילו|He talks *as if* he knows everything.
+asleep|ישן|The baby is *asleep*.
+assessment|הערכה|The teacher gave us a written *assessment*.
+available|זמין|Is the doctor *available* today?
+awake|ער|I was *awake* all night.
+aware|מודע|Are you *aware* of the problem?
+awful|נורא|The food was *awful*.
+based on|מבוסס על|The movie is *based on* a true story.
+basic|בסיסי|You need *basic* English for this job.
+basis|בסיס|We meet on a weekly *basis*.
+beat|להביס; להכות|He *beat* me at tennis.
+become|להפוך ל־, להיעשות|She wants to *become* a nurse.
+behave|להתנהג|The children *behave* very well.
+behavior|התנהגות|His *behavior* in class is good.
+belong to|להיות שייך ל־|This bag doesn't *belong to* me.
+below|מתחת|Write your name *below* the line.
+beyond|מעבר ל־|The village is *beyond* the hills.
+date of birth|תאריך לידה|Write your *date of birth* on the form.
+blame|להאשים|Don't *blame* me!
+blood|דם|He lost a lot of *blood*.
+blow|לנשוף; לנשב|*Blow* out the candles.
+boat|סירה|We went on a *boat* trip.
+border|גבול|We crossed the *border* at night.
+was born|נולד|I *was born* in Jerusalem.
+both… and|גם... וגם|*Both* Dan *and* Maya passed the test.
+bother|להטריד|Sorry to *bother* you.
+bottom|תחתית|Look at the *bottom* of the page.
+brain|מוח|The *brain* controls the body.
+branch|סניף; ענף|The bank has a *branch* in our town.
+bridge|גשר|We crossed the *bridge*.
+bright|בהיר; חכם|The room is very *bright*.
+broad|רחב|The river is very *broad* here.
+business|עסק|He has his own *business*.
+calendar|לוח שנה|Write the date in your *calendar*.
+camera|מצלמה|I took the photo with my new *camera*.
+camp|מחנה|The children went to summer *camp*.
+cancel|לבטל|We had to *cancel* the trip.
+card|כרטיס|I sent her a birthday *card*.
+take care of|לטפל ב־|Who will *take care of* the dog?
+cash|מזומן|Can I pay in *cash*?
+credit card|כרטיס אשראי|Can I pay by *credit card*?
+carry|לשאת, לסחוב|Can you *carry* this box?
+carry out|לבצע|The students will *carry out* an experiment.
+case|מקרה; תיק|It was an interesting *case*.
+in any case|בכל מקרה|*In any case*, I will call you.
+cause|לגרום; סיבה|Smoking can *cause* disease.
+celebrate|לחגוג|We *celebrate* her birthday every year.
+celebration|חגיגה|There was a big *celebration* in the city.
+century|מאה (שנים)|This house is a *century* old.
+certain|בטוח; מסוים|I am *certain* that he will come.
+chance|סיכוי, הזדמנות|There is a good *chance* of rain.
+by chance|במקרה|I met him *by chance*.
+chapter|פרק|Read the first *chapter*.
+character|דמות; אופי|Who is the main *character* in the story?
+in charge of|אחראי על|She is *in charge of* the project.
+check|לבדוק|*Check* your answers.
+choice|בחירה|You have no *choice*.
+choose|לבחור|*Choose* the correct answer.
+circle|עיגול|Draw a *circle*.
+city|עיר|Tel Aviv is a big *city*.
+clever|חכם, פיקח|She is a very *clever* girl.
+climate|אקלים|Israel has a warm *climate*.
+climb|לטפס|We want to *climb* the mountain.
+club|מועדון|He joined a sports *club*.
+clue|רמז|Give me a *clue*.
+clothes|בגדים|I need new *clothes*.
+cloud|ענן|There is a dark *cloud* in the sky.
+coast|חוף|We drove along the *coast*.
+coat|מעיל|Wear a *coat*, it's cold.
+code|קוד|Enter the *code* to open the door.
+collect|לאסוף|I *collect* stamps.
+comfortable|נוח|This chair is very *comfortable*.
+common|נפוץ; משותף|This is a *common* mistake.
+in common|במשותף|We have a lot *in common*.
+communication|תקשורת|Good *communication* is important.
+company|חברה (עסק)|She works for a big *company*.
+compare|להשוות|*Compare* the two pictures.
+complain|להתלונן|He always *complains* about the food.
+complete|להשלים; שלם|*Complete* the sentences.
+condition|מצב; תנאי|The car is in good *condition*.
+on condition that|בתנאי ש־|You can go *on condition that* you come back early.
+connect|לחבר|*Connect* the computer to the internet.
+connection|קשר, חיבור|There is a *connection* between sleep and health.
+consider|לשקול|I will *consider* your offer.
+contact|ליצור קשר|*Contact* me by email.
+contents|תוכן העניינים; תכולה|Look at the *contents* page.
+continue|להמשיך|Please *continue* reading.
+control|שליטה; לשלוט|The police took *control* of the situation.
+under control|בשליטה|Everything is *under control*.
+conversation|שיחה|We had a long *conversation*.
+cook|לבשל|I *cook* dinner every evening.
+corner|פינה|The shop is on the *corner*.
+correct|נכון; לתקן|Your answer is *correct*.
+could|יכול היה; האם תוכל|*Could* you help me, please?
+couple|זוג|They are a nice *couple*.
+a couple of|כמה, שניים|I'll be back in *a couple of* minutes.
+course|קורס|I took a *course* in English.
+cover|לכסות|*Cover* the pot.
+crazy|משוגע|That's a *crazy* idea!
+cream|קצפת; קרם|There is *cream* on the cake.
+create|ליצור|Artists *create* beautiful things.
+crime|פשע|*Crime* is a big problem in the city.
+crowd|קהל, המון|A large *crowd* came to the game.
+culture|תרבות|I want to learn about Japanese *culture*.
+cupboard|ארון|Put the cups in the *cupboard*.
+dance|לרקוד; ריקוד|Let's *dance*!
+danger|סכנה|There is *danger* on the road.
+in danger|בסכנה|The animals are *in danger*.
+dangerous|מסוכן|It is *dangerous* to swim here.
+dead|מת|The plant is *dead*.
+deal|עסקה|We made a *deal*.
+deal with|לטפל ב־, להתמודד עם|I will *deal with* the problem.
+a great deal|הרבה|She knows *a great deal* about art.
+death|מוות|His *death* was a shock.
+deep|עמוק|The water is very *deep*.
+definitely|בהחלט|I will *definitely* come.
+definition|הגדרה|Read the *definition* in the dictionary.
+delete|למחוק|*Delete* the old files.
+deliver|למסור, לשלוח|They *deliver* pizza until midnight.
+depend on|להיות תלוי ב־|It will *depend on* the weather.
+describe|לתאר|*Describe* your house.
+description|תיאור|Write a short *description* of the picture.
+desk|שולחן כתיבה|My books are on the *desk*.
+detail|פרט|Tell me every *detail*.
+difference|הבדל|What is the *difference* between them?
+make a difference|לשנות, להשפיע|Your help can *make a difference*.
+dig|לחפור|The dog likes to *dig* in the garden.
+digital|דיגיטלי|I have a *digital* camera.
+dinner|ארוחת ערב|We eat *dinner* at eight.
+direction|כיוון|We walked in the wrong *direction*.
+director|במאי; מנהל|He is a famous movie *director*.
+disappear|להיעלם|The sun will *disappear* behind the clouds.
+disappointed|מאוכזב|I was *disappointed* with my grade.
+discover|לגלות|Scientists *discover* new things every day.
+discuss|לדון|Let's *discuss* the problem.
+discussion|דיון|We had a long *discussion*.
+divide|לחלק|*Divide* the cake into eight pieces.
+have to do with|קשור ל־|What does it *have to do with* me?
+doubt|ספק; לפקפק|I have no *doubt* about it.
+no doubt|ללא ספק|*No doubt* he is the best player.
+dramatic|דרמטי|There was a *dramatic* change in the weather.
+dream|חלום; לחלום|I had a strange *dream*.
+drop|להפיל; לטפטף|Don't *drop* the glass.
+due to|בגלל, עקב|The game was cancelled *due to* rain.
+during|במהלך|I slept *during* the movie.
+each other|זה את זה|They love *each other*.
+earth|כדור הארץ; אדמה|The *earth* goes around the sun.
+east|מזרח|The sun rises in the *east*.
+education|חינוך, השכלה|*Education* is very important.
+effect|השפעה, תוצאה|The medicine had a good *effect*.
+make an effort|להתאמץ|You need to *make an effort* to succeed.
+either… or|או... או|You can have *either* tea *or* coffee.
+electric|חשמלי|I have an *electric* car.
+else|עוד, אחר|What *else* do you need?
+empty|ריק|The box is *empty*.
+encourage|לעודד|My parents *encourage* me to study.
+energy|אנרגיה|I have no *energy* today.
+engine|מנוע|The car's *engine* is very old.
+enormous|עצום|They live in an *enormous* house.
+environment|סביבה|We must protect the *environment*.
+equal|שווה|All people are *equal*.
+especially|במיוחד|I love fruit, *especially* apples.
+even|אפילו|*Even* my little brother knows the answer.
+even if|גם אם|I will go *even if* it rains.
+ever|אי פעם|Have you *ever* been to London?
+ever since|מאז|We have been friends *ever since*.
+exact|מדויק|What is the *exact* time?
+exactly|בדיוק|That's *exactly* what I mean.
+examination|בחינה|I have an *examination* tomorrow.
+exciting|מרגש|It was an *exciting* game.
+excellent|מצוין|Your work is *excellent*.
+except|חוץ מ־|Everyone came *except* Dan.
+expect|לצפות|I *expect* a lot of guests.
+experience|ניסיון; חוויה|She has a lot of *experience*.
+explain|להסביר|Can you *explain* the rule again?
+explanation|הסבר|Thank you for the clear *explanation*.
+expert|מומחה|He is an *expert* in computers.
+express|להביע|It is hard to *express* my feelings.
+extremely|ביותר, מאוד|It is *extremely* hot today.
+fail|להיכשל|Don't *fail* the test!
+false|לא נכון, שקרי|Is the sentence true or *false*?
+famous|מפורסם|She is a *famous* singer.
+as far as|ככל ש־; עד|*As far as* I know, he is at home.
+so far|עד כה|*So far*, everything is fine.
+fat|שמן|The cat is very *fat*.
+fear|פחד|He has a *fear* of dogs.
+feed|להאכיל|Don't forget to *feed* the cat.
+feel like|מתחשק|I *feel like* eating pizza.
+festival|פסטיבל|We went to a music *festival*.
+few|מעט|*Few* people came to the meeting.
+field|שדה; תחום|The children play in the *field*.
+fight|לריב, להילחם; ריב|Don't *fight* with your brother.
+file|קובץ; תיק|Save the *file* on your computer.
+fill|למלא|*Fill* the bottle with water.
+fill in|למלא (טופס)|Please *fill in* the form.
+final|סופי, אחרון|This is the *final* question.
+finally|לבסוף, סוף סוף|*Finally*, the bus arrived.
+finger|אצבע|I cut my *finger*.
+at first|בהתחלה|*At first*, I didn't like the city.
+first of all|קודם כול|*First of all*, read the text.
+fish|דג|We had *fish* for dinner.
+fit|להתאים (במידה)|These shoes don't *fit* me.
+fix|לתקן|Can you *fix* my bike?
+flat|שטוח|The land here is *flat*.
+floor|רצפה; קומה|Our apartment is on the third *floor*.
+follow|לעקוב; ללכת אחרי|*Follow* me, please.
+the following|הבא, הבאים|Answer *the following* questions.
+force|להכריח; כוח|You can't *force* me to go.
+foreign|זר, לועזי|Do you speak a *foreign* language?
+forest|יער|We walked in the *forest*.
+forever|לנצח|I will love you *forever*.
+forgive|לסלוח|Please *forgive* me.
+form|טופס; צורה|Fill in the *form*.
+fortunately|למרבה המזל|*Fortunately*, nobody was hurt.
+forward|קדימה|Take one step *forward*.
+frequently|לעיתים קרובות|He *frequently* comes late.
+fresh|טרי|I like *fresh* bread.
+frightening|מפחיד|The movie was *frightening*.
+fruit|פרי|Eat more *fruit*.
+fun|כיף|The party was a lot of *fun*.
+furniture|רהיטים|We bought new *furniture*.
+future|עתיד|What are your plans for the *future*?
+garbage|זבל|Take out the *garbage*.
+gas|דלק; גז|The car needs *gas*.
+general|כללי|I have a *general* question.
+in general|באופן כללי|*In general*, I like my job.
+get back|לחזור|When did you *get back*?
+get off|לרדת (מאוטובוס)|*Get off* the bus at the next stop.
+get on|לעלות (לאוטובוס)|*Get on* the bus here.
+get rid of|להיפטר מ־|I want to *get rid of* these old shoes.
+get up|לקום|I *get up* at six.
+give up|לוותר|Don't *give up*!
+go away|ללכת מכאן|*Go away*, I'm busy.
+go back|לחזור|I want to *go back* home.
+go out|לצאת (לבלות)|Let's *go out* tonight.
+government|ממשלה|The *government* made a new law.
+grammar|דקדוק|English *grammar* is not easy.
+graph|גרף|Look at the *graph* on page 5.
+gray|אפור|The sky is *gray* today.
+ground|קרקע, אדמה|The ball fell to the *ground*.
+guy|בחור|He is a nice *guy*.
+on the one hand|מצד אחד|*On the one hand*, the job pays well.
+on the other hand|מצד שני|*On the other hand*, it is far from home.
+hardly|בקושי|I can *hardly* hear you.
+hate|לשנוא|I *hate* waiting.
+headache|כאב ראש|I have a *headache*.
+health|בריאות|Smoking is bad for your *health*.
+healthy|בריא|Eat *healthy* food.
+heart|לב|His *heart* is beating fast.
+heat|חום|I can't stand the *heat*.
+height|גובה|What is your *height*?
+heavy|כבד|This box is very *heavy*.
+hide|להסתתר; להחביא|Where did you *hide* the money?
+history|היסטוריה|I like to study *history*.
+hit|להכות, לפגוע|Don't *hit* your brother.
+holiday|חג; חופשה|Passover is a spring *holiday*.
+honest|כן, ישר|Please be *honest* with me.
+horrible|נורא, איום|The weather was *horrible*.
+hospital|בית חולים|She works in a *hospital*.
+hotel|מלון|We stayed in a nice *hotel*.
+however|עם זאת|The job is hard. *However*, I like it.
+huge|ענק|They have a *huge* garden.
+hurt|לכאוב; לפגוע|My leg *hurts*.
+husband|בעל|Her *husband* is a doctor.
+no idea|אין לי מושג|I have *no idea* where he is.
+identify|לזהות|Can you *identify* the man in the picture?
+identity|זהות|Show me your *identity* card.
+ill|חולה|She is *ill* today.
+imagine|לדמיין|*Imagine* a world without cars.
+improve|לשפר|I want to *improve* my English.
+include|לכלול|The price does not *include* breakfast.
+increase|לעלות; להגדיל|Prices *increase* every year.
+indeed|אכן|It was *indeed* a great day.
+independent|עצמאי|She is a very *independent* woman.
+individual|יחיד, פרט|Every *individual* is different.
+information|מידע|I need more *information*.
+for instance|לדוגמה|Some animals, *for instance* bears, sleep in winter.
+instead of|במקום|Drink water *instead of* soda.
+intelligent|נבון, אינטליגנטי|Dolphins are very *intelligent* animals.
+international|בינלאומי|This is an *international* company.
+interview|ראיון; לראיין|I have a job *interview* tomorrow.
+introduce|להציג, להכיר|Let me *introduce* my friend.
+invent|להמציא|Who *invented* the telephone?
+invitation|הזמנה|Thank you for the *invitation*.
+involved|מעורב|Are you *involved* in the project?
+island|אי|They live on a small *island*.
+issue|נושא, סוגיה|This is an important *issue*.
+item|פריט|There are ten *items* on the list.
+join|להצטרף|Do you want to *join* us?
+joke|בדיחה|He told a funny *joke*.
+key|מפתח|I lost my *key*.
+kind (adj)|טוב לב|She is very *kind* to everyone.
+knife|סכין|Cut the bread with a *knife*.
+label|תווית|Read the *label* on the bottle.
+lady|גברת|Who is that *lady*?
+land|אדמה, ארץ|They bought some *land*.
+laugh|לצחוק|Don't *laugh* at me.
+lead|להוביל|She will *lead* the team.
+lead to|להוביל ל־|Hard work can *lead to* success.
+leader|מנהיג|He is a good *leader*.
+least|הכי פחות|This is the *least* expensive shirt.
+let|לתת, להרשות|*Let* me help you.
+library|ספרייה|I borrow books from the *library*.
+be likely to|צפוי ל־|It *is likely to* rain tomorrow.
+line|שורה; קו|Read the first *line*.
+limit|גבול, הגבלה|There is a speed *limit* on this road.
+link|קישור; לקשר|Click on the *link*.
+a little|קצת|We walked *a little*.
+load|מטען|The truck has a heavy *load*.
+local|מקומי|We buy vegetables at the *local* market.
+lock|לנעול|*Lock* the door when you leave.
+long ago|לפני זמן רב|*Long ago*, people lived in caves.
+as long as|כל עוד|You can stay *as long as* you want.
+no longer|כבר לא|He *no longer* lives here.
+look after|לטפל ב־, להשגיח|Can you *look after* my dog?
+look for|לחפש|I'm *looking for* my keys.
+look forward to|לצפות בכיליון עיניים ל־|I *look forward to* seeing you.
+look like|להיראות כמו|You *look like* your mother.
+look up|לחפש (במילון)|*Look up* the word in the dictionary.
+lose|לאבד; להפסיד|Don't *lose* your ticket.
+loud|רועש, חזק|The music is too *loud*.
+low|נמוך|The prices are *low* here.
+lucky|בר מזל|You are very *lucky*.
+machine|מכונה|The washing *machine* is broken.
+magazine|מגזין, ירחון|I read a fashion *magazine*.
+mail|דואר; לשלוח בדואר|Did you check the *mail*?
+main|עיקרי, ראשי|What is the *main* idea of the text?
+mainly|בעיקר|The students are *mainly* from the north.
+mad|משוגע; כועס|The movie was about a *mad* scientist.
+manage to|להצליח ל־|Did you *manage to* finish the work?
+map|מפה|Look at the *map*.
+mark|ציון; סימן; לסמן|*Mark* the correct answer.
+market|שוק|We buy fruit at the *market*.
+marry|להתחתן|He wants to *marry* her.
+match|להתאים|*Match* the words to the pictures.
+material|חומר|What *material* is this shirt made of?
+math|מתמטיקה|I am good at *math*.
+no matter|לא משנה|*No matter* what happens, I will help you.
+maximum|מקסימום|The *maximum* speed here is 90.
+may|ייתכן; רשאי|You *may* go now.
+meal|ארוחה|Breakfast is the most important *meal*.
+meat|בשר|I don't eat *meat*.
+member|חבר (בקבוצה)|She is a *member* of the club.
+mention|להזכיר|Don't *mention* it to anyone.
+might|אולי, ייתכן ש־|It *might* rain later.
+million|מיליון|Nine *million* people live in Israel.
+mind|להתנגד, להיות אכפת|Do you *mind* if I open the window?
+never mind|לא נורא|*Never mind*, it's not important.
+mine|שלי|The car is *mine*.
+minimum|מינימום|The *minimum* age is 18.
+modern|מודרני|They live in a *modern* apartment.
+moment|רגע|Wait a *moment*, please.
+more and more|יותר ויותר|*More and more* people use the internet.
+more or less|פחות או יותר|The work is *more or less* finished.
+mountain|הר|We climbed the *mountain*.
+museum|מוזיאון|We visited the art *museum*.
+must|חייב|You *must* wear a seat belt.
+nation|אומה|The whole *nation* watched the game.
+nature|טבע|I love walking in *nature*.
+neat|מסודר|Her room is always *neat*.
+necessary|הכרחי, נחוץ|Is it *necessary* to bring a passport?
+neither… nor|לא... ולא|*Neither* Dan *nor* Maya came.
+nervous|לחוץ, עצבני|I feel *nervous* before tests.
+newspaper|עיתון|I read the *newspaper* every morning.
+noise|רעש|Stop making *noise*!
+none|אף אחד, אף לא|*None* of my friends came.
+normal|רגיל, נורמלי|It is *normal* to feel tired.
+north|צפון|Haifa is in the *north*.
+not only|לא רק|She is *not only* smart but also kind.
+note|פתק; הערה|I left you a *note*.
+notice|לשים לב; הודעה|Did you *notice* her new hair?
+a number of|מספר (כמה)|*A number of* students were late.
+object|חפץ|What is that strange *object*?
+occur|להתרחש|When did the accident *occur*?
+odd|מוזר|Your behavior is *odd*.
+offer|הצעה; להציע|They made me a good *offer*.
+office|משרד|She works in an *office*.
+oil|שמן; נפט|Cook it in olive *oil*.
+once again|שוב פעם|*Once again*, he was late.
+at once|מייד|Come here *at once*!
+onto|על גבי, אל|The cat jumped *onto* the table.
+operate|להפעיל; לנתח|Do you know how to *operate* this machine?
+operation|ניתוח; מבצע|He needs an *operation*.
+opinion|דעה|What is your *opinion*?
+in my opinion|לדעתי|*In my opinion*, the movie was great.
+opportunity|הזדמנות|This is a great *opportunity*.
+opposite|הפוך; מול|The bank is *opposite* the school.
+ordinary|רגיל|It was an *ordinary* day.
+order|סדר; הזמנה; להזמין|Can I take your *order*?
+in order to|כדי ל־|I study hard *in order to* pass the test.
+ought to|כדאי ש־, צריך|You *ought to* see a doctor.
+ours|שלנו|This house is *ours*.
+organize|לארגן|Let's *organize* a party.
+original|מקורי|That's an *original* idea.
+on my own|לבד|I did the project *on my own*.
+pair|זוג|I bought a new *pair* of shoes.
+park|לחנות; פארק|You can't *park* here.
+take part in|להשתתף ב־|I want to *take part in* the game.
+particular|מסוים, מיוחד|Is there a *particular* reason?
+in particular|במיוחד|I like sports, football *in particular*.
+partner|שותף; בן זוג|He is my business *partner*.
+party|מסיבה|We had a birthday *party*.
+passenger|נוסע|Every *passenger* needs a ticket.
+pass|לעבור|I hope I *pass* the test.
+perfect|מושלם|Your English is *perfect*.
+photo|תמונה, צילום|Can I take a *photo*?
+take place|להתקיים|The meeting will *take place* on Sunday.
+plenty of|הרבה, די והותר|We have *plenty of* time.
+plus|ועוד, פלוס|Two *plus* two is four.
+point of view|נקודת מבט|Try to see my *point of view*.
+police|משטרה|Call the *police*!
+popular|פופולרי|This song is very *popular*.
+position|עמדה; מיקום|What is your *position* in the company?
+power|כוח; חשמל|Knowledge is *power*.
+powerful|חזק, רב עוצמה|It is a very *powerful* computer.
+predict|לחזות|Nobody can *predict* the future.
+prefer|להעדיף|I *prefer* tea to coffee.
+present|מתנה; הווה|I got a birthday *present*.
+at present|כעת|*At present*, she works in a bank.
+pressure|לחץ|I work well under *pressure*.
+previous|קודם|Read the *previous* page.
+price|מחיר|What is the *price* of this book?
+print|להדפיס|*Print* the document, please.
+private|פרטי|This is a *private* beach.
+prize|פרס|She won first *prize*.
+probably|כנראה|He will *probably* be late.
+process|תהליך|Learning a language is a long *process*.
+program|תוכנית|I watched a TV *program* about animals.
+proper|ראוי, מתאים|Wear *proper* shoes for the trip.
+protect|להגן|We must *protect* the children.
+proud|גאה|I am *proud* of you.
+prove|להוכיח|Can you *prove* it?
+provide|לספק|The hotel will *provide* towels.
+public|ציבורי|This is a *public* park.
+purpose|מטרה|What is the *purpose* of your visit?
+on purpose|בכוונה|He broke the window *on purpose*.
+quarter|רבע|I'll be there in a *quarter* of an hour.
+quite|די, למדי|The test was *quite* easy.
+race|מרוץ|He won the *race*.
+rain|גשם|We stayed home because of the *rain*.
+raise|להרים; לגדל|*Raise* your hand if you know the answer.
+rather|די; במקום|It is *rather* cold today.
+would rather|מעדיף|I *would rather* stay home.
+reach|להגיע ל־|We will *reach* the city at noon.
+realize|להבין, לקלוט|I didn't *realize* it was so late.
+reason|סיבה|What is the *reason* for the delay?
+receive|לקבל|Did you *receive* my email?
+recent|לאחרונה, עדכני|This is a *recent* photo of my son.
+recognize|לזהות|I didn't *recognize* you!
+record|להקליט; לתעד|*Record* the lesson on your phone.
+regular|רגיל, קבוע|I am a *regular* customer here.
+relax|להירגע|Sit down and *relax*.
+religion|דת|Respect every *religion*.
+religious|דתי|He comes from a *religious* family.
+remind|להזכיר (למישהו)|*Remind* me to buy milk.
+repeat|לחזור על|Please *repeat* the question.
+reply|תשובה; להשיב|I am waiting for your *reply*.
+report|דוח; לדווח|Write a short *report*.
+request|בקשה; לבקש|I have a small *request*.
+respect|כבוד; לכבד|*Respect* your parents.
+responsible for|אחראי ל־|Who is *responsible for* this mess?
+responsibility|אחריות|It is your *responsibility*.
+the rest|השאר|I'll eat *the rest* tomorrow.
+result|תוצאה|What was the *result* of the game?
+as a result of|כתוצאה מ־|The road was closed *as a result of* the storm.
+rice|אורז|We had chicken and *rice*.
+ride|לרכוב|Can you *ride* a bike?
+ring|לצלצל; טבעת|The phone will *ring* soon.
+rise|לעלות|The sun will *rise* at six.
+risk|סיכון|Don't take a *risk*.
+river|נהר|They swam in the *river*.
+role|תפקיד|She played the main *role* in the play.
+safe|בטוח|Is it *safe* to swim here?
+sale|מכירה|The house is for *sale*.
+on sale|במבצע|These shoes are *on sale*.
+salt|מלח|Pass me the *salt*, please.
+save|לחסוך; להציל|I want to *save* money for a car.
+schedule|לוח זמנים|What is your *schedule* for today?
+science|מדע|I love *science*.
+score|ניקוד, תוצאה|What is the *score*?
+sea|ים|We swam in the *sea*.
+search|לחפש; חיפוש|*Search* for the word online.
+season|עונה|Summer is my favorite *season*.
+seat|מושב|Is this *seat* free?
+secret|סוד|Can you keep a *secret*?
+seem|להיראות, להיות נראה|You *seem* tired.
+sell|למכור|They *sell* fresh bread.
+serious|רציני|This is a *serious* problem.
+serve|להגיש; לשרת|They *serve* breakfast until ten.
+service|שירות|The *service* in this restaurant is great.
+set|סט, ערכה; לקבוע|I bought a new *set* of plates.
+set up|להקים|They want to *set up* a new business.
+several|כמה|I have *several* questions.
+shape|צורה|What *shape* is it?
+shirt|חולצה|He is wearing a white *shirt*.
+shoes|נעליים|I need new *shoes*.
+shop|חנות; לעשות קניות|The *shop* opens at nine.
+go shopping|ללכת לקניות|Let's *go shopping* tomorrow.
+should|צריך, כדאי|You *should* sleep more.
+shoot|לירות; לצלם|They *shoot* the movie in Tel Aviv.
+silent|שקט|The room was *silent*.
+silence|שקט, דממה|There was *silence* in the class.
+silly|טיפשי, מגוחך|Don't be *silly*!
+silver|כסף (מתכת)|She has a *silver* ring.
+similar to|דומה ל־|Your bag is *similar to* mine.
+since|מאז; מכיוון ש־|I have lived here *since* 2010.
+singer|זמר|She is a famous *singer*.
+single|יחיד; רווק|He is still *single*.
+site|אתר|Visit our *site* for more information.
+smell|להריח; ריח|The food *smells* good.
+smoke|עשן; לעשן|I can see *smoke*.
+so that|כדי ש־|Speak slowly *so that* everyone understands.
+and so on|וכן הלאה|We bought bread, milk, eggs, *and so on*.
+social|חברתי|She is very *social*.
+society|חברה (ציבור)|We live in a modern *society*.
+soft|רך|This bed is very *soft*.
+solve|לפתור|Can you *solve* this problem?
+sort|סוג; למיין|What *sort* of music do you like?
+sort of|די, במידה מסוימת|I'm *sort of* tired.
+sound|צליל; להישמע|That *sounds* like a good idea.
+south|דרום|Eilat is in the *south*.
+space|חלל; מקום|There is no *space* for another chair.
+specific|ספציפי, מסוים|Can you be more *specific*?
+speed|מהירות|What is the *speed* of the train?
+spend|להוציא (כסף); לבלות (זמן)|I *spend* a lot of time reading.
+in spite of|למרות|We went out *in spite of* the rain.
+stage|שלב; במה|This is the first *stage* of the game.
+standard|סטנדרט, רמה|The *standard* of the work is high.
+star|כוכב|I can see a bright *star*.
+state|מדינה; מצב; לציין|Texas is a very big *state*.
+statement|הצהרה, משפט|Is this *statement* true or false?
+station|תחנה|Meet me at the train *station*.
+step|צעד|Take one *step* forward.
+stick|להדביק|*Stick* the picture on the wall.
+stay|להישאר|*Stay* here, please.
+store|חנות|The *store* is closed.
+strange|מוזר|I heard a *strange* noise.
+go on strike|לשבות|The teachers will *go on strike*.
+study|ללמוד|I *study* English at college.
+stuff|דברים|Take your *stuff* with you.
+stupid|טיפש|That was a *stupid* mistake.
+subject|נושא; מקצוע|What is the *subject* of the article?
+succeed|להצליח|If you work hard, you will *succeed*.
+suggest|להציע|I *suggest* we leave early.
+suggestion|הצעה|That's a good *suggestion*.
+suit|להתאים ל־|This color doesn't *suit* you.
+support|לתמוך|My family will *support* me.
+suppose|להניח|I *suppose* you are right.
+make sure|לוודא|*Make sure* the door is locked.
+surprise|הפתעה|We planned a *surprise* party.
+sweet|מתוק|This cake is too *sweet*.
+switch off|לכבות|*Switch off* the light.
+switch on|להדליק|*Switch on* the TV.
+taste|לטעום; טעם|*Taste* the soup.
+team|קבוצה, צוות|Our *team* won the game.
+technology|טכנולוגיה|*Technology* changes very fast.
+teenager|נער, מתבגר|Every *teenager* has a phone.
+tend to|נוטה ל־|I *tend to* sleep late on weekends.
+term|מונח; סמסטר|This *term* we study grammar.
+terrible|נורא|The traffic was *terrible*.
+text|טקסט; הודעה|Read the *text* and answer the questions.
+over there|שם|My car is *over there*.
+theirs|שלהם|This house is *theirs*.
+therefore|לכן|It was raining. *Therefore*, we stayed home.
+thick|עבה|This book is very *thick*.
+thin|דק, רזה|She is tall and *thin*.
+thought|מחשבה|That's a nice *thought*.
+through|דרך|We walked *through* the park.
+throw|לזרוק|*Throw* the ball to me.
+throw away|לזרוק לפח|Don't *throw away* the box.
+thousand|אלף|The car cost forty *thousand* shekels.
+ticket|כרטיס|I bought a *ticket* for the concert.
+tidy|מסודר|Keep your room *tidy*.
+all the time|כל הזמן|He talks *all the time*.
+in time|בזמן (לא מאוחר מדי)|We arrived *in time* for the movie.
+on time|בדיוק בזמן|The train left *on time*.
+at the same time|באותו זמן|They spoke *at the same time*.
+title|כותרת|What is the *title* of the book?
+tool|כלי|A hammer is a useful *tool*.
+top|ראש, חלק עליון|Write your name at the *top* of the page.
+topic|נושא|What is the *topic* of the lesson?
+total|סך הכול|The *total* is 300 shekels.
+touch|לגעת|Don't *touch* the paint.
+in touch with|בקשר עם|I am still *in touch with* my old friends.
+tour|סיור|We went on a *tour* of the old city.
+towards|לעבר|He walked *towards* the door.
+tradition|מסורת|It is a family *tradition*.
+traffic|תנועה (כבישים)|There is a lot of *traffic* today.
+train|רכבת|I go to work by *train*.
+translate|לתרגם|*Translate* the sentence into Hebrew.
+translation|תרגום|I need a *translation* of this letter.
+transport|תחבורה|Public *transport* is cheap here.
+trash|זבל|Put it in the *trash*.
+travel|לנסוע, לטייל|I love to *travel*.
+treasure|אוצר|They found a *treasure* in the sea.
+treat|להתייחס; לטפל|*Treat* others as you want to be treated.
+trick|תעלול, טריק|He played a *trick* on me.
+trouble|צרה, בעיה|I am in *trouble*.
+trust|לבטוח|I *trust* my friends.
+tune|מנגינה|I can't remember the *tune*.
+type|סוג; להקליד|What *type* of movies do you like?
+ugly|מכוער|That's an *ugly* building.
+unit|יחידה|Open your book to *unit* 4.
+unless|אלא אם כן|I won't go *unless* you come with me.
+up to|עד|You can take *up to* three books.
+used to|נהג ל־ (בעבר)|We *used to* live in Eilat.
+be used to|רגיל ל־|I *am used to* waiting.
+useful|שימושי|This is a *useful* book.
+usual|רגיל, שגרתי|He came at the *usual* time.
+as usual|כרגיל|*As usual*, she was late.
+vegetable|ירק|Eat a *vegetable* with every meal.
+view|נוף; השקפה|The *view* from the hotel is beautiful.
+village|כפר|She grew up in a small *village*.
+visit|לבקר; ביקור|I *visit* my grandmother every week.
+voice|קול|She has a beautiful *voice*.
+wake up|להתעורר|I *wake up* at seven.
+warm|חמים|The water is *warm*.
+warn|להזהיר|I *warn* you, the dog bites.
+waste|לבזבז|Don't *waste* time.
+wave|לנופף; גל|*Wave* goodbye to grandma.
+on the way|בדרך|I'm *on the way* home.
+weather|מזג אוויר|The *weather* is nice today.
+weight|משקל|What is your *weight*?
+west|מערב|The sun sets in the *west*.
+whatever|מה שלא; כל מה ש־|Do *whatever* you want.
+on the whole|בסך הכול|*On the whole*, it was a good year.
+the whole|כל ה־ (השלם)|I ate *the whole* cake.
+whose|של מי|*Whose* bag is this?
+wide|רחב|The road is very *wide*.
+wife|אישה (רעיה)|His *wife* is a teacher.
+win|לנצח, לזכות|I hope we *win* the game.
+wind|רוח|The *wind* is very strong today.
+within|בתוך|I'll call you *within* an hour.
+wonder|לתהות|I *wonder* where he is.
+wood|עץ (חומר)|The table is made of *wood*.
+in other words|במילים אחרות|*In other words*, you don't agree.
+at work|בעבודה|She is *at work* now.
+would|היה (תנאי)|I *would* like a cup of tea.
+worried|מודאג|I am *worried* about the test.
+worry|לדאוג|Don't *worry*, be happy.
+yet|עדיין, כבר|Have you finished *yet*?
+not yet|עוד לא|"Are you ready?" "*Not yet*."
+yours|שלך|Is this pen *yours*?
+zero|אפס|The temperature is *zero* degrees.`];
+const BANDS = BAND_RAW.map((raw, bi) => {
+  const words = raw.split('\n').map((l, i) => { const [enw, he, ex] = l.split('|'); const marks = (ex.match(/\*[^*]+\*/g) || []).map(x => x.slice(1, -1)); return { b: bi + 1, i, en: enw, say: enw.replace(/\s*\(.*?\)/g, '').replace(/…/g, ' '), he, ex, plain: ex.replace(/\*/g, ''), mark: marks.length === 1 ? marks[0] : null, k: 'b:' + (bi + 1) + ':' + i }; });
+  const sets = []; for (let i = 0; i < words.length; i += 10) sets.push(words.slice(i, i + 10));
+  return { id: bi + 1, name: 'Band ' + (bi + 1), he: bi ? 'רמה בינונית' : 'רמה בסיסית', words, sets };
+});
+const BW = k => { const p = k.split(':'); const B = BANDS[+p[1] - 1]; return B && B.words[+p[2]]; };
+const bandRec = () => P.band || (P.band = { 1: {}, 2: {} });
+const bSetBest = (bid, si) => (bandRec()[bid] || {})[si];
+const bKnown = w => known(w.k);
+function bCurSet(bid) { const B = BANDS[bid - 1]; for (let i = 0; i < B.sets.length; i++) if ((bSetBest(bid, i) || 0) < 0.8) return i; return -1; }
+const bSent = (w, mode) => {
+  const parts = w.ex.split(/(\*[^*]+\*)/);
+  return `<span class="en" dir="ltr" lang="en">${parts.map(p => p[0] === '*' ? (mode === 'gap' ? '<span class="gap">_____</span>' : `<mark class="hl">${esc(p.slice(1, -1))}</mark>`) : esc(p)).join('')}</span>`;
+};
+const bWordsN = (w, x) => (w.mark || w.en).split(' ').length === (x.mark || x.en).split(' ').length;
+function bDist(w, n, field, setW) {
+  const B = BANDS[w.b - 1].words, ok = x => x !== w && x[field] && x[field] !== w[field] && !overlap(x.he, w.he) && x.en.toLowerCase() !== w.en.toLowerCase();
+  const near = (setW || []).filter(ok), far = shuf(B.filter(ok));
+  const out = []; for (const x of [...shuf(near), ...far]) { if (out.length >= n) break; if (!out.some(o => o[field].toLowerCase() === x[field].toLowerCase())) out.push(x); }
+  return out;
+}
+const bLow = t => /^(I|I'm|I'll)\b/.test(t) ? t : t.replace(/^[A-Z](?=[a-z])/, c => c.toLowerCase());
+const bCap = t => t[0].toUpperCase() + t.slice(1);
+const B_TYPES = ['meaning', 'ctxmean', 'cloze', 'reverse', 'listen'];
+function qBand(w, type, setW) {
+  if (type === 'cloze' && !w.mark) type = 'ctxmean';
+  const rec = [{ k: w.k, s: 'mean' }]; let q;
+  if (type === 'meaning') q = mcq({ prompt: 'מה הפירוש?', big: en(w.en), bigLen: w.en.length, audio: w.say, autoplay: false, opts: [w.he, ...bDist(w, 3, 'he', setW).map(x => x.he)].map(heOpt), correct: w.he, rec });
+  else if (type === 'reverse') q = mcq({ prompt: 'איך אומרים את זה באנגלית?', bigHe: w.he, opts: [w.en, ...bDist(w, 3, 'en', setW).map(x => x.en)].map(enOpt), correct: w.en, rec });
+  else if (type === 'listen') {
+    const all = BANDS[w.b - 1].words.filter(x => x !== w), p0 = all.filter(x => bWordsN(w, x)).map(x => x.en);
+    let ds = similar(w.en, 3, p0, 8, true); if (ds.length < 3) ds = similar(w.en, 3, all.map(x => x.en), 8, true);
+    q = mcq({ prompt: 'הקשיבי ובחרי את מה ששמעת', audio: w.say, listen: true, opts: [w.en, ...ds].map(enOpt), correct: w.en, rec: [...rec, { s: 'listen' }] });
+  } else if (type === 'cloze') {
+    let ds = bDist(w, 6, 'mark', setW).filter(x => bWordsN(w, x)).slice(0, 3);
+    if (ds.length < 2) ds = bDist(w, 3, 'mark', setW);
+    const atStart = w.ex.indexOf('*') === 0, fx = t => atStart ? bCap(t) : bLow(t);
+    q = mcq({ prompt: 'השלימי את המשפט', sent: bSent(w, 'gap'), opts: uniq([w.mark, ...ds.map(x => x.mark)].map(fx)).map(enOpt), correct: fx(w.mark), reveal: bSent(w), rec: [{ k: w.k, s: 'ctx' }] });
+  } else q = mcq({ prompt: 'מה פירוש המילה המסומנת במשפט?', sent: bSent(w), audio: w.plain, autoplay: false, opts: [w.he, ...bDist(w, 3, 'he', setW).map(x => x.he)].map(heOpt), correct: w.he, rec: [{ k: w.k, s: 'ctx' }] });
+  q.word = w.say; q.variant = () => qBand(w, rnd(B_TYPES.filter(t => t !== type)), setW);
+  return q;
+}
+function bandMatch(ws) { return { t: 'match', pairs: ws.map(w => ({ en: w.en, he: w.he, k: w.k })), L: shuf(ws.map((_, i) => i)), R: shuf(ws.map((_, i) => i)), done: [], miss: [], selL: null, rec: [] }; }
+function bandSetQs(bid, si) {
+  const ws = BANDS[bid - 1].sets[si], qs = [];
+  ws.forEach(w => { qs.push(qBand(w, rnd(['meaning', 'ctxmean']), ws)); qs.push(qBand(w, w.mark ? 'cloze' : rnd(['reverse', 'listen']), ws)); });
+  const out = shuf(qs); out.splice(Math.floor(out.length / 2), 0, bandMatch(sample(ws, Math.min(5, ws.length))));
+  out.push(...sample(ws, 3).map(w => qBand(w, rnd(['reverse', 'listen']), ws)));
+  return out;
+}
+function startBandSet(bid, si) { P.bandAt = bid; V = { name: 'bcards', bid, si, i: 0, flip: false, again: [] }; render(true); setTimeout(() => { const w = BANDS[bid - 1].sets[si][0]; if (V.name === 'bcards') TTS.say(w.say); }, 200); }
+function startBandQuiz(bid, si) {
+  startQuiz(arraySrc(bandSetQs(bid, si)), { kind: 'band', area: 'band', title: BANDS[bid - 1].name + ' · סט ' + (si + 1), back: { name: 'band', bid }, again: () => startBandQuiz(bid, si),
+    onFinish: sm => { const r = bandRec(); r[bid] = r[bid] || {}; const sc = sm.n ? sm.ok / sm.n : 0; const prev = r[bid][si]; r[bid][si] = Math.max(prev || 0, sc); sm.bset = { best: r[bid][si], rec: prev != null && sc > prev, pass: sc >= 0.8, next: si + 1 < BANDS[bid - 1].sets.length ? si + 1 : null, bid }; } });
+}
+function startBandReview(bid, mode) {
+  const B = BANDS[bid - 1];
+  let ws = mode === 'due' ? dueKeys().filter(k => k.startsWith('b:' + bid + ':')).map(BW).filter(Boolean) : [];
+  if (mode !== 'due') { const learned = B.sets.filter((_, i) => bSetBest(bid, i) != null).flat(); ws = sample(learned.length >= 8 ? learned : B.words.slice(0, 40), 15); }
+  ws = ws.slice(0, 15); if (!ws.length) { toast('אין כרגע מילים לחזרה'); return; }
+  startQuiz(arraySrc(shuf(ws.map(w => qBand(w, rnd(B_TYPES))))), { kind: 'band', area: 'band', title: mode === 'due' ? 'חזרה: ' + B.name : 'בוחן מהיר: ' + B.name, back: { name: 'band', bid }, again: () => startBandReview(bid, mode) });
+}
+function bNext() {
+  if (V.i < V.deck.length - 1) { V.i++; V.flip = false; render(); const w = BANDS[V.bid - 1].words[V.deck[V.i]]; setTimeout(() => TTS.say(w.say), 150); }
+  else { save(); startBandQuiz(V.bid, V.si); }
 }
 
 /* ===================== QUIZ RUNNER ===================== */
@@ -2525,13 +3841,37 @@ VIEWS.qdone = () => {
     ${s.techDone ? `<div class="newmast">${I.star}<div><b>סיימת את מדריך המילון!</b></div></div>` : ''}
     ${(s.reassessD || []).length ? `<p class="note">${s.reassessD.map(id => DLM[id].short).join(', ')} חזרה לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
     ${s.reassess.length ? `<p class="note">${s.reassess.map(id => en(uLabel(UM[id]))).join(', ')} חזר לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
+    ${s.bset ? `<div class="pathok best">${I.star}<b>${s.bset.rec ? 'שיא חדש! ' : 'השיא בסט: '}${Math.round(s.bset.best * 100)}%</b></div>${s.bset.pass && s.bset.next != null ? `<button class="btn" data-act="bset" data-b="${s.bset.bid}" data-i="${s.bset.next}">לסט ${s.bset.next + 1}</button>` : !s.bset.pass ? '<p class="note">כדי להשלים את הסט צריך 80%.</p>' : ''}` : ''}
     ${(s.dk || []).length ? `<div class="dkbox"><b>סימנת ${s.dk.length === 1 ? 'פריט אחד' : s.dk.length + ' פריטים'} כ"לא יודעת"</b><button class="btn soft" data-act="dkthis">חזרה על מה שלא ידעתי</button></div>` : ''}
     <div class="btns center">${s.path ? `<button class="btn" data-act="back">המשך במסלול</button>${(!s.path.pass || s.path.retry) && o.again ? `<button class="btn ghost" data-act="again">${s.path.retry ? 'לתרגל שוב' : 'נסי שוב'}</button>` : ''}` : `${s.gUnlock ? `<button class="btn" data-act="glnext">לשלב ${s.gUnlock}</button>` : ''}${o.again ? `<button class="btn ${s.gUnlock ? 'ghost' : ''}" data-act="again">סבב נוסף</button>` : ''}<button class="btn ${o.again || s.gUnlock ? 'ghost' : ''}" data-act="back">המשך</button>`}</div></section>`;
 };
 
+VIEWS.band = () => {
+  const bid = V.bid || P.bandAt || 1, B = BANDS[bid - 1], cur = bCurSet(bid), r = bandRec()[bid] || {};
+  const kn = B.words.filter(bKnown).length, done = B.sets.filter((_, i) => (r[i] || 0) >= 0.8).length;
+  const due = dueKeys().filter(k => k.startsWith('b:' + bid + ':')).length;
+  return `<button class="back" data-act="go" data-v="sight">${I.arrow}<span>מילים</span></button>
+  <section class="block"><h1 class="h1">אוצר מילים לפי רשימות</h1><p class="muted">בכל סט 10 מילים: פירוש, שימוש במשפט, שמיעה והתאמה. סט הושלם מ־80%.</p></section>
+  <section class="block"><div class="btabs" role="tablist">${BANDS.map(x => `<button role="tab" aria-selected="${x.id === bid}" class="${x.id === bid ? 'on' : ''}" data-act="btab" data-b="${x.id}"><b class="en">${x.name}</b><small>${x.he} · ${x.words.length} מילים</small></button>`).join('')}</div></section>
+  <section class="block card bsum"><div class="bsum-n"><b>${done}<small>/${B.sets.length}</small></b><span>סטים הושלמו</span></div><div class="bsum-n"><b>${kn}<small>/${B.words.length}</small></b><span>מילים בשליטה</span></div>
+    <div class="bsum-b">${cur >= 0 ? `<button class="btn" data-act="bset" data-b="${bid}" data-i="${cur}">${done || r[cur] != null ? 'להמשיך' : 'להתחיל'}: סט ${cur + 1}</button>` : '<span class="chip ok">כל הסטים הושלמו!</span>'}${due ? `<button class="btn soft" data-act="bdue" data-b="${bid}">חזרה · ${due}</button>` : ''}${Object.keys(r).length ? `<button class="btn ghost" data-act="bquick" data-b="${bid}">בוחן מהיר</button>` : ''}</div></section>
+  <section class="block"><div class="bgrid">${B.sets.map((ws, i) => { const sc = r[i]; const st = sc == null ? '' : sc >= 0.8 ? 'ok' : 'lr'; return `<button class="bset ${i === cur ? 'cur' : ''} ${st}" data-act="bset" data-b="${bid}" data-i="${i}"><span class="bs-n">סט ${i + 1}</span><span class="bs-w en">${esc(ws.slice(0, 3).map(w => w.en).join(', '))}…</span>${sc != null ? `<span class="bs-sc">${sc >= 0.8 ? I.check : ''}${Math.round(sc * 100)}%</span>` : i === cur ? '<span class="bs-sc now">עכשיו</span>' : ''}</button>`; }).join('')}</div></section>`;
+};
+VIEWS.bcards = () => {
+  const ws = BANDS[V.bid - 1].sets[V.si], deck = V.deck || (V.deck = ws.map(w => w.i)), w = BANDS[V.bid - 1].words[deck[V.i]];
+  return `<div class="qtop"><button class="icon-btn" data-act="go" data-v="band" aria-label="יציאה">${I.close}</button><div class="qprog">${bar(V.i / deck.length)}<small>${BANDS[V.bid - 1].name} · סט ${V.si + 1} · מילה ${V.i + 1}/${deck.length}</small></div></div>
+  <section class="block"><div class="bcard">
+    <div class="bc-top"><div class="big en" dir="ltr">${esc(w.en)}</div><div class="audrow center">${spk(w.say, 'השמעה', 'lg')}${spkSlow(w.say)}</div></div>
+    ${V.flip ? `<p class="he-mean">${esc(w.he)}</p>` : `<button class="btn soft" data-act="bflip">הצגת הפירוש</button>`}
+    <div class="bc-ex"><span class="eyebrow">במשפט</span><p>${bSent(w)}</p>${spk(w.plain, 'השמעת המשפט')}</div>
+  </div>
+  <div class="btns center"><button class="btn" data-act="bknow">${I.check}<span>יודעת</span></button><button class="btn ghost" data-act="bdk">לא יודעת</button></div>
+  <p class="center"><button class="link small" data-act="bskip">דילוג לתרגול</button></p></section>`;
+};
 VIEWS.sight = () => {
   const cur = curSight(), due = dueKeys().filter(k => k.startsWith('s:')).length;
-  return `<section class="block"><h1 class="h1">מילים שכיחות</h1></section>
+  return `<section class="block"><button class="bentry" data-act="go" data-v="band"><span class="be-ic">${PIC.book}</span><span class="be-t"><b>רשימות מילים <span class="en">Band 1 · Band 2</span></b><small>${BANDS[0].words.length + BANDS[1].words.length} מילים · פירוש, משפטים, שמיעה והתאמה</small></span><span class="be-go">${I.arrow}</span></button></section>
+  <section class="block"><h1 class="h1">מילים שכיחות</h1></section>
   ${due ? `<section class="block card row-card"><div><b>${due} מילים לחזרה</b></div><button class="btn sm" data-act="sdue">חזרה</button></section>` : ''}
   <section class="block"><div class="glist">${SG.map(g => { const k = g.words.filter(w => known('s:' + w.w)).length; return `<button class="gcard ${g.i === cur ? 'cur' : ''}" data-act="sg" data-i="${g.i}"><div class="g-top"><b>${esc(g.name)}</b>${g.i === cur ? '<span class="chip lr">עכשיו</span>' : k === g.words.length ? '<span class="chip ok">שולטת</span>' : ''}</div><div class="g-words en" dir="ltr">${g.words.slice(0, 6).map(w => esc(w.w)).join(' · ')}…</div>${bar(k / g.words.length)}<small>${k}/${g.words.length}</small></button>`; }).join('')}</div></section>`;
 };
@@ -3284,7 +4624,7 @@ VIEWS.passage = () => {
 /* ===================== RENDER & EVENTS ===================== */
 let SHEET = null, timerH = null; const OPEN = new Set(); let PANEL = null;
 const NAV = [['home', 'מסלול', PIC.route], ['phon', 'דפוסים', I.abc], ['sight', 'מילים', I.cards], ['acad', 'אקדמי', I.cap], ['dict', 'מילון', DICT_ICON], ['read', 'ספרייה', I.book], ['games', 'משחקים', I.play]];
-const FOCUS = ['teacher', 'stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
+const FOCUS = ['bcards', 'teacher', 'stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
 function render(top) {
   const app = document.getElementById('app'), nav = document.getElementById('nav');
   const head = `<header class="top"><div class="brand">${V.name === 'diagintro' || V.name === 'profiles' || !P ? '' : `<span class="logo">${POPLOGO}</span>`}<span class="brand-t"><b class="en">Popcorn English</b><small>קריאה אקדמית</small></span></div><div class="top-r">${P ? `${V.name === 'quiz' ? `<span class="starchip" title="הכוכבים שלך">${I.star}<b>${P.stars || 0}</b></span>` : `<button class="starchip" data-act="go" data-v="lb" title="לוח המובילות">${I.star}<b>${P.stars || 0}</b></button>`}<button class="slowt ${SLOW ? 'on' : ''}" data-act="slow" aria-pressed="${SLOW}">${SLOW ? I.check : TURTLE}<span>שמיעה איטית</span></button><button class="who" data-act="prof" title="הפרופיל שלי" aria-label="הפרופיל שלי"><span class="avatar sm" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><span class="who-n">${esc(P.name)}</span></button>` : ''}${cloudBadge()}<button class="helpbtn" data-act="help" aria-label="עזרה">?</button></div></header>`;
@@ -3343,6 +4683,8 @@ function animateMascot() {
 
 /* help sheet + guided tour */
 const HELPTX = {
+  band: ['רשימות מילים', ['בכל סט 10 מילים מהרשימות של משרד החינוך.', 'קודם מכירות כל מילה: פירוש, הקראה ומשפט.', 'אחר כך תרגול: פירוש, השלמת משפט, שמיעה והתאמה.', 'סט הושלם מ־80%. נשמרת התוצאה הטובה ביותר.']],
+  bcards: ['הכרות עם המילים', ['מקשיבות למילה ולמשפט.', 'לא יודעת? המילה תחזור שוב ותיכנס לרשימת החזרה.']],
   profiles: ['איך מתחילים', ['כותבים שם או כינוי ולוחצים "יצירת פרופיל".', 'כל סטודנטית במכשיר בוחרת את השם שלה.']],
   diagintro: ['בוחן פתיחה', ['בודק מה כבר יודעות, כדי לדלג על זה.', 'אין ציון. לא בטוחה? "לא יודעת" עדיף על ניחוש.', 'אפשר לעצור ולהמשיך אחר כך.']],
   quiz: ['איך עונים', ['לוחצים על התשובה. עוברים לבד לשאלה הבאה.', 'נגיעה במסך = מעבר מהיר.', 'הרמקול משמיע. לא בטוחה? "לא יודעת".']],
@@ -3382,6 +4724,8 @@ const TOURS = {
   multi: [['.dw-say', 'הקשיבי'], ['.dw-pick', 'סמני'], ['[data-act=dcheck]', 'בדיקה']],
   find: [['.ppar.focus, .pas', 'מצאי בפסקה'], ['[data-act=fcheck]', 'בדיקה']],
   pick: [['.pk-box, [data-act=ppick]', 'בחרי שתיים'], ['[data-act=pcheck]', 'בדיקה']],
+  v_band: [['.bset.cur, .bset', 'כל סט = 10 מילים'], ['.btabs', 'Band 1 או Band 2']],
+  v_bcards: [['.bc-top .spk', 'הקשיבי'], ['.bc-ex', 'המילה במשפט'], ['[data-act=bdk]', 'לא יודעת? נתרגל אותה']],
   pstar: [['.pnode.skip .pn-badge.sk', 'כוכב: הבוחן הראה שאת כבר יודעת. אפשר לדלג הלאה']],
   v_cards: [['.flip', 'הפכי'], ['[data-act=cknow]', 'יודעת'], ['[data-act=cagain]', 'לא יודעת']],
   v_lesson: [['.lesson-card .btn.soft, .lesson-card .spk', 'הקשיבי'], ['[data-act=lnext]', 'הבא']],
@@ -3620,6 +4964,14 @@ const ACT = {
   ltr: el => { V.tr[el.dataset.i] = !V.tr[el.dataset.i]; render(); },
   lfinish: () => { const s = P.units[V.u]; s.lesson = true; if (s.st === 'nt') s.st = 'learn'; P.hist.unshift({ t: now(), l: 'שיעור ' + uLabel(UM[V.u]), ok: null, n: null }); P.lastArea = 'phon'; checkAch(); if (PN && PN.tag === 'pl:' + V.u) { const up = markNode(PN.key); PN = null; checkAch(); save(); toast(up != null ? `שלב ${up + 1} הושלם!` : 'התקדמת במסלול!'); SFX.play('win'); go('home', { scrollPath: true }); return; } save(); toast('השיעור הושלם'); go('unit', { u: V.u }); },
   sg: el => startSightGroup(+el.dataset.i),
+  btab: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(); },
+  bset: el => startBandSet(+el.dataset.b, +el.dataset.i),
+  bdue: el => startBandReview(+el.dataset.b, 'due'),
+  bquick: el => startBandReview(+el.dataset.b, 'quick'),
+  bflip: () => { V.flip = true; render(); },
+  bknow: () => { const w = BANDS[V.bid - 1].words[V.deck[V.i]]; if (!P.items[w.k]) P.items[w.k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; bNext(); },
+  bdk: () => { const w = BANDS[V.bid - 1].words[V.deck[V.i]]; itemRec(w.k, false); dkAdd(w.k); if (!V.again.includes(w.i)) { V.again.push(w.i); V.deck.push(w.i); } bNext(); },
+  bskip: () => { save(); startBandQuiz(V.bid, V.si); },
   flip: () => { V.flip = !V.flip; const f = document.querySelector('.flip'); if (f) f.classList.toggle('on', V.flip); else render(); },
   cknow: () => { const k = 's:' + V.deck[V.i]; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; cardNext(); },
   cagain: () => { const w = V.deck[V.i]; itemRec('s:' + w, false); dkAdd('s:' + w); if (!V.again.includes(w)) { V.again.push(w); V.deck.push(w); } cardNext(); },
