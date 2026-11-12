@@ -960,26 +960,43 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bgpick{display:flex;flex-direction:column;gap:8px}.bgpick>b{font-size:.95rem}.bgsw{display:flex;gap:10px;flex-wrap:wrap}.bgsw button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}.bgsw button[aria-pressed=true]{border-color:var(--plum);box-shadow:0 0 0 3px color-mix(in srgb,var(--plum) 30%,transparent)}
 .ns-best{display:flex;align-items:center;justify-content:center;gap:5px;margin:0;color:var(--muted)}.ns-best svg{width:16px;height:16px;color:#F2B544}.ns-best b{color:var(--ink)}
 .pathok.best svg{color:#F2B544}
-.bentry{display:flex;align-items:center;gap:12px;width:100%;text-align:start;padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:linear-gradient(120deg,color-mix(in srgb,var(--pb3) 70%,var(--surface)),color-mix(in srgb,var(--pb1) 70%,var(--surface)));box-shadow:var(--shadow);cursor:pointer;color:var(--ink);font:inherit}
-.be-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--surface);color:var(--plum);flex:none}.be-ic svg{width:26px;height:26px}
-.be-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.be-t small{color:var(--muted)}
-.be-go svg{width:20px;height:20px;color:var(--plum);transform:scaleX(-1)}
 .btabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
 .btabs button.on{border-color:var(--plum);background:var(--lav)}.btabs small{color:var(--muted)}
 .bsum{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
 .bsum-n{display:flex;flex-direction:column;align-items:center;min-width:80px}.bsum-n b{font-size:1.6rem;font-variant-numeric:tabular-nums}.bsum-n small{font-size:.9rem;color:var(--muted)}.bsum-n span{font-size:.82rem;color:var(--muted)}
 .bsum-b{flex:1;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.bset{display:flex;flex-direction:column;gap:4px;text-align:start;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-width:0}
-.bset.cur{border:2px solid var(--plum)}.bset.ok{background:var(--good-bg)}.bset.lr{background:var(--warn-bg)}
-.bs-n{font-weight:600}.bs-w{color:var(--muted);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
-.bs-sc{font-size:.8rem;display:flex;align-items:center;gap:3px;color:var(--good);font-weight:600}.bs-sc svg{width:14px;height:14px}.bset.lr .bs-sc{color:var(--warn)}.bs-sc.now{color:var(--plum)}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.bs-w{color:var(--ink);font-size:.88rem;line-height:1.35;text-align:left;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
 .bcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
 .bc-top{display:flex;flex-direction:column;align-items:center;gap:8px}
 .bc-ex{width:100%;box-sizing:border-box;background:var(--lav);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .bc-ex p{margin:0;font-size:1.15rem;line-height:1.5}
-.bcat .h2{font-size:1.05rem;margin:0 0 8px}
+.bentry-w .h2{margin:0}
+.btiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.btile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;padding:14px 14px 12px;border-radius:22px;border:1px solid color-mix(in srgb,var(--plum) 18%,var(--line));cursor:pointer;font:inherit;color:var(--ink);box-shadow:var(--shadow);min-width:0;transition:transform .15s}
+.btile:active{transform:scale(.98)}
+.btile.bt1{background:radial-gradient(120px 100px at 100% 0%,color-mix(in srgb,var(--pb2) 90%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--pb3) 75%,var(--surface)),color-mix(in srgb,var(--pb1) 60%,var(--surface)))}
+.btile.bt2{background:radial-gradient(120px 100px at 100% 0%,color-mix(in srgb,var(--pb4) 90%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--pb1) 70%,var(--surface)),color-mix(in srgb,var(--pb3) 65%,var(--surface)))}
+.bt-ics{display:flex;gap:5px;margin-bottom:6px}
+.bt-ics i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--plum);border:2px solid color-mix(in srgb,var(--plum) 14%,var(--surface));box-shadow:0 2px 6px rgba(60,40,100,.12)}
+.bt-ics svg{width:16px;height:16px}
+.bt-name{font-size:1.35rem;font-weight:700;line-height:1.1}
+.bt-sub{font-size:.8rem;color:var(--muted)}
+.bt-prog{width:100%;display:flex;flex-direction:column;gap:3px;margin-top:6px}.bt-prog small{font-size:.75rem;color:var(--muted)}
+.bc-h{display:flex;align-items:center;gap:8px;font-size:1.05rem;margin:0 0 8px}
+.bc-h small{color:var(--muted);font-weight:400;font-size:.8rem;margin-inline-start:auto}
+.bc-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--cc) 16%,var(--surface));color:var(--cc)}.bc-ic svg{width:19px;height:19px}
+.bset{position:relative;display:flex;flex-direction:column;gap:6px;text-align:start;padding:12px;border-radius:18px;border:1px solid color-mix(in srgb,var(--cc) 22%,var(--line));background:linear-gradient(170deg,color-mix(in srgb,var(--cc) 9%,var(--surface)),var(--surface) 70%);color:var(--ink);cursor:pointer;font:inherit;min-width:0;box-shadow:0 3px 0 color-mix(in srgb,var(--cc) 18%,var(--line));transition:transform .12s}
+.bset:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--cc) 18%,var(--line))}
+.bset.cur{border:2px solid var(--cc)}
+.bs-top{display:flex;align-items:center;gap:8px}
+.bs-ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cc);color:#FFFFFF;flex:none}.bs-ic svg{width:17px;height:17px}
+.bs-n{font-weight:600;flex:1}
+.bs-ok{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--good);color:#FFFFFF}.bs-ok svg{width:13px;height:13px}
+.bs-now{font-size:.72rem;font-weight:600;color:var(--cc);background:color-mix(in srgb,var(--cc) 14%,var(--surface));padding:2px 8px;border-radius:999px}
+.bs-bar{height:6px;border-radius:999px;background:color-mix(in srgb,var(--cc) 12%,var(--line));overflow:hidden}.bs-bar i{display:block;height:100%;background:var(--cc);border-radius:inherit}
+.bs-f{font-size:.75rem;color:var(--muted)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -3142,6 +3159,46 @@ function startBandReview(bid, mode) {
   ws = ws.slice(0, 15); if (!ws.length) { toast('אין כרגע מילים לחזרה'); return; }
   startQuiz(arraySrc(shuf(ws.map(w => qBand(w, rnd(B_TYPES))))), { kind: 'band', area: 'band', title: mode === 'due' ? 'חזרה: ' + B.name : 'בוחן מהיר: ' + B.name, back: { name: 'band', bid }, again: () => startBandReview(bid, mode) });
 }
+
+const SVGI = d => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const CI = {
+  people: 'M8.5 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M16 11a2.5 2.5 0 1 0 0-5M17 14c2.4.3 4 2 4 5',
+  heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+  house: 'M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z',
+  cup: 'M5 8h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 9h1.5a2.5 2.5 0 0 1 0 5H16M8 3v2M11 3v2',
+  book: 'M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zm0 0v13',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  pin: 'M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+  compass: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z',
+  smile: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8.5 14.5c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8M9 9.5h.01M15 9.5h.01',
+  leaf: 'M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7',
+  bolt: 'M13 3L5 13.5h6L10 21l8-10.5h-6z',
+  chat: 'M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5V16H6a2 2 0 0 1-2-2z',
+  question: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.2M12 17h.01',
+  hash: 'M9 4L7 20M17 4l-2 16M4 9h16M3.5 15h16',
+  sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z',
+  ticket: 'M4 8a2 2 0 0 0 0 4v0a2 2 0 0 0 0 4v2h16v-2a2 2 0 0 1 0-4 2 2 0 0 1 0-4V6H4zM14 6v12',
+  cart: 'M3 4h2l2.2 10.5a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2M9 20h.01M17 20h.01',
+  laptop: 'M5 6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9H5zM3 18h18',
+  globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z',
+  bus: 'M6 4h12a2 2 0 0 1 2 2v10H4V6a2 2 0 0 1 2-2zM4 11h16M7.5 19v-3M16.5 19v-3M7.5 14h.01M16.5 14h.01',
+  bulb: 'M9 18h6m-5 3h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z',
+  link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'
+};
+const CATS_UI = {
+  'אנשים ומשפחה': ['people', '#C2557F'], 'אנשים ויחסים': ['people', '#C2557F'], 'גוף ובריאות': ['heart', '#D0546A'], 'בבית': ['house', '#B07A2A'], 'בית ואוכל': ['house', '#B07A2A'],
+  'אוכל ושתייה': ['cup', '#C4831A'], 'בית ספר ולימודים': ['book', '#6E4FB0'], 'לימודים ושפה': ['book', '#6E4FB0'], 'זמן ושעות': ['clock', '#3E6DB5'], 'זמן ותדירות': ['clock', '#3E6DB5'],
+  'מקומות ודרכים': ['pin', '#2F8A63'], 'מקומות ותחבורה': ['bus', '#2F8A63'], 'מיקום וכיוון': ['compass', '#2A8C8C'], 'רגשות ותיאורים': ['smile', '#D99A1C'], 'דעות והרגשות': ['bulb', '#D99A1C'],
+  'צבעים וטבע': ['leaf', '#4E9A3C'], 'עולם, טבע ומזג אוויר': ['globe', '#4E9A3C'], 'פעלים בסיסיים': ['bolt', '#9361D1'], 'פעלים חשובים': ['bolt', '#9361D1'], 'תקשורת ודיבור': ['chat', '#4F79C2'],
+  'מילות שאלה וקישור': ['question', '#7A6E9E'], 'מילות קישור וביטויים': ['link', '#7A6E9E'], 'כמויות ומספרים': ['hash', '#B5527F'], 'עוד מילים שימושיות': ['sparkle', '#8C6BC8'],
+  'תרבות, ספורט ופנאי': ['ticket', '#D0546A'], 'קניות וכסף': ['cart', '#C4831A'], 'עבודה וטכנולוגיה': ['laptop', '#3E6DB5']
+};
+const catUI = n => { const c = CATS_UI[n] || ['sparkle', '#8C6BC8']; return { ic: SVGI(CI[c[0]]), col: c[1] }; };
+function bandTile(B) {
+  const r = bandRec()[B.id] || {}, kn = B.words.filter(bKnown).length, done = B.sets.filter((_, i) => (r[i] || 0) >= 0.8).length;
+  const icons = (B.id === 1 ? ['people', 'cup', 'house', 'clock'] : ['globe', 'laptop', 'ticket', 'bulb']);
+  return `<button class="btile bt${B.id}" data-act="bopen" data-b="${B.id}"><span class="bt-ics" aria-hidden="true">${icons.map((k, j) => `<i style="--j:${j}">${SVGI(CI[k])}</i>`).join('')}</span><span class="bt-name en">${B.name}</span><span class="bt-sub">${B.he} · ${B.words.length} מילים · ${B.cats.length} נושאים</span><span class="bt-prog">${bar(B.sets.length ? done / B.sets.length : 0)}<small>${done}/${B.sets.length} סטים</small></span></button>`;
+}
 function bNext() {
   if (V.i < V.deck.length - 1) { V.i++; V.flip = false; render(); const w = BANDS[V.bid - 1].words[V.deck[V.i]]; setTimeout(() => TTS.say(w.say), 150); }
   else { save(); startBandQuiz(V.bid, V.si); }
@@ -3892,7 +3949,7 @@ VIEWS.band = () => {
   <section class="block"><div class="btabs" role="tablist">${BANDS.map(x => `<button role="tab" aria-selected="${x.id === bid}" class="${x.id === bid ? 'on' : ''}" data-act="btab" data-b="${x.id}"><b class="en">${x.name}</b><small>${x.he} · ${x.words.length} מילים</small></button>`).join('')}</div></section>
   <section class="block card bsum"><div class="bsum-n"><b>${done}<small>/${B.sets.length}</small></b><span>סטים הושלמו</span></div><div class="bsum-n"><b>${kn}<small>/${B.words.length}</small></b><span>מילים בשליטה</span></div>
     <div class="bsum-b">${cur >= 0 ? `<button class="btn" data-act="bset" data-b="${bid}" data-i="${cur}">${done || r[cur] != null ? 'להמשיך' : 'להתחיל'}: ${esc(bSetName(B, cur))}</button>` : '<span class="chip ok">כל הסטים הושלמו!</span>'}${due ? `<button class="btn soft" data-act="bdue" data-b="${bid}">חזרה · ${due}</button>` : ''}${Object.keys(r).length ? `<button class="btn ghost" data-act="bquick" data-b="${bid}">בוחן מהיר</button>` : ''}</div></section>
-  ${B.cats.map(c => `<section class="block bcat"><h2 class="h2">${esc(c.name)}</h2><div class="bgrid">${c.sets.map(i => { const ws = B.sets[i], sc = r[i]; const st = sc == null ? '' : sc >= 0.8 ? 'ok' : 'lr'; return `<button class="bset ${i === cur ? 'cur' : ''} ${st}" data-act="bset" data-b="${bid}" data-i="${i}"><span class="bs-n">${ws.of > 1 ? 'סט ' + ws.n : 'סט'} · ${ws.length} מילים</span><span class="bs-w en">${esc(ws.slice(0, 3).map(w => w.en).join(', '))}…</span>${sc != null ? `<span class="bs-sc">${sc >= 0.8 ? I.check : ''}${Math.round(sc * 100)}%</span>` : i === cur ? '<span class="bs-sc now">עכשיו</span>' : ''}</button>`; }).join('')}</div></section>`).join('')}`;
+  ${B.cats.map(c => { const u = catUI(c.name); return `<section class="block bcat" style="--cc:${u.col}"><h2 class="bc-h"><span class="bc-ic">${u.ic}</span><span>${esc(c.name)}</span><small>${c.sets.reduce((a, i) => a + B.sets[i].length, 0)} מילים</small></h2><div class="bgrid">${c.sets.map(i => { const ws = B.sets[i], sc = r[i]; const st = sc == null ? '' : sc >= 0.8 ? 'ok' : 'lr'; return `<button class="bset ${i === cur ? 'cur' : ''} ${st}" data-act="bset" data-b="${bid}" data-i="${i}"><span class="bs-top"><span class="bs-ic">${u.ic}</span><span class="bs-n">${ws.of > 1 ? 'סט ' + ws.n : 'סט אחד'}</span>${st === 'ok' ? `<span class="bs-ok">${I.check}</span>` : i === cur ? '<span class="bs-now">עכשיו</span>' : ''}</span><span class="bs-w en">${esc(ws.slice(0, 3).map(w => w.en).join(' · '))}</span><span class="bs-bar"><i style="width:${Math.round((sc || 0) * 100)}%"></i></span><span class="bs-f">${ws.length} מילים${sc != null ? ` · ${Math.round(sc * 100)}%` : ''}</span></button>`; }).join('')}</div></section>`; }).join('')}`;
 };
 VIEWS.bcards = () => {
   const ws = BANDS[V.bid - 1].sets[V.si], deck = V.deck || (V.deck = ws.map(w => w.i)), w = BANDS[V.bid - 1].words[deck[V.i]];
@@ -3907,7 +3964,7 @@ VIEWS.bcards = () => {
 };
 VIEWS.sight = () => {
   const cur = curSight(), due = dueKeys().filter(k => k.startsWith('s:')).length;
-  return `<section class="block"><button class="bentry" data-act="go" data-v="band"><span class="be-ic">${PIC.book}</span><span class="be-t"><b>רשימות מילים <span class="en">Band 1 · Band 2</span></b><small>${BANDS[0].words.length + BANDS[1].words.length} מילים · פירוש, משפטים, שמיעה והתאמה</small></span><span class="be-go">${I.arrow}</span></button></section>
+  return `<section class="block bentry-w"><h2 class="h2">רשימות מילים של משרד החינוך</h2><p class="muted small">לפי נושאים: פירוש, משפטים, שמיעה והתאמה</p><div class="btiles">${BANDS.map(bandTile).join('')}</div></section>
   <section class="block"><h1 class="h1">מילים שכיחות</h1></section>
   ${due ? `<section class="block card row-card"><div><b>${due} מילים לחזרה</b></div><button class="btn sm" data-act="sdue">חזרה</button></section>` : ''}
   <section class="block"><div class="glist">${SG.map(g => { const k = g.words.filter(w => known('s:' + w.w)).length; return `<button class="gcard ${g.i === cur ? 'cur' : ''}" data-act="sg" data-i="${g.i}"><div class="g-top"><b>${esc(g.name)}</b>${g.i === cur ? '<span class="chip lr">עכשיו</span>' : k === g.words.length ? '<span class="chip ok">שולטת</span>' : ''}</div><div class="g-words en" dir="ltr">${g.words.slice(0, 6).map(w => esc(w.w)).join(' · ')}…</div>${bar(k / g.words.length)}<small>${k}/${g.words.length}</small></button>`; }).join('')}</div></section>`;
@@ -5001,6 +5058,7 @@ const ACT = {
   ltr: el => { V.tr[el.dataset.i] = !V.tr[el.dataset.i]; render(); },
   lfinish: () => { const s = P.units[V.u]; s.lesson = true; if (s.st === 'nt') s.st = 'learn'; P.hist.unshift({ t: now(), l: 'שיעור ' + uLabel(UM[V.u]), ok: null, n: null }); P.lastArea = 'phon'; checkAch(); if (PN && PN.tag === 'pl:' + V.u) { const up = markNode(PN.key); PN = null; checkAch(); save(); toast(up != null ? `שלב ${up + 1} הושלם!` : 'התקדמת במסלול!'); SFX.play('win'); go('home', { scrollPath: true }); return; } save(); toast('השיעור הושלם'); go('unit', { u: V.u }); },
   sg: el => startSightGroup(+el.dataset.i),
+  bopen: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(true); },
   btab: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(); },
   bset: el => startBandSet(+el.dataset.b, +el.dataset.i),
   bdue: el => startBandReview(+el.dataset.b, 'due'),
