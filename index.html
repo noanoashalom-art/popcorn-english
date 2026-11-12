@@ -1001,6 +1001,7 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bc-mean .he-mean{margin:0}
 .bc-emo{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:2.4rem;line-height:1;background:linear-gradient(150deg,var(--pb3),var(--pb1));box-shadow:0 3px 10px rgba(60,40,100,.12);color:var(--plum)}
 .bc-emo svg{width:34px;height:34px}
+.printbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.printbar svg{width:18px;height:18px}.printbar .btn{text-decoration:none}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -5266,11 +5267,15 @@ VIEWS.read = () => `<section class="block"><h1 class="h1">הספרייה</h1></s
     <button class="book" data-act="go" data-v="strat"><span class="cover">${cover('strat')}${P.stratSeen ? `<span class="ribbon ok">${I.check}</span>` : '<span class="ribbon new">התחילי כאן</span>'}</span><b class="bk-t en">Reading Strategies</b><small class="bk-he">אסטרטגיות קריאה</small></button>
     ${PAS.map(Pa => { const r = (P.pas || {})[Pa.id]; return bookBtn('pas', Pa.id, Pa.title, Pa.he, `${Pa.paras.length} פסקאות`, scoreBadge(r && r.cs)); }).join('')}</div></section>
   ${[1, 2, 3].map(l => `<section class="block"><h2 class="h2 shelf-t">${I.book}<span>רמה ${l}</span>${l === P.rlvl ? '<span class="chip lr">מומלץ לך</span>' : ''}</h2><div class="shelf">${TEXTS.filter(t => t.lvl === l).map(t => bookBtn('text', t.id, t.title, t.he, '', scoreBadge(P.reads[t.id]))).join('')}</div></section>`).join('')}`;
+const PRINT_BASE = 'https://noanoashalom-art.github.io/popcorn-english/print/';
+const PRINT_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>';
+const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn sm soft" data-act="printit" data-id="${id}">${PRINT_IC}<span>הדפסה</span></button>` : `<a class="btn sm soft" href="${PRINT_BASE}${id}.html?print" target="_blank" rel="noopener">${PRINT_IC}<span>הדפסה</span></a>`}<a class="btn sm ghost" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}.pdf" target="_blank" rel="noopener"><span>קובץ PDF</span></a><small class="muted">דף עבודה: הטקסט והשאלות</small></div>`;
 VIEWS.text = () => {
   const T = TEXTS.find(t => t.id === V.id);
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><button class="btn sm soft" data-act="sayall">${I.spk}<span>השמעת הטקסט</span></button></div>${textBlock(T, true, V.tr)}</section>
-  <section class="block card row-card"><div><b>${T.q.length} שאלות הבנה</b></div><button class="btn" data-act="rstart">לשאלות</button></section>`;
+  <section class="block card row-card"><div><b>${T.q.length} שאלות הבנה</b></div><button class="btn" data-act="rstart">לשאלות</button></section>
+  <section class="block">${printBar(T.id)}</section>`;
 };
 
 /* ===================== DICTIONARY SKILLS ===================== */
@@ -5939,7 +5944,7 @@ VIEWS.passage = () => {
   const vdone = Object.keys(r.v).length, cdone = Object.keys(r.c).length;
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
   <section class="block card pas-head"><span class="eyebrow">קטע אקדמי · טרום-בסיסי א'</span><h1 class="h1 en">${esc(Pa.title)}</h1><p class="muted">${esc(Pa.he)} · ${Pa.paras.length} פסקאות · ${Pa.vocab.length} מילים · ${Pa.qs.length} שאלות</p>
-    <div class="tipline">${PIC.route}<span>טיפ: השאלות מציינות פסקה. קראי רק את הפסקה הזאת.</span><button class="link small" data-act="go" data-v="strat">לכל האסטרטגיות</button></div></section>
+    <div class="tipline">${PIC.route}<span>טיפ: השאלות מציינות פסקה. קראי רק את הפסקה הזאת.</span><button class="link small" data-act="go" data-v="strat">לכל האסטרטגיות</button></div>${printBar(Pa.id)}</section>
   <section class="block card"><span class="eyebrow en">Vocabulary Exercise</span><h2 class="h2">תרגיל אוצר מילים לפי פסקאות</h2>
     <div class="tscroll"><table class="vtable"><thead><tr><th>פסקה</th><th>המשימה</th><th>תשובה</th></tr></thead><tbody>${Pa.vocab.map((v, i) => `<tr><td class="en vt-p">${v.p}</td><td>${v.type === 'find' ? `מצאי מילה שפירושה <b>${esc(v.he)}</b>` : `מה פירוש ${en(v.en)} בהקשר?`}</td><td>${r.v[i] == null ? '<span class="muted">?</span>' : `<span class="${r.v[i] ? 'vok' : 'vbad'}">${v.type === 'find' ? en(v.ans[0]) : esc(v.he)}</span>`}</td></tr>`).join('')}</tbody></table></div>
     <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי את התרגיל'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
@@ -6292,6 +6297,12 @@ const ACT = {
   ltr: el => { V.tr[el.dataset.i] = !V.tr[el.dataset.i]; render(); },
   lfinish: () => { const s = P.units[V.u]; s.lesson = true; if (s.st === 'nt') s.st = 'learn'; P.hist.unshift({ t: now(), l: 'שיעור ' + uLabel(UM[V.u]), ok: null, n: null }); P.lastArea = 'phon'; checkAch(); if (PN && PN.tag === 'pl:' + V.u) { const up = markNode(PN.key); PN = null; checkAch(); save(); toast(up != null ? `שלב ${up + 1} הושלם!` : 'התקדמת במסלול!'); SFX.play('win'); go('home', { scrollPath: true }); return; } save(); toast('השיעור הושלם'); go('unit', { u: V.u }); },
   sg: el => startSightGroup(+el.dataset.i),
+  printit: el => {
+    const url = 'print/' + el.dataset.id + '.html'; let f = document.getElementById('printframe'); if (f) f.remove();
+    f = document.createElement('iframe'); f.id = 'printframe'; f.setAttribute('aria-hidden', 'true'); f.style.cssText = 'position:fixed;width:0;height:0;border:0;right:0;bottom:0';
+    f.onload = () => setTimeout(() => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { window.open(url + '?print', '_blank'); } }, 400);
+    f.src = url; document.body.appendChild(f); toast('פותחת הדפסה…');
+  },
   bopen: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(true); },
   btab: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(); },
   bset: el => startBandSet(+el.dataset.b, +el.dataset.i),
