@@ -1012,6 +1012,7 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .vnudge{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:20px;border:1px solid color-mix(in srgb,#E2B33C 40%,var(--line));background:linear-gradient(150deg,color-mix(in srgb,var(--pb4) 85%,var(--surface)),color-mix(in srgb,var(--pb2) 55%,var(--surface)));box-shadow:var(--shadow)}
 .vn-pop{font-size:2rem;line-height:1;flex:none;animation:pop .4s ease-out}
 .vn-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.vn-t p{margin:0;color:var(--ink);font-size:.93rem;line-height:1.5}.vn-t .btns{justify-content:flex-start;margin-top:4px}
+.vstart{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.vstart .h2{margin:2px 0}.vstart p{margin:0}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -8130,9 +8131,8 @@ VIEWS.passage = () => {
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
   <section class="block card pas-head"><span class="eyebrow">קטע אקדמי · טרום-בסיסי א'</span><h1 class="h1 en">${esc(Pa.title)}</h1><p class="muted">${esc(Pa.he)} · ${Pa.paras.length} פסקאות · ${Pa.vocab.length} מילים · ${Pa.qs.length} שאלות</p>
     <div class="tipline">${PIC.route}<span>טיפ: השאלות מציינות פסקה. קראי רק את הפסקה הזאת.</span><button class="link small" data-act="go" data-v="strat">לכל האסטרטגיות</button></div>${printBar(Pa.id)}</section>
-  <section class="block card"><span class="eyebrow en">Vocabulary Exercise</span><h2 class="h2">תרגיל אוצר מילים לפי פסקאות</h2>
-    <div class="tscroll"><table class="vtable"><thead><tr><th>פסקה</th><th>המשימה</th><th>תשובה</th></tr></thead><tbody>${Pa.vocab.map((v, i) => `<tr><td class="en vt-p">${v.p}</td><td>${v.type === 'find' ? `מצאי מילה שפירושה <b>${esc(v.he)}</b>` : `מה פירוש ${en(v.en)} בהקשר?`}</td><td>${r.v[i] == null ? '<span class="muted">?</span>' : `<span class="${r.v[i] ? 'vok' : 'vbad'}">${v.type === 'find' ? en(v.ans[0]) : esc(v.he)}</span>`}</td></tr>`).join('')}</tbody></table></div>
-    <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי את התרגיל'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
+  <section class="block card vstart"><div><span class="eyebrow en">Vocabulary</span><h2 class="h2">תרגיל אוצר מילים</h2><p class="muted small">${Pa.vocab.length} מילים מתוך הקטע</p></div>
+    <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><span>לחצי על מילה לתרגום</span></div>${passageHtml(Pa, { audio: true })}</section>
   <section class="block card"><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה לפי פסקאות</h2>
     <ol class="cq">${Pa.qs.map((x, i) => `<li><div class="qhead"><span class="parchip en">Paragraph ${x.p}</span><span class="tpchip en">${x.tp}</span>${r.c[i] != null ? `<span class="${r.c[i] ? 'vok' : 'vbad'}">${r.c[i] ? '✓' : '✗'}</span>` : ''}</div><p class="en" dir="ltr">${esc(x.q)}</p>${r.c[i] != null ? `<p class="model en" dir="ltr">${esc(x.ans)}</p>` : ''}</li>`).join('')}</ol>
