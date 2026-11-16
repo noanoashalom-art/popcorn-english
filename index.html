@@ -8134,9 +8134,8 @@ VIEWS.passage = () => {
   <section class="block card vstart"><div><span class="eyebrow en">Vocabulary</span><h2 class="h2">תרגיל אוצר מילים</h2><p class="muted small">${Pa.vocab.length} מילים מתוך הקטע</p></div>
     <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><span>לחצי על מילה לתרגום</span></div>${passageHtml(Pa, { audio: true })}</section>
-  <section class="block card"><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה לפי פסקאות</h2>
-    <ol class="cq">${Pa.qs.map((x, i) => `<li><div class="qhead"><span class="parchip en">Paragraph ${x.p}</span><span class="tpchip en">${x.tp}</span>${r.c[i] != null ? `<span class="${r.c[i] ? 'vok' : 'vbad'}">${r.c[i] ? '✓' : '✗'}</span>` : ''}</div><p class="en" dir="ltr">${esc(x.q)}</p>${r.c[i] != null ? `<p class="model en" dir="ltr">${esc(x.ans)}</p>` : ''}</li>`).join('')}</ol>
-    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי את השאלות'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>`;
+  <section class="block card vstart"><div><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה</h2><p class="muted small">${Pa.qs.length} שאלות לפי פסקאות</p></div>
+    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>`;
 };
 
 /* ===================== RENDER & EVENTS ===================== */
