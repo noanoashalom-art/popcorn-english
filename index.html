@@ -7939,8 +7939,8 @@ function mixQs(k) {
 }
 function bossQs(k) {
   const L = LV[k], out = [], add = q => { if (q) { q.variant = null; out.push(q); } };
-  sample(STAGES[k], 3).forEach(id => add(qPhon(UM[id], rnd(['listen', 'contains', 'say']), rnd(UM[id].words), 2, { plain: true })));
-  sample(L.sight.flatMap(g => SG[g].words), 2).forEach(w => add(qSight(w, rnd(['meaning', 'listen', 'reverse']))));
+  if (!P.noPhon) sample(STAGES[k], 3).forEach(id => add(qPhon(UM[id], rnd(['listen', 'contains', 'say']), rnd(UM[id].words), 2, { plain: true })));
+  sample(L.sight.flatMap(g => SG[g].words), P.noPhon ? 3 : 2).forEach(w => add(qSight(w, rnd(['meaning', 'listen', 'reverse']))));
   sample(L.acad.flatMap(c => AC[c].items), 3).forEach((a, i) => add(qAcad(a, i === 0 ? 'context' : rnd(['meaning', 'reverse', 'cloze']))));
   const dl = L.dict.filter(x => x !== 'tech');
   sample(dl, Math.min(2, dl.length)).forEach(id => add(bankQ(id)));
