@@ -1039,6 +1039,26 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .dm-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
 .dmw{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 8px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .dmw span{font-weight:600}.dmw small{color:var(--muted);font-size:.8rem}.dmw.on{background:var(--good-bg);border-color:var(--good)}.dmw.on small{color:var(--good)}
+.wcheck{display:flex;flex-direction:column;gap:12px;text-align:start}
+.wc-steps{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.wc-steps li{display:flex;align-items:center;gap:6px}.wc-steps span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--lav);color:var(--plum);font-weight:700;font-size:.8rem}
+.wc-drop{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px 14px;border:2px dashed color-mix(in srgb,var(--plum) 45%,var(--line));border-radius:18px;background:var(--lav);cursor:pointer;text-align:center}
+.wc-drop input{position:absolute;inset:0;opacity:0;cursor:pointer}.wc-dic{font-size:1.8rem}.wc-drop small{color:var(--muted)}
+.wc-err{color:var(--bad);margin:0}
+.wc-res{display:flex;align-items:center;gap:14px}
+.wc-score{width:76px;height:76px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;border:5px solid var(--warn);background:var(--warn-bg)}
+.wc-score.good{border-color:var(--good);background:var(--good-bg)}.wc-score.low{border-color:var(--bad)}
+.wc-score b{font-size:1.5rem;line-height:1}.wc-score small{font-size:.72rem;color:var(--muted)}
+.wc-sum p{margin:4px 0 0;color:var(--muted)}
+.wc-list,.wc-self{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.wc-list li{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--good-bg);flex-wrap:wrap}
+.wc-list li.no{background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.wc-ic{font-weight:700}.wc-list li.ok .wc-ic{color:var(--good)}.wc-list li.no .wc-ic{color:var(--bad)}
+.wc-a{font-size:.9rem;color:var(--muted)}
+.wc-self li{display:flex;align-items:center;gap:10px}.wc-n{min-width:46px;font-weight:600;color:var(--plum)}
+.wc-ab{display:flex;gap:6px;direction:ltr}.wc-ab button{width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.wc-ab button.on{background:var(--plum);border-color:var(--plum);color:var(--on-plum,#FFFFFF)}
+.wc-self input{flex:1;min-width:0;font:inherit;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -7469,7 +7489,8 @@ VIEWS.text = () => {
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><button class="btn sm soft" data-act="sayall">${I.spk}<span>השמעת הטקסט</span></button></div>${textBlock(T, true, V.tr)}</section>
   <section class="block card row-card"><div><b>${T.q.length} שאלות הבנה</b></div><button class="btn" data-act="rstart">לשאלות</button></section>
-  <section class="block">${printBar(T.id)}</section>`;
+  <section class="block">${printBar(T.id)}</section>
+  ${wcheckHtml(T.id)}`;
 };
 
 /* ===================== DICTIONARY SKILLS ===================== */
@@ -8178,8 +8199,73 @@ VIEWS.passage = () => {
     <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><span>לחצי על מילה לתרגום</span></div>${passageHtml(Pa, { audio: true })}</section>
   <section class="block card vstart"><div><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה</h2><p class="muted small">${Pa.qs.length} שאלות לפי פסקאות</p></div>
-    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>`;
+    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>
+  ${wcheckHtml(Pa.id)}`;
 };
+
+/* ===================== Worksheet check: upload a photo / PDF of the printed worksheet ===================== */
+const WKEY = {"t1": [["Q", 1, "mc", "a", "People learn new skills for different reasons."], ["Q", 2, "mc", "a", "To improve their lives."]], "t2": [["Q", 1, "mc", "a", "Sleep and students"], ["Q", 2, "mc", "a", "They can learn more."]], "t3": [["Q", 1, "mc", "b", "People know more words."], ["Q", 2, "mc", "b", "people who read every day"]], "t4": [["Q", 1, "mc", "c", "Students have less time to study."], ["Q", 2, "mc", "b", "the advantages and disadvantages of working while studying"]], "t5": [["Q", 1, "mc", "b", "Social media has both positive and negative effects."], ["Q", 2, "mc", "c", "using social media for many hours"], ["Q", 3, "mc", "c", "social media"]], "t6": [["Q", 1, "mc", "a", "water that was not clean"], ["Q", 2, "mc", "a", "Clean water is still a problem in some places."]], "p1": [["V", 1, "word", "affect", "להשפיע על"], ["V", 2, "mc", "c", "אולם"], ["V", 3, "word", "cause/causes", "סיבה; גורם"], ["V", 4, "mc", "d", "מועדי הגשה"], ["V", 5, "word", "appetite", "תיאבון"], ["V", 6, "word", "concentrate", "להתרכז"], ["V", 7, "mc", "a", "כתוצאה מכך"], ["V", 8, "word", "reduce", "להפחית"], ["V", 9, "mc", "a", "תמיכה"], ["V", 10, "word", "succeed", "להצליח"], ["C", 1, "mc", "a", "more than half"], ["C", 2, "pick", "academic pressure/money", "2"], ["C", 3, "mc", "b", "to pay for rent, food, and books"], ["C", 4, "pick", "headaches/stomach problems/trouble sleeping/losing appetite", "4"], ["C", 5, "pick", "it is difficult to concentrate/students forget information/students get lower grades", "3"], ["C", 6, "pick", "walking/dancing/riding a bike", "3"], ["C", 7, "mc", "c", "good time management"], ["C", 8, "pick", "workshops/meetings with counselors", "2"], ["C", 9, "mc", "a", "students who manage stress well"]], "p2": [["V", 1, "word", "habit", "הרגל"], ["V", 2, "mc", "c", "איכות"], ["V", 3, "word", "relax", "להירגע"], ["V", 4, "mc", "c", "סיבות"], ["V", 5, "word", "reduces", "מפחית; מקטין"], ["V", 6, "word", "negative", "שליליות"], ["V", 7, "mc", "c", "חוסר"], ["V", 8, "word", "appears", "נראה ש- (מופיע כפועל)"], ["V", 9, "word", "suggest", "מציעים (פועל)"], ["V", 10, "mc", "d", "לפגוע; להזיק"], ["C", 1, "mc", "c", "in bed, just before they go to sleep"], ["C", 2, "pick", "the blue light from the screen/phones keep the mind active", "2"], ["C", 3, "mc", "a", "a natural hormone that helps us fall asleep"], ["C", 4, "pick", "people need more time to fall asleep/people wake up during the night", "2"], ["C", 5, "pick", "people feel tired/people feel nervous/people make more mistakes/a higher risk of health problems", "4"], ["C", 6, "pick", "heart disease/diabetes", "2"], ["C", 7, "mc", "a", "about one hour"], ["C", 8, "pick", "stop using screens one hour before bedtime/turn on night mode/leave the phone in another room/read a paper book", "4"], ["C", 9, "mc", "c", "Phones are useful, but changing habits helps us sleep better."]]};
+const WSEC = { Q: 'Questions', V: 'Vocabulary', C: 'Comprehension' };
+const WC = {};
+let SAMPLE = null, SAMPLE_IMG = false;
+(async () => { try { if (window.claude && claude.use) { SAMPLE = await claude.use('sample'); if (SAMPLE) { const l = await SAMPLE.limits().catch(() => null); SAMPLE_IMG = !!(l && l.images); } } } catch (e) { SAMPLE = null; } if (P && (V.name === 'text' || V.name === 'passage')) render(); })();
+const wcState = id => WC[id] || (WC[id] = { files: [], busy: false, res: null, err: '', self: {} });
+function wcheckHtml(id) {
+  const K = WKEY[id]; if (!K) return '';
+  const S = wcState(id), steps = `<ol class="wc-steps"><li><span>1</span>הדפיסי ופתרי</li><li><span>2</span>${SAMPLE_IMG ? 'צלמי או העלי PDF' : 'סמני את התשובות כאן'}</li><li><span>3</span>קבלי ציון</li></ol>`;
+  const res = S.res ? (() => { const ok = S.res.filter(r => r.ok).length, sc = Math.round(ok / K.length * 100);
+    return `<div class="wc-res"><div class="wc-score ${sc >= 80 ? 'good' : sc >= 60 ? 'mid' : 'low'}"><b>${sc}</b><small>ציון</small></div><div class="wc-sum"><b>${ok} מתוך ${K.length} נכונות</b>${S.note ? `<p>${esc(S.note)}</p>` : ''}</div></div>
+    <ul class="wc-list">${K.map(([s, n, t, a], i) => { const r = S.res[i] || {}; return `<li class="${r.ok ? 'ok' : 'no'}"><span class="wc-ic">${r.ok ? '✓' : '✗'}</span><span class="en" dir="ltr">${s === 'Q' ? '' : WSEC[s] + ' '}${n}</span><span class="wc-a">${r.ok ? '' : `תשובה: <b class="en" dir="ltr">${esc(t === 'word' ? a.split('/')[0] : t === 'pick' ? a.replace(/\//g, ', ') : a + ')')}</b>`}${r.st && !r.ok ? ` <small>(כתבת: <span class="en" dir="ltr">${esc(r.st)}</span>)</small>` : ''}</span></li>`; }).join('')}</ul>
+    <button class="btn sm ghost" data-act="wcreset" data-id="${id}">בדיקה חדשה</button>`; })() : '';
+  if (S.res) return `<section class="block card wcheck"><h2 class="h2">בדיקת דף העבודה</h2>${res}</section>`;
+  if (SAMPLE_IMG) return `<section class="block card wcheck"><h2 class="h2">בדיקת דף העבודה</h2>${steps}
+    <label class="wc-drop"><input type="file" accept="image/*,application/pdf" multiple data-wcfile="${id}"><span class="wc-dic">📷</span><b>${S.files.length ? `${S.files.length} ${S.files.length === 1 ? 'קובץ נבחר' : 'קבצים נבחרו'}` : 'העלאת צילום או PDF'}</b><small>אפשר כמה עמודים</small></label>
+    ${S.err ? `<p class="wc-err">${esc(S.err)}</p>` : ''}
+    <button class="btn" data-act="wcgo" data-id="${id}" ${!S.files.length || S.busy ? 'disabled' : ''}>${S.busy ? 'בודקת…' : 'בדיקה וציון'}</button></section>`;
+  return `<section class="block card wcheck"><h2 class="h2">בדיקת דף העבודה</h2>${steps}
+    <ul class="wc-self">${K.map(([s, n, t, a, x], i) => `<li><span class="en wc-n" dir="ltr">${s === 'Q' ? '' : s + ' '}${n}</span>${t === 'mc' ? `<span class="wc-ab">${(s === 'V' ? 'abcd' : 'abc').split('').map(l => `<button class="en ${S.self[i] === l ? 'on' : ''}" data-act="wcself" data-id="${id}" data-i="${i}" data-l="${l}">${l}</button>`).join('')}</span>` : `<input class="en" dir="ltr" data-wcin="${id}:${i}" value="${esc(S.self[i] || '')}" placeholder="${t === 'pick' ? 'word, word' : 'word'}">`}</li>`).join('')}</ul>
+    <button class="btn" data-act="wcselfgo" data-id="${id}">בדיקה וציון</button></section>`;
+}
+let PDFJS = null;
+function loadPdfJs() {
+  if (PDFJS) return PDFJS;
+  PDFJS = new Promise((ok, bad) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'; s.onload = () => { try { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; ok(window.pdfjsLib); } catch (e) { bad(e); } }; s.onerror = bad; document.head.appendChild(s); });
+  return PDFJS;
+}
+async function pdfToImages(file) {
+  const lib = await loadPdfJs(), doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise, out = [];
+  for (let i = 1; i <= Math.min(doc.numPages, 4); i++) {
+    const pg = await doc.getPage(i), vp = pg.getViewport({ scale: 1.6 }), c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+    await pg.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    out.push(await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85)));
+  }
+  return out;
+}
+const wnorm = s => String(s || '').toLowerCase().replace(/[^a-z, ]/g, '').trim();
+function wcMark(K, st) {
+  return K.map(([s, n, t, a], i) => { const v = wnorm(st[i]);
+    if (t === 'mc') return { ok: v === a, st: st[i] || '' };
+    if (t === 'word') return { ok: a.split('/').includes(v), st: st[i] || '' };
+    const want = a.split('/'), got = v.split(/[ ,]+/).filter(Boolean); return { ok: got.length === want.length && got.every(g => want.includes(g)), st: st[i] || '' }; });
+}
+function wcSave(id, S, K) { const ok = S.res.filter(r => r.ok).length; const r = pasRecSafe(id); if (r) { r.ws = Math.max(r.ws || 0, ok / K.length); save(); } }
+const pasRecSafe = id => { try { P.wsheet = P.wsheet || {}; return P.wsheet[id] || (P.wsheet[id] = {}); } catch (e) { return null; } };
+async function wcGo(id) {
+  const S = wcState(id), K = WKEY[id]; if (!S.files.length || S.busy) return;
+  S.busy = true; S.err = ''; render();
+  try {
+    let imgs = [];
+    for (const f of S.files) { if (/pdf/i.test(f.type) || /\.pdf$/i.test(f.name)) imgs.push(...await pdfToImages(f)); else imgs.push(f); }
+    const lim = await SAMPLE.limits().catch(() => null), max = (lim && lim.images && lim.images.maxCount) || 4; imgs = imgs.slice(0, max);
+    const key = K.map(([s, n, t, a]) => `${WSEC[s]} ${n}: ${t === 'mc' ? 'circled letter ' + a : t === 'word' ? 'written word, accept any of: ' + a : 'written/circled words, correct set: ' + a}`).join('\n');
+    const prompt = `The images are photos or scans of ONE printed English worksheet that a student filled in by hand (they circled a letter a/b/c/d or wrote a word on a line). Read only what the STUDENT marked or wrote, item by item, using the numbered items on the sheet.\nItems (section and number) and the answer key:\n${key}\n\nReturn JSON only: {"items":[{"s":"<section letter>","n":<number>,"student":"<what the student marked or wrote, '' if blank or unreadable>"}], "note":"<one short encouraging sentence in Hebrew, feminine form, max 14 words>"} with one entry per item, in the same order. Section letters: ${[...new Set(K.map(k => k[0]))].map(x => x + '=' + WSEC[x]).join(', ')}. Do not grade; just transcribe the student's answers (letters lowercase).`;
+    const data = await SAMPLE.json(prompt, { images: imgs, cache: false });
+    const items = (data && data.items) || [], st = K.map(([s, n]) => { const it = items.find(x => String(x.s).toUpperCase() === s && +x.n === n); return it ? it.student : ''; });
+    S.res = wcMark(K, st); S.note = data && data.note || ''; S.files = []; wcSave(id, S, K);
+    SFX.play(S.res.filter(r => r.ok).length / K.length >= 0.8 ? 'win' : 'ok');
+  } catch (e) { S.err = e && e.code === 'not_granted' ? 'כדי לבדוק צריך לאשר את השימוש ב־Claude.' : e && e.code === 'rate_limited' ? 'יותר מדי בדיקות. נסי שוב בעוד דקה.' : 'לא הצלחתי לקרוא את הקובץ. נסי צילום ברור יותר, ישר ומואר.'; }
+  S.busy = false; render();
+}
 
 /* ===================== RENDER & EVENTS ===================== */
 let SHEET = null, timerH = null; const OPEN = new Set(); let PANEL = null;
@@ -8631,6 +8717,10 @@ Object.assign(ACT, {
   dtnext: () => { V.st = Math.min(TSTEPS.length - 1, (V.st || 0) + 1); V.tpick = null; P.dict.tech.seen = true; if (P.dict.tech.st === 'nt') P.dict.tech.st = 'learn'; save(); render(true); },
   dtprev: () => { V.st = Math.max(0, (V.st || 0) - 1); V.tpick = null; render(true); },
   dsearch: () => { const i = document.getElementById('dsearch'); V.dq = i ? i.value : ''; render(); const r = dlookup(V.dq); if (r && r.keys) TTS.say(hw(r.keys[0])); },
+  wcgo: el => wcGo(el.dataset.id),
+  wcreset: el => { WC[el.dataset.id] = null; render(); },
+  wcself: el => { const S = wcState(el.dataset.id); S.self[el.dataset.i] = el.dataset.l; render(); },
+  wcselfgo: el => { const id = el.dataset.id, S = wcState(id), K = WKEY[id]; document.querySelectorAll(`[data-wcin^="${id}:"]`).forEach(x => { S.self[x.dataset.wcin.split(':')[1]] = x.value; }); S.res = wcMark(K, K.map((_, i) => S.self[i] || '')); S.note = ''; wcSave(id, S, K); SFX.play(S.res.filter(r => r.ok).length / K.length >= 0.8 ? 'win' : 'ok'); render(); },
   dmore: el => { V.dmore = V.dmore || {}; V.dmore[el.dataset.i] = !V.dmore[el.dataset.i]; render(); },
   dpickw: el => { V.dq = el.dataset.w; render(); const r = dlookup(V.dq); if (r && r.keys) TTS.say(hw(r.keys[0])); },
   dpart: el => { V.part = V.part === el.dataset.p ? null : el.dataset.p; render(); },
@@ -8660,9 +8750,11 @@ function boot() {
   });
   document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.keep) { if (d.open) OPEN.add(d.dataset.keep); else OPEN.delete(d.dataset.keep); } }, true);
   document.addEventListener('input', e => {
+    if (e.target && e.target.dataset && e.target.dataset.wcin) { const [id, i] = e.target.dataset.wcin.split(':'); wcState(id).self[i] = e.target.value; }
     if (e.target && e.target.id === 'dsearch') { const box = document.getElementById('dsug'); if (box) box.innerHTML = dsug(e.target.value).map(k => `<button class="chipbtn en" data-act="dpickw" data-w="${k}">${k}</button>`).join(''); }
   });
   document.addEventListener('change', e => {
+    if (e.target && e.target.dataset && e.target.dataset.wcfile) { const S = wcState(e.target.dataset.wcfile); S.files = [...e.target.files].slice(0, 4); S.err = ''; render(); return; }
     if (e.target && e.target.id === 'voicesel') {
       const v = (TTS.list || []).find(x => x.name === e.target.value);
       if (v) { TTS.voice = v; try { localStorage.setItem(KEY + '-voice', v.name); } catch (_) { } TTS.say('The main idea of the text is clear.'); }
