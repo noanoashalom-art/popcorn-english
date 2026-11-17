@@ -708,6 +708,7 @@ i.lg.ac{background:var(--pink)}
 @keyframes idle{50%{transform:translateY(-5px)}}
 .lv-head{align-items:center}
 .lv-t h3{margin:0}
+.lv-jlink{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:6px;padding:5px 12px;border-radius:999px;border:1.5px dashed color-mix(in srgb,var(--pl,#68489A) 45%,transparent);background:transparent;color:var(--pl,#68489A);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}.lv-jlink svg{width:15px;height:15px}
 .lv-jump{justify-content:center;background:none;padding:0}
 .lv-jump .btn svg{width:16px;height:16px}
 .jump-l{list-style:none;padding:0;margin:14px auto;display:grid;gap:10px;max-width:420px;text-align:start}.jump-l li{display:flex;gap:10px;align-items:baseline;background:var(--surface);border-radius:12px;padding:10px 12px}.jump-l b{flex:0 0 52px;color:var(--pl,#68489A);font-size:1.1rem;text-align:center}
@@ -8032,11 +8033,12 @@ function pathHtml() {
   const info = pathInfo(), cur = info.cur, ck = cur ? cur.k : LV.length;
   return info.lv.map(L => {
     const name = LV[L.k].name, isCur = L.k === ck, past = L.k < ck;
-    const head = `<div class="lv-head"><div class="lv-t"><h3>${L.k + 1}. ${esc(name)}</h3></div>
+    const jump = isCur && L.total - L.fin >= 4 ? `<button class="lv-jlink" data-act="pjump" data-k="${L.k}"><span>« לדלג על כל שלב ${L.k + 1}</span></button>` : '';
+    const head = `<div class="lv-head"><div class="lv-t"><h3>שלב ${L.k + 1}: ${esc(name)}</h3>${jump}</div>
       <div class="lv-p">${past ? `<span class="lv-crown">${PIC.crown}</span>` : !isCur ? `<span class="lv-lock">${PIC.lock}</span>` : ''}<b class="en">${L.fin}/${L.total}</b></div></div>${bar(L.fin / L.total)}`;
     if (past) return `<details class="lv done lv${L.k % 3}"><summary>${head}</summary>${levelMap(L, null)}</details>`;
     if (!isCur) return `<div class="lv locked lv${L.k % 3}">${head}</div>`;
-    return `<div class="lv now lv${L.k % 3}">${head}${L.total - L.fin >= 4 ? `<div class="lv-jump"><button class="btn sm ghost" data-act="pjump" data-k="${L.k}">${PIC.flag}<span>כבר יודעת את החומר? לדלג על השלב</span></button></div>` : ''}${levelMap(L, cur)}</div>`;
+    return `<div class="lv now lv${L.k % 3}">${head}${levelMap(L, cur)}</div>`;
   }).join('') + (!cur ? `<div class="card donecard">${OWL('cheer')}<h3 class="h2">סיימת את כל המסלול!</h3></div>` : '');
 }
 function nodeSheet() {
