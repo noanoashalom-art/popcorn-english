@@ -1013,6 +1013,16 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .vn-pop{font-size:2rem;line-height:1;flex:none;animation:pop .4s ease-out}
 .vn-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.vn-t p{margin:0;color:var(--ink);font-size:.93rem;line-height:1.5}.vn-t .btns{justify-content:flex-start;margin-top:4px}
 .vstart{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.vstart .h2{margin:2px 0}.vstart p{margin:0}
+.qcard.tq{position:relative;background:linear-gradient(160deg,var(--lav),color-mix(in srgb,var(--lav) 55%,var(--surface)));border:2px solid color-mix(in srgb,var(--plum) 30%,var(--line));padding-top:30px}
+.qcard.tq .prompt{font-size:1.15rem;font-weight:600;color:var(--ink)}
+.tq-badge{position:absolute;top:-16px;inset-inline-start:50%;transform:translateX(50%);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--plum);color:var(--on-plum,#FFFFFF);font-weight:700;font-size:1.1rem;box-shadow:0 3px 8px rgba(60,40,100,.25)}
+.tq-hint{margin:2px 4px -2px;font-size:.88rem;color:var(--muted);text-align:start}
+.tq-opts{grid-template-columns:1fr !important}
+.tq-opts .opt{display:flex;align-items:center;gap:12px;text-align:start;justify-content:flex-start;min-height:54px;border-style:solid;box-shadow:0 2px 0 var(--line)}
+.tq-opts .opt .tq-t{flex:1;min-width:0}
+.tq-l{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:.95rem;background:var(--lav);color:var(--plum);border:1.5px solid color-mix(in srgb,var(--plum) 35%,var(--line))}
+.tq-opts .opt.right .tq-l{background:var(--good);color:#FFFFFF;border-color:var(--good)}
+.tq-opts .opt.wrong .tq-l{background:var(--bad);color:#FFFFFF;border-color:var(--bad)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -7238,7 +7248,8 @@ VIEWS.quiz = () => {
   return top + (q.ctxFn ? `<section class="block ctx">${q.ctxFn()}</section>` : q.ctx ? `<section class="block ctx">${q.ctx}</section>` : '') + `<section class="block ${q.ctxFn || q.ctx ? 'withctx' : ''}">${body}</section>`;
 };
 function qView(q, o) {
-  let h = `<div class="card qcard"><p class="prompt">${q.prompt}</p>`;
+  const tq = q.t !== 'aud' && !q.big && !q.bigHe && !q.listen && !q.audio && !q.speed;
+  let h = `<div class="card qcard ${tq ? 'tq' : ''}">${tq ? '<span class="tq-badge" aria-hidden="true">?</span>' : ''}<p class="prompt">${q.prompt}</p>`;
   if (q.listen) h += `<div class="listen-pad"><button class="spk xl" data-act="say" data-t="${esc(q.audio)}" aria-label="השמעה">${I.spk}</button>${spkSlow(q.audio)}</div>`;
   if (q.big) h += `<div class="${bigCls('x'.repeat(q.bigLen || 6))} ${q.flash ? 'flash' : ''}" ${q.flash ? 'id="flashw"' : ''}>${q.big}</div>`;
   if (q.flash && !q.answered) h += `<button class="link small" data-act="reflash">הראי שוב</button>`;
@@ -7253,7 +7264,7 @@ h += `<div class="aopts">${q.opts.map((w, j) => { const st = q.answered ? (j ===
   } else {
     const allEn = q.opts.every(x => x.html.includes('class="en'));
     const oa = allEn && q.optAudio !== false && !o.diag && !q.listen && !q.speed && !q.ctx && !q.ctxFn;
-    h += `<div class="opts ${allEn ? 'en-opts' : ''}">${q.opts.map((op, j) => { let c = 'opt'; if (q.answered) c += j === q.ans ? ' right' : j === q.sel ? ' wrong' : ' dim'; const b = `<button class="${c}" data-act="opt" data-i="${j}" ${q.answered ? 'aria-disabled="true"' : ''}>${op.html}</button>`; return oa ? `<div class="optw" data-hl>${b}<button class="ospk" data-act="say" data-t="${esc(op.v)}" aria-label="השמעת ${esc(op.v)}">${I.spk}</button></div>` : b; }).join('')}</div>`;
+    h += `${tq ? '<p class="tq-hint">בחרי תשובה אחת:</p>' : ''}<div class="opts ${allEn ? 'en-opts' : ''} ${tq ? 'tq-opts' : ''}">${q.opts.map((op, j) => { let c = 'opt'; if (q.answered) c += j === q.ans ? ' right' : j === q.sel ? ' wrong' : ' dim'; const b = `<button class="${c}" data-act="opt" data-i="${j}" ${q.answered ? 'aria-disabled="true"' : ''}>${tq ? `<span class="tq-l" aria-hidden="true">${'אבגדהו'[j]}</span>` : ''}<span class="tq-t">${op.html}</span></button>`; return oa ? `<div class="optw" data-hl>${b}<button class="ospk" data-act="say" data-t="${esc(op.v)}" aria-label="השמעת ${esc(op.v)}">${I.spk}</button></div>` : b; }).join('')}</div>`;
   }
   if (!q.answered) h += `<div class="dkrow"><button class="dk" data-act="opt" data-i="-1">אני לא יודעת</button></div>`;
   else if (o.feedback !== false) h += feedback(q);
