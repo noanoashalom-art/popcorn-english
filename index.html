@@ -710,6 +710,7 @@ i.lg.ac{background:var(--pink)}
 .lv-t h3{margin:0}
 .lv-jump{justify-content:center;background:none;padding:0}
 .lv-jump .btn svg{width:16px;height:16px}
+.jump-l{list-style:none;padding:0;margin:14px auto;display:grid;gap:10px;max-width:420px;text-align:start}.jump-l li{display:flex;gap:10px;align-items:baseline;background:var(--surface);border-radius:12px;padding:10px 12px}.jump-l b{flex:0 0 52px;color:var(--pl,#68489A);font-size:1.1rem;text-align:center}
 /* games: icon tiles + level sheet */
 .gtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
 .gtile{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow);transition:transform .12s}
@@ -7975,9 +7976,14 @@ function startNode(n, quick) {
   else if (n.t === 'rv') startQuiz(arraySrc(rvQs(n)), o('חזרה: צלילים ומילים'));
   else startQuiz(arraySrc(bossQs(n.k)), o('בוחן סוף שלב ' + (n.k + 1)));
 }
+VIEWS.jumpinfo = () => { const k = V.k, L = LV[k];
+  return `<section class="block card intro diagstart">${OWL('cheer')}<span class="eyebrow">בוחן דילוג</span><h1 class="h1">לדלג על שלב ${k + 1}: ${esc(L.name)}</h1>
+    <p>אם את כבר מכירה את החומר של השלב, אפשר לבדוק את זה בבוחן קצר ולעבור הלאה.</p>
+    <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים שכיחות, אוצר מילים אקדמי ומילון</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
+    <div class="btns center"><button class="btn big-btn" data-act="pjumpgo" data-k="${k}">${I.play}<span>להתחיל את הבוחן</span></button><button class="btn ghost" data-act="go" data-v="home">חזרה למסלול</button></div></section>`; };
 function startJump(k) {
   PN = { key: 'jump:' + k, tag: 'jump:' + k, thr: 0.9 };
-  startQuiz(arraySrc(bossQs(k)), { kind: 'mixed', title: 'בוחן דילוג: שלב ' + (k + 1), tag: 'jump:' + k, back: { name: 'home', scrollPath: true } });
+  startQuiz(arraySrc(bossQs(k)), { kind: 'mixed', title: 'בוחן דילוג: שלב ' + (k + 1) + ' · ' + LV[k].name, tag: 'jump:' + k, back: { name: 'home', scrollPath: true } });
 }
 function markNode(key) {
   ensurePath();
@@ -8030,7 +8036,7 @@ function pathHtml() {
       <div class="lv-p">${past ? `<span class="lv-crown">${PIC.crown}</span>` : !isCur ? `<span class="lv-lock">${PIC.lock}</span>` : ''}<b class="en">${L.fin}/${L.total}</b></div></div>${bar(L.fin / L.total)}`;
     if (past) return `<details class="lv done lv${L.k % 3}"><summary>${head}</summary>${levelMap(L, null)}</details>`;
     if (!isCur) return `<div class="lv locked lv${L.k % 3}">${head}</div>`;
-    return `<div class="lv now lv${L.k % 3}">${head}${L.total - L.fin >= 4 ? `<div class="lv-jump"><button class="btn sm ghost" data-act="pjump" data-k="${L.k}">${PIC.flag}<span>בוחן דילוג</span></button></div>` : ''}${levelMap(L, cur)}</div>`;
+    return `<div class="lv now lv${L.k % 3}">${head}${L.total - L.fin >= 4 ? `<div class="lv-jump"><button class="btn sm ghost" data-act="pjump" data-k="${L.k}">${PIC.flag}<span>כבר יודעת את החומר? לדלג על השלב</span></button></div>` : ''}${levelMap(L, cur)}</div>`;
   }).join('') + (!cur ? `<div class="card donecard">${OWL('cheer')}<h3 class="h2">סיימת את כל המסלול!</h3></div>` : '');
 }
 function nodeSheet() {
@@ -8688,7 +8694,8 @@ const ACT = {
   pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key) && !nodeOpen(n, cur)) { toast(n.t === 'boss' ? 'הבוחן נפתח אחרי כל הצעדים בשלב' : 'הצעד הזה ייפתח בשלב הבא'); return; } SFX.play('tap'); NS = n.key; render(); },
   pstart: () => { const n = findNode(NS); NS = null; startNode(n, false); },
   pquick: () => { const n = findNode(NS); NS = null; startNode(n, true); },
-  pjump: el => startJump(+el.dataset.k),
+  pjump: el => go('jumpinfo', { k: +el.dataset.k }),
+  pjumpgo: el => startJump(+el.dataset.k),
   fpick: el => { const q = Q && Q.q; if (!q || q.answered || q.t !== 'find') return; q.sel = el.dataset.w; render(); },
   fcheck: () => { const q = Q.q; if (q.t === 'find' && q.sel) answerCustom(q.find.includes(q.sel)); },
   fdk: () => { const q = Q.q; dkAdd(dkKey(q)); if (q.t === 'find') q.sel = null; answerCustom(false); },
