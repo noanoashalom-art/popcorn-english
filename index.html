@@ -1023,6 +1023,22 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .tq-l{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:.95rem;background:var(--lav);color:var(--plum);border:1.5px solid color-mix(in srgb,var(--plum) 35%,var(--line))}
 .tq-opts .opt.right .tq-l{background:var(--good);color:#FFFFFF;border-color:var(--good)}
 .tq-opts .opt.wrong .tq-l{background:var(--bad);color:#FFFFFF;border-color:var(--bad)}
+.dbank{background:var(--lav);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;text-align:start}
+.dbank b{font-size:.95rem}.dbank p{margin:0;color:var(--muted)}
+.dbank-w{display:flex;flex-wrap:wrap;gap:8px}
+.dbw{font:inherit;font-size:1.05rem;font-weight:600;padding:8px 14px;border-radius:999px;border:2px solid color-mix(in srgb,var(--plum) 35%,var(--line));background:var(--surface);color:var(--plum);cursor:pointer}
+.dbw.on{background:var(--plum);color:var(--on-plum,#FFFFFF)}.dbw.sm{font-size:.9rem;padding:4px 10px;font-weight:500}
+.dmore{display:flex;flex-direction:column;gap:12px;text-align:start;border:2px solid color-mix(in srgb,var(--plum) 25%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--pb1) 55%,var(--surface)),var(--surface) 60%)}
+.dm-head{display:flex;gap:12px;align-items:flex-start}.dm-ic{font-size:1.8rem;line-height:1}.dm-head p{margin:4px 0 0;color:var(--muted);font-size:.93rem}
+.dm-links{display:flex;gap:8px;flex-wrap:wrap}.dm-links a{text-decoration:none}
+.dm-t{font-size:1rem;margin:4px 0 0}
+.dm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.dm-grid ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.dm-grid li{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.dm-grid li b{color:var(--plum)}.dm-grid li span{font-size:.88rem;color:var(--muted)}
+.dm-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.dmw{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 8px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.dmw span{font-weight:600}.dmw small{color:var(--muted);font-size:.8rem}.dmw.on{background:var(--good-bg);border-color:var(--good)}.dmw.on small{color:var(--good)}
 /* fun layer */
 .starchip{display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-family:var(--f-en);font-weight:600;font-size:.9rem}
 .starchip svg{width:16px;height:16px;color:#F2B544}
@@ -7672,6 +7688,19 @@ VIEWS.dict = () => {
   <section class="block"><div class="dsteps">${dTile('tech', 1, 'איך משתמשים במילון', P.dict.tech.st, 'dtech', nx === 'tech')}${DORDER.map((id, i) => dTile(id, i + 2, DLM[id].short, P.dict[id].st, 'dles', id === nx)).join('')}</div></section>
   <section class="block"><details class="known dextra"><summary>בונוס: מעברית לאנגלית</summary><div class="dsteps">${DEXTRA.map(id => dTile(id, '+', DLM[id].short, P.dict[id].st, 'dles', false)).join('')}</div></details></section>`;
 };
+const AFFIX = [['-s / -es', 'books → book · boxes → box'], ['-ies → -y', 'studies → study'], ['-ed', 'worked → work · decided → decide'], ['-ing', 'making → make · running → run'], ['-er / -est', 'bigger → big · easiest → easy'], ['-ly', 'quickly → quick'], ['-ness', 'kindness → kind'], ['-ment', 'development → develop'], ['-ful / -less', 'helpful → help · useless → use']];
+const PREFIX = [['un-', 'unhappy → happy'], ['re-', 'rewrite → write'], ['dis-', 'dislike → like'], ['im- / in-', 'impossible → possible'], ['mis-', 'misunderstand → understand']];
+const DMORE = [['researchers', 'research', 'מחקר; לחקור'], ['studies', 'study', 'מחקר; ללמוד'], ['carefully', 'careful', 'זהיר'], ['unhappiness', 'happy', 'שמח'], ['rebuilding', 'build', 'לבנות'], ['disagreement', 'agree', 'להסכים'], ['impossible', 'possible', 'אפשרי'], ['misunderstood', 'understand', 'להבין'], ['employment', 'employ', 'להעסיק'], ['unemployed', 'employ', 'להעסיק'], ['improvements', 'improve', 'לשפר'], ['decreased', 'decrease', 'לרדת; להפחית'], ['communities', 'community', 'קהילה'], ['healthier', 'healthy', 'בריא'], ['relationships', 'relationship', 'מערכת יחסים'], ['rewritten', 'write', 'לכתוב'], ['uncomfortable', 'comfortable', 'נוח'], ['effectively', 'effective', 'יעיל'], ['unbelievable', 'believe', 'להאמין'], ['disappeared', 'appear', 'להופיע'], ['scientists', 'scientist', 'מדען'], ['developing', 'develop', 'לפתח'], ['usefulness', 'useful', 'שימושי'], ['illnesses', 'illness', 'מחלה']];
+function dMoreHtml() {
+  const open = V.dmore || {};
+  return `<div class="card dmore"><div class="dm-head"><span class="dm-ic" aria-hidden="true">📱</span><div><b>ממשיכות לתרגל במילון דיגיטלי אמיתי</b><p>כאן תרגלת על מילונית קטנה. עכשיו כדאי לחפש מילים נוספות במילון דיגיטלי, כמו במבחן. פתחי מילון בלשונית חדשה ונסי את המילים מהרשימה.</p></div></div>
+    <div class="dm-links"><a class="btn sm" href="https://www.morfix.co.il" target="_blank" rel="noopener">מורפיקס</a><a class="btn sm ghost" href="https://dictionary.cambridge.org/dictionary/english-hebrew/" target="_blank" rel="noopener">Cambridge אנגלית־עברית</a></div>
+    <h3 class="dm-t">לא מוצאת? מורידים את הסיומת או את התחילית</h3>
+    <div class="dm-grid"><div><span class="eyebrow">סיומות</span><ul>${AFFIX.map(([a, ex]) => `<li><b class="en" dir="ltr">${a}</b><span class="en" dir="ltr">${ex}</span></li>`).join('')}</ul></div>
+    <div><span class="eyebrow">תחיליות</span><ul>${PREFIX.map(([a, ex]) => `<li><b class="en" dir="ltr">${a}</b><span class="en" dir="ltr">${ex}</span></li>`).join('')}</ul><p class="muted small">שימי לב: תחילית משנה את המשמעות. <span class="en" dir="ltr">unhappy</span> = לא שמח.</p></div></div>
+    <h3 class="dm-t">רשימת מילים לתרגול נוסף</h3><p class="muted small">חפשי כל מילה במילון הדיגיטלי. מה מילת המקור? לחצי על המילה כדי לבדוק.</p>
+    <div class="dm-words">${DMORE.map(([w, b, he], i) => `<button class="dmw ${open[i] ? 'on' : ''}" data-act="dmore" data-i="${i}"><span class="en" dir="ltr">${w}</span>${open[i] ? `<small><span class="en" dir="ltr">→ ${b}</span> · ${he}</small>` : '<small>?</small>'}</button>`).join('')}</div></div>`;
+}
 const TSTEPS = ['חיפוש מילה', 'קריאת ערך', 'כמה ערכים', 'לפי ההקשר'];
 VIEWS.dtech = () => {
   ensureDict(); const s = V.st || 0;
@@ -7683,10 +7712,13 @@ VIEWS.dtech = () => {
     const r = dlookup(V.dq);
     body = `<div class="card dcard"><p class="rule-d">כותבים את המילה באנגלית ומקבלים פירוש בעברית.</p>
       <p class="muted">לא נמצא? מורידים את הסיומת: <span class="en" dir="ltr">conditions → condition</span></p>
-      <div class="dsearch" dir="ltr"><input id="dsearch" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type a word…" value="${esc(V.dq || '')}" lang="en"><button class="btn sm" data-act="dsearch">Search</button></div>
+      <div class="dbank"><b>במילונית התרגול יש ${DKEYS.length} מילים בלבד. בחרי מילה מהרשימה או הקלידי אותה:</b>
+        <div class="dbank-w" dir="ltr">${DKEYS.map(k => `<button class="dbw en ${V.dq && V.dq.toLowerCase() === k ? 'on' : ''}" data-act="dpickw" data-w="${k}">${k}</button>`).join('')}</div>
+        <p class="small">נסי גם מילה עם סיומת: ${['conditions', 'studies', 'running', 'increased'].map(k => `<button class="dbw sm en" data-act="dpickw" data-w="${k}">${k}</button>`).join(' ')}</p></div>
+      <div class="dsearch" dir="ltr"><input id="dsearch" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type a word from the list…" value="${esc(V.dq || '')}" lang="en"><button class="btn sm" data-act="dsearch">Search</button></div>
       <div id="dsug" class="dsug" dir="ltr">${dsug(V.dq).map(k => `<button class="chipbtn en" data-act="dpickw" data-w="${k}">${k}</button>`).join('')}</div>
-      <p class="muted small">נסי: ${['condition', 'conditions', 'studies', 'light'].map(k => `<button class="link en" data-act="dpickw" data-w="${k}">${k}</button>`).join(' · ')}</p>
-      ${r ? r.keys ? r.keys.map(k => entryHtml(k)).join('') : r.sug ? `<div class="dmsg">לא נמצא. נסי: <button class="link en" data-act="dpickw" data-w="${r.sug}">${r.sug}</button></div>` : `<div class="dmsg">לא נמצא. בדקי את האיות.</div>` : ''}</div>`;
+      ${r ? r.keys ? r.keys.map(k => entryHtml(k)).join('') : r.sug ? `<div class="dmsg">לא נמצא. נסי: <button class="link en" data-act="dpickw" data-w="${r.sug}">${r.sug}</button></div>` : `<div class="dmsg">המילה לא נמצאת במילונית התרגול. בחרי מילה מהרשימה למעלה.</div>` : ''}</div>
+      ${dMoreHtml()}`;
   } else if (s === 1) {
     const parts = [['head', 'המילה'], ['pos', 'חלק דיבר'], ['mean', 'פירוש'], ['ex', 'משפט לדוגמה']];
     body = `<div class="card dcard"><p class="rule-d">לחצי על כל חלק כדי לראות איפה הוא בערך.</p><div class="chips">${parts.map(([k, l]) => `<button class="chipbtn ${V.part === k ? 'on' : ''}" data-act="dpart" data-p="${k}">${l}</button>`).join('')}</div>
@@ -8599,6 +8631,7 @@ Object.assign(ACT, {
   dtnext: () => { V.st = Math.min(TSTEPS.length - 1, (V.st || 0) + 1); V.tpick = null; P.dict.tech.seen = true; if (P.dict.tech.st === 'nt') P.dict.tech.st = 'learn'; save(); render(true); },
   dtprev: () => { V.st = Math.max(0, (V.st || 0) - 1); V.tpick = null; render(true); },
   dsearch: () => { const i = document.getElementById('dsearch'); V.dq = i ? i.value : ''; render(); const r = dlookup(V.dq); if (r && r.keys) TTS.say(hw(r.keys[0])); },
+  dmore: el => { V.dmore = V.dmore || {}; V.dmore[el.dataset.i] = !V.dmore[el.dataset.i]; render(); },
   dpickw: el => { V.dq = el.dataset.w; render(); const r = dlookup(V.dq); if (r && r.keys) TTS.say(hw(r.keys[0])); },
   dpart: el => { V.part = V.part === el.dataset.p ? null : el.dataset.p; render(); },
   dpk: el => { const L = DLM[V.id]; V.dpk = +el.dataset.i; render(); if (L && L.demo && V.dpk === L.demo[2]) { SFX.play('ok'); confetti(12); } else SFX.play('bad'); },
