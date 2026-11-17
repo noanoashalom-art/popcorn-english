@@ -5769,7 +5769,9 @@ function bandMatch(ws) { return { t: 'match', pairs: ws.map(w => ({ en: w.en, he
 function bandSetQs(bid, si) {
   const ws = BANDS[bid - 1].sets[si], qs = [];
   ws.forEach(w => { qs.push(qBand(w, rnd(['meaning', 'ctxmean']), ws)); qs.push(qBand(w, w.mark ? 'cloze' : rnd(['reverse', 'listen']), ws)); });
-  const out = shuf(qs); out.splice(Math.floor(out.length / 2), 0, bandMatch(sample(ws, Math.min(5, ws.length))));
+  const out = shuf(qs), mw = shuf(ws.slice()), half = Math.ceil(mw.length / 2);
+  out.splice(0, 0, bandMatch(mw.slice(0, half)));
+  if (mw.length - half >= 3) out.splice(Math.floor(out.length / 2), 0, bandMatch(mw.slice(half)));
   out.push(...sample(ws, 3).map(w => qBand(w, rnd(['reverse', 'listen']), ws)));
   return out;
 }
@@ -7361,9 +7363,9 @@ function feedback(q) {
   return `<div class="feedback">${f}${extra}<div class="autobar" aria-hidden="true"><span></span></div></div>`;
 }
 function matchView(q) {
-  const L = q.L.map(i => { const p = q.pairs[i], d = q.done.includes(i); return `<button class="mt ${d ? 'done' : ''} ${q.selL === i ? 'sel' : ''}" data-act="mpick" data-side="L" data-i="${i}" ${d ? 'disabled' : ''}><span class="mt-spk">${I.spk}</span>${en(p.en)}</button>`; }).join('');
-  const R = q.R.map(i => { const p = q.pairs[i], d = q.done.includes(i); return `<button class="mt he ${d ? 'done' : ''} ${q.shake === i ? 'shake' : ''}" data-act="mpick" data-side="R" data-i="${i}" ${d ? 'disabled' : ''}>${esc(p.he)}</button>`; }).join('');
-  return `<div class="card qcard"><p class="prompt">התאימי כל מילה לפירוש שלה</p></div>
+  const L = q.L.map(i => { const p = q.pairs[i], d = q.done.includes(i); return `<button class="mt ${d ? 'done' : ''} ${q.selL === i ? 'sel' : ''} ${q.shakeL === i ? 'shake' : ''}" data-act="mpick" data-side="L" data-i="${i}" ${d ? 'disabled' : ''}><span class="mt-spk">${I.spk}</span>${en(p.en)}</button>`; }).join('');
+  const R = q.R.map(i => { const p = q.pairs[i], d = q.done.includes(i); return `<button class="mt he ${d ? 'done' : ''} ${q.selR === i ? 'sel' : ''} ${q.shake === i ? 'shake' : ''}" data-act="mpick" data-side="R" data-i="${i}" ${d ? 'disabled' : ''}>${esc(p.he)}</button>`; }).join('');
+  return `<div class="card qcard"><p class="prompt">התאימי כל מילה לפירוש שלה</p><p class="muted small">אפשר להתחיל מהמילה או מהפירוש</p></div>
     <div class="match"><div class="mcol">${L}</div><div class="mcol">${R}</div></div>
     ${q.answered ? `<div class="feedback"><div class="fb ${q.ok ? 'good' : 'bad'}">${q.ok ? I.check + '<b>כל ההתאמות נכונות</b>' : `<b>סיימת.</b> <span>${q.miss.length} התאמות דרשו ניסיון נוסף.</span>`}</div><div class="autobar" aria-hidden="true"><span></span></div></div>` : ''}`;
 }
@@ -8379,7 +8381,7 @@ const TOURS = {
   listen: [['.listen-pad .spk:not(.slowbtn), .audrow .spk:not(.slowbtn)', 'הקשיבי'], ['.slowbtn', 'לאט יותר'], ['.opts', 'בחרי תשובה']],
   speed: [['.qcard', 'המילה נעלמת מהר'], ['.opts', 'בחרי מהר']],
   ctx: [['.ctx', 'הטקסט'], ['.qcard', 'השאלה'], ['.opts', 'בחרי תשובה']],
-  match: [['.mt:not(.he)', 'מילה באנגלית'], ['.mt.he', 'ואז הפירוש']],
+  match: [['.mt:not(.he)', 'מילה באנגלית'], ['.mt.he', 'והפירוש. אפשר להתחיל מכל צד']],
   multi: [['.dw-say', 'הקשיבי'], ['.dw-pick', 'סמני'], ['[data-act=dcheck]', 'בדיקה']],
   find: [['.ppar.focus, .pas', 'מצאי בפסקה'], ['[data-act=fcheck]', 'בדיקה']],
   pick: [['.pk-box, [data-act=ppick]', 'בחרי שתיים'], ['[data-act=pcheck]', 'בדיקה']],
@@ -8700,11 +8702,14 @@ const ACT = {
   pasv: el => startPasVocab(el.dataset.id),
   pasc: el => startPasComp(el.dataset.id),
   mpick: el => {
-    const q = Q.q, i = +el.dataset.i; if (q.answered) return;
-    if (el.dataset.side === 'L') { q.selL = i; q.shake = null; render(); if (!(Q.o && Q.o.area === 'band')) TTS.say(q.pairs[i].en, false, document.querySelector(`.mt[data-side="L"][data-i="${i}"]`)); return; }
-    if (q.selL == null) { toast('בחרי קודם מילה באנגלית'); return; }
-    if (q.selL === i) { q.done.push(i); const p = q.pairs[i]; const ok = !q.miss.includes(i); if (p.k) itemRec(p.k, ok); skillRec('mean', ok); q.selL = null; q.shake = null; SFX.play('match', q.done.length); confetti(8, false, LASTXY.x, LASTXY.y); }
-    else { if (!q.miss.includes(q.selL)) q.miss.push(q.selL); q.shake = i; SFX.play('bad'); }
+    const q = Q.q, i = +el.dataset.i, side = el.dataset.side; if (q.answered || q.done.includes(i)) return;
+    const sayIt = () => { if (!(Q.o && Q.o.area === 'band')) TTS.say(q.pairs[i].en, false, document.querySelector(`.mt[data-side="L"][data-i="${i}"]`)); };
+    const mine = side === 'L' ? 'selL' : 'selR', other = side === 'L' ? 'selR' : 'selL';
+    q.shake = null; q.shakeL = null;
+    if (q[other] == null) { q[mine] = q[mine] === i ? null : i; render(); if (side === 'L' && q.selL === i) sayIt(); return; }
+    const first = q[other];
+    if (first === i) { q.done.push(i); const p = q.pairs[i]; const ok = !q.miss.includes(i); if (p.k) itemRec(p.k, ok); skillRec('mean', ok); q.selL = q.selR = null; SFX.play('match', q.done.length); confetti(8, false, LASTXY.x, LASTXY.y); }
+    else { if (!q.miss.includes(first)) q.miss.push(first); if (side === 'R') q.shake = i; else q.shakeL = i; SFX.play('bad'); }
     if (q.done.length === q.pairs.length) { q.answered = true; q.ok = q.miss.length <= 1; if (q.ok) { Q.ok++; P.stars = (P.stars || 0) + 2; SFX.play('win'); setTimeout(() => confetti(24), 60); } save(); }
     render();
   },
