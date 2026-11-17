@@ -7483,14 +7483,13 @@ VIEWS.read = () => `<section class="block"><h1 class="h1">הספרייה</h1></s
   ${[1, 2, 3].map(l => `<section class="block"><h2 class="h2 shelf-t">${I.book}<span>רמה ${l}</span>${l === P.rlvl ? '<span class="chip lr">מומלץ לך</span>' : ''}</h2><div class="shelf">${TEXTS.filter(t => t.lvl === l).map(t => bookBtn('text', t.id, t.title, t.he, '', scoreBadge(P.reads[t.id]))).join('')}</div></section>`).join('')}`;
 const PRINT_BASE = 'https://noanoashalom-art.github.io/popcorn-english/print/';
 const PRINT_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>';
-const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn sm soft" data-act="printit" data-id="${id}">${PRINT_IC}<span>הדפסה</span></button>` : `<a class="btn sm soft" href="${PRINT_BASE}${id}.html?print" target="_blank" rel="noopener">${PRINT_IC}<span>הדפסה</span></a>`}<a class="btn sm ghost" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}.pdf" target="_blank" rel="noopener"><span>קובץ PDF</span></a><small class="muted">דף עבודה: הטקסט והשאלות</small></div>`;
+const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn sm soft" data-act="printit" data-id="${id}">${PRINT_IC}<span>הדפסה</span></button>` : `<a class="btn sm soft" href="${PRINT_BASE}${id}.html?print" target="_blank" rel="noopener">${PRINT_IC}<span>הדפסה</span></a>`}<a class="btn sm ghost" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}.pdf" target="_blank" rel="noopener"><span>קובץ PDF</span></a><a class="btn sm ghost keybtn" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}-key.html?print" target="_blank" rel="noopener">✓<span>דף תשובות</span></a><small class="muted">דף עבודה ודף תשובות להשוואה</small></div>`;
 VIEWS.text = () => {
   const T = TEXTS.find(t => t.id === V.id);
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><button class="btn sm soft" data-act="sayall">${I.spk}<span>השמעת הטקסט</span></button></div>${textBlock(T, true, V.tr)}</section>
   <section class="block card row-card"><div><b>${T.q.length} שאלות הבנה</b></div><button class="btn" data-act="rstart">לשאלות</button></section>
-  <section class="block">${printBar(T.id)}</section>
-  ${wcheckHtml(T.id)}`;
+  <section class="block">${printBar(T.id)}</section>`;
 };
 
 /* ===================== DICTIONARY SKILLS ===================== */
@@ -8199,8 +8198,7 @@ VIEWS.passage = () => {
     <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><span>לחצי על מילה לתרגום</span></div>${passageHtml(Pa, { audio: true })}</section>
   <section class="block card vstart"><div><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה</h2><p class="muted small">${Pa.qs.length} שאלות לפי פסקאות</p></div>
-    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>
-  ${wcheckHtml(Pa.id)}`;
+    <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>`;
 };
 
 /* ===================== Worksheet check: upload a photo / PDF of the printed worksheet ===================== */
@@ -8208,7 +8206,7 @@ const WKEY = {"t1": [["Q", 1, "mc", "a", "People learn new skills for different 
 const WSEC = { Q: 'Questions', V: 'Vocabulary', C: 'Comprehension' };
 const WC = {};
 let SAMPLE = null, SAMPLE_IMG = false;
-(async () => { try { if (window.claude && claude.use) { SAMPLE = await claude.use('sample'); if (SAMPLE) { const l = await SAMPLE.limits().catch(() => null); SAMPLE_IMG = !!(l && l.images); } } } catch (e) { SAMPLE = null; } if (P && (V.name === 'text' || V.name === 'passage')) render(); })();
+(async () => { return; try { if (window.claude && claude.use) { SAMPLE = await claude.use('sample'); if (SAMPLE) { const l = await SAMPLE.limits().catch(() => null); SAMPLE_IMG = !!(l && l.images); } } } catch (e) { SAMPLE = null; } if (P && (V.name === 'text' || V.name === 'passage')) render(); })();
 const wcState = id => WC[id] || (WC[id] = { files: [], busy: false, res: null, err: '', self: {} });
 function wcheckHtml(id) {
   const K = WKEY[id]; if (!K) return '';
