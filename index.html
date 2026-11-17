@@ -1005,6 +1005,9 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bc-mean .he-mean{margin:0}
 .bc-emo{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:2.4rem;line-height:1;background:linear-gradient(150deg,var(--pb3),var(--pb1));box-shadow:0 3px 10px rgba(60,40,100,.12);color:var(--plum)}
 .bc-emo svg{width:34px;height:34px}
+.paperdone .pd-score{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed #9FD8C0}
+.paperdone .pd-score label{display:flex;align-items:center;gap:8px;font-weight:600}
+.paperdone .pd-score input{width:64px;padding:8px;border:2px solid #9FD8C0;border-radius:10px;font:inherit;text-align:center;background:var(--card,#fff);color:inherit}
 .paperdone .btn{gap:8px}.paperdone .pd-ic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2C7A57;color:#fff;font-weight:800;font-size:14px}
 .paperdone .btn.ok{background:#2C7A57;color:#fff;border-color:#2C7A57}.paperdone .btn.ok .pd-ic{background:#fff;color:#2C7A57}.paperdone.on{border-color:#9FD8C0;background:#F1FAF5}
 .printbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.printbar svg{width:18px;height:18px}.printbar .btn{text-decoration:none}
@@ -7481,10 +7484,16 @@ VIEWS.read = () => `<section class="block"><h1 class="h1">הספרייה</h1></s
   ${(ensureDict(), dictProg() < 0.5) ? `<section class="block card row-card"><div><b>לפני הקריאה: מיומנויות מילון</b></div><button class="btn sm" data-act="go" data-v="dict">למילון</button></section>` : ''}
   <section class="block"><h2 class="h2 shelf-t">${PIC.doc}<span>קטעים אקדמיים</span></h2><div class="shelf">
     <button class="book" data-act="go" data-v="strat"><span class="cover">${cover('strat')}${P.stratSeen ? `<span class="ribbon ok">${I.check}</span>` : '<span class="ribbon new">התחילי כאן</span>'}</span><b class="bk-t en">Reading Strategies</b><small class="bk-he">אסטרטגיות קריאה</small></button>
-    ${PAS.map(Pa => { const r = (P.pas || {})[Pa.id]; return bookBtn('pas', Pa.id, Pa.title, Pa.he, `${Pa.paras.length} פסקאות`, paperDone(Pa.id) && !(r && r.cs >= 0.6) ? `<span class="ribbon ok">${I.check}</span>` : scoreBadge(r && r.cs)); }).join('')}</div></section>
-  ${[1, 2, 3].map(l => `<section class="block"><h2 class="h2 shelf-t">${I.book}<span>רמה ${l}</span>${l === P.rlvl ? '<span class="chip lr">מומלץ לך</span>' : ''}</h2><div class="shelf">${TEXTS.filter(t => t.lvl === l).map(t => bookBtn('text', t.id, t.title, t.he, '', paperDone(t.id) && !((P.reads[t.id] || 0) >= 0.6) ? `<span class="ribbon ok">${I.check}</span>` : scoreBadge(P.reads[t.id]))).join('')}</div></section>`).join('')}`;
-const paperDone = id => !!(P.paper && P.paper[id]);
-const paperCard = id => `<section class="block card row-card paperdone ${paperDone(id) ? 'on' : ''}"><div><b>${paperDone(id) ? 'סימנת שסיימת את דף העבודה' : 'פתרת על דף מודפס?'}</b><p class="muted small">${paperDone(id) ? 'הטקסט מסומן כבוצע' : 'בסיום ההשוואה לדף התשובות, סמני כאן'}</p></div><button class="btn ${paperDone(id) ? 'ok' : 'soft'}" data-act="paperdone" data-id="${id}" aria-pressed="${paperDone(id)}"><span class="pd-ic">✓</span><span>ביצעתי</span></button></section>`;
+    ${PAS.map(Pa => { const r = (P.pas || {})[Pa.id]; return bookBtn('pas', Pa.id, Pa.title, Pa.he, `${Pa.paras.length} פסקאות`, libBadge(Pa.id, r && r.cs != null ? r.cs : null)); }).join('')}</div></section>
+  ${[1, 2, 3].map(l => `<section class="block"><h2 class="h2 shelf-t">${I.book}<span>רמה ${l}</span>${l === P.rlvl ? '<span class="chip lr">מומלץ לך</span>' : ''}</h2><div class="shelf">${TEXTS.filter(t => t.lvl === l).map(t => bookBtn('text', t.id, t.title, t.he, '', libBadge(t.id, P.reads[t.id]))).join('')}</div></section>`).join('')}`;
+const paperRec = id => { const v = P.paper && P.paper[id]; return v == null ? null : typeof v === 'object' ? v : { t: v }; };
+const paperDone = id => !!paperRec(id);
+const paperN = id => (typeof WKEY !== 'undefined' && WKEY[id] || []).length;
+const bestScore = (id, site) => { const r = paperRec(id), ps = r && r.s != null ? r.s : null; return site == null ? ps : ps == null ? site : Math.max(site, ps); };
+const libBadge = (id, site) => { const s = bestScore(id, site); return s != null ? scoreBadge(s) : paperDone(id) ? `<span class="ribbon ok">${I.check}</span>` : ''; };
+const paperCard = id => { const r = paperRec(id), on = !!r, N = paperN(id), has = r && r.n != null;
+  return `<section class="block card paperdone ${on ? 'on' : ''}"><div class="row-card"><div><b>${on ? 'סימנת שסיימת את דף העבודה' : 'פתרת על דף מודפס?'}</b><p class="muted small">${on ? 'הטקסט מסומן כבוצע' : 'בסיום ההשוואה לדף התשובות, סמני כאן'}</p></div><button class="btn ${on ? 'ok' : 'soft'}" data-act="paperdone" data-id="${id}" aria-pressed="${on}"><span class="pd-ic">✓</span><span>ביצעתי</span></button></div>
+  ${on && N ? `<div class="pd-score"><label>כמה תשובות נכונות? <input type="number" inputmode="numeric" min="0" max="${N}" data-pdin="${id}" value="${has ? r.n : ''}" placeholder="0"> <span>מתוך ${N}</span></label><button class="btn sm" data-act="pdsave" data-id="${id}">${has ? 'עדכון ציון' : 'שמירת ציון'}</button>${has ? `<span class="chip ${r.s >= 0.6 ? 'ok' : 'lr'} en">${Math.round(r.s * 100)}%</span>` : ''}</div>` : ''}</section>`; };
 const PRINT_BASE = 'https://noanoashalom-art.github.io/popcorn-english/print/';
 const PRINT_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>';
 const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn sm soft" data-act="printit" data-id="${id}">${PRINT_IC}<span>הדפסה</span></button>` : `<a class="btn sm soft" href="${PRINT_BASE}${id}.html?print" target="_blank" rel="noopener">${PRINT_IC}<span>הדפסה</span></a>`}<a class="btn sm ghost" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}.pdf" target="_blank" rel="noopener"><span>קובץ PDF</span></a><a class="btn sm ghost keybtn" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}-key.html?print" target="_blank" rel="noopener">✓<span>דף תשובות</span></a><small class="muted">דף עבודה ודף תשובות להשוואה</small></div>`;
@@ -8619,6 +8628,9 @@ const ACT = {
   lfinish: () => { const s = P.units[V.u]; s.lesson = true; if (s.st === 'nt') s.st = 'learn'; P.hist.unshift({ t: now(), l: 'שיעור ' + uLabel(UM[V.u]), ok: null, n: null }); P.lastArea = 'phon'; checkAch(); if (PN && PN.tag === 'pl:' + V.u) { const up = markNode(PN.key); PN = null; checkAch(); save(); toast(up != null ? `שלב ${up + 1} הושלם!` : 'התקדמת במסלול!'); SFX.play('win'); go('home', { scrollPath: true }); return; } save(); toast('השיעור הושלם'); go('unit', { u: V.u }); },
   sg: el => startSightGroup(+el.dataset.i),
   paperdone: el => { const id = el.dataset.id; P.paper = P.paper || {}; if (P.paper[id]) delete P.paper[id]; else { P.paper[id] = now(); try { SFX.play('win'); } catch (e) {} } save(); render(); },
+  pdsave: el => { const id = el.dataset.id, N = paperN(id), inp = document.querySelector(`[data-pdin="${id}"]`), v = inp ? parseInt(inp.value, 10) : NaN;
+    if (isNaN(v) || v < 0 || v > N) { if (inp) { inp.focus(); inp.style.borderColor = '#E86A92'; } return; }
+    P.paper = P.paper || {}; const r = paperRec(id) || { t: now() }; r.n = v; r.s = v / N; r.u = now(); P.paper[id] = r; try { SFX.play(r.s >= 0.8 ? 'win' : 'ok'); } catch (e) {} save(); render(); },
   printit: el => {
     const url = 'print/' + el.dataset.id + '.html'; let f = document.getElementById('printframe'); if (f) f.remove();
     f = document.createElement('iframe'); f.id = 'printframe'; f.setAttribute('aria-hidden', 'true'); f.style.cssText = 'position:fixed;width:0;height:0;border:0;right:0;bottom:0';
