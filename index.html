@@ -711,6 +711,19 @@ i.lg.ac{background:var(--pink)}
 .lv-jlink{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:6px;padding:5px 12px;border-radius:999px;border:1.5px dashed color-mix(in srgb,var(--pl,#68489A) 45%,transparent);background:transparent;color:var(--pl,#68489A);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}.lv-jlink svg{width:15px;height:15px}
 .lv-jump{justify-content:center;background:none;padding:0}
 .lv-jump .btn svg{width:16px;height:16px}
+.wdict{display:flex;gap:12px;align-items:flex-start;background:var(--warn-bg)}.wdict .wd-ic{font-size:1.8rem;line-height:1}.wdict p{margin:4px 0 8px}
+.wstep{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--plum);color:#fff;font-size:.95rem;margin-inline-end:8px;vertical-align:2px}
+.wr-ic{font-size:1.15rem}.wrules{display:grid;gap:10px}.wr-row{display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:var(--lav);border-radius:12px}.wr-row .en{font-size:1.05rem}
+.wsent{display:block;font-size:1.25rem;margin-top:8px}.wblank{color:var(--plum);font-weight:700}
+.qrow,.qtf{display:block;margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--lav);font-size:1rem}
+.wprompt{background:var(--lav)}.wprompt p{font-size:1.08rem;line-height:1.6;margin:6px 0 0}
+.wneed{list-style:none;padding:0;margin:8px 0;display:grid;gap:8px}.wneed li{display:flex;gap:8px;align-items:center}.wneed svg{width:18px;height:18px;color:var(--ok,#2C7A57);flex:none}
+.wbk{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.wbk span{display:flex;flex-direction:column;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:10px}.wbk small{color:var(--muted)}
+.wframe{display:flex;flex-direction:column;gap:8px}.wframe label{font-weight:600}.wframe textarea{width:100%;font:inherit;font-size:1.05rem;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);resize:vertical}.wframe textarea:focus{outline:none;border-color:var(--plum)}
+.wbody{display:grid;gap:12px}
+.wchk{list-style:none;padding:0;margin:8px 0;display:grid;gap:8px}.wchk li{display:flex;gap:10px;align-items:flex-start}.wchk .wc-ic{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-weight:800;color:#fff;background:#2C7A57}.wchk li.no .wc-ic{background:#E86A92}.wchk small{display:block;color:var(--muted)}
+.wmodel{background:var(--lav)}.wmodel p.en{font-size:1.08rem;line-height:1.7}
+.btn.ok{background:#2C7A57;color:#fff}
 .jump-l{list-style:none;padding:0;margin:14px auto;display:grid;gap:10px;max-width:420px;text-align:start}.jump-l li{display:flex;gap:10px;align-items:baseline;background:var(--surface);border-radius:12px;padding:10px 12px}.jump-l b{flex:0 0 52px;color:var(--pl,#68489A);font-size:1.1rem;text-align:center}
 /* games: icon tiles + level sheet */
 .gtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
@@ -8122,7 +8135,83 @@ const PAS = [
     { p: 5, tp: 'Scanning', q: 'How much less did students who used their phones in bed sleep?', qh: 'בכמה פחות ישנו סטודנטים שהשתמשו בטלפון במיטה?', o: ['about one hour', 'about two hours', 'about ten minutes'], ans: 'about one hour', kw: ['students', 'phones', 'bed', 'less'], why: 'slept about one hour less than students who did not.' },
     { p: 6, tp: 'Examples', q: 'Give two examples of solutions that experts suggest.', qh: 'תני שתי דוגמאות לפתרונות שמומחים מציעים.', pick: { valid: ['stop using screens one hour before bedtime', 'turn on night mode', 'leave the phone in another room', 'read a paper book'], wrong: ['buy a new phone', 'drink coffee at night'] }, ans: 'a) stop using screens one hour before bedtime  b) leave the phone in another room', kw: ['solutions', 'experts', 'suggest'], why: 'אחרי For example מופיעים הפתרונות.' },
     { p: 7, tp: 'Scanning', q: 'What is the writer’s main conclusion?', qh: 'מהי המסקנה העיקרית של הכותב?', o: ['Phones are useful, but changing habits helps us sleep better.', 'People should never use smartphones.', 'Blue light is good for the brain.'], ans: 'Phones are useful, but changing a few habits helps us sleep better.', kw: ['conclusion'], why: 'In conclusion מסמן את המסקנה בפסקה האחרונה.' }
-   ] }
+   ] },
+ { id: 'p3', title: 'Walking and Texting', he: 'הליכה וכתיבת הודעות', exam: 'D',
+   paras: [
+    'A new study by researchers in Israel shows that young people are more easily distracted when they walk and use their phones at the same time. The researchers watched college students walking in the city. They found that the students made more mistakes and walked more slowly when they wrote text messages while walking. Young people were more likely to do this than older people.',
+    'The study was paid for by the city’s road safety department. Each of the 60 college students in the study was asked to walk the same 500-meter route six times, with a researcher walking behind them. In two of the walks, the students wrote text messages on their phones. Two walks were done while the students talked on the phone, and two walks were done without a phone at all.',
+    'During the two texting walks, almost all of the students – 95% – made four walking mistakes on average. These ranged from walking slowly and stopping suddenly, to crossing the street without looking, walking into other people, and missing the green light. About one-quarter of the students (25%) needed the researcher to stop them quickly to prevent an accident. Even when walking without a phone, 40% of the students made at least one mistake. When the students talked on the phone, however, the number of mistakes was 30% lower than when they texted.',
+    'One of the researchers explained that “most young people look at their phones more than 100 times a day, even when they walk in busy streets.” When people read or write a message, their eyes look down at the screen and not at the road. Their minds also move from paying attention to the street to thinking about the message. When this happens, they do not see cars, bicycles, or other people in time, and accidents are more likely.'
+   ],
+   g: { study: 'מחקר', researchers: 'חוקרים', young: 'צעירים', distracted: 'מוסחים; דעתם מוסחת', walk: 'ללכת', walking: 'הליכה', phones: 'טלפונים', same: 'אותו; זהה', time: 'זמן', watched: 'צפו; התבוננו', college: 'מכללה', city: 'עיר', mistakes: 'טעויות', slowly: 'לאט', messages: 'הודעות', likely: 'סביר; צפוי', older: 'מבוגרים יותר', paid: 'שילם', road: 'כביש', safety: 'בטיחות', department: 'מחלקה', asked: 'התבקשו', route: 'מסלול', behind: 'מאחורי', walks: 'הליכות', talked: 'דיברו', without: 'בלי', almost: 'כמעט', average: 'ממוצע (on average = בממוצע)', ranged: 'נעו (בין... ל...)', stopping: 'עצירה', suddenly: 'פתאום', crossing: 'חציית', street: 'רחוב', looking: 'להסתכל', missing: 'מפספסים', green: 'ירוק', light: 'רמזור; אור', quarter: 'רבע', needed: 'היו צריכים', prevent: 'למנוע', accident: 'תאונה', accidents: 'תאונות', least: 'לפחות (at least)', however: 'אולם', number: 'מספר', lower: 'נמוך יותר', explained: 'הסביר', busy: 'עמוסים', eyes: 'עיניים', screen: 'מסך', minds: 'מוחות; מחשבות', paying: 'paying attention = לשים לב', attention: 'תשומת לב', thinking: 'חושבים', cars: 'מכוניות', bicycles: 'אופניים' },
+   vocab: [
+    { p: 1, type: 'find', he: 'מוסחים (דעתם מוסחת)', ans: ['distracted'] },
+    { p: 1, type: 'mean', en: 'study', he: 'מחקר', d: ['שיעור', 'מבחן', 'ספר'] },
+    { p: 2, type: 'find', he: 'מסלול', ans: ['route'] },
+    { p: 2, type: 'mean', en: 'without', he: 'בלי', d: ['עם', 'לפני', 'בזמן'] },
+    { p: 3, type: 'find', he: 'פתאום', ans: ['suddenly'] },
+    { p: 3, type: 'mean', en: 'prevent', he: 'למנוע', d: ['לגרום', 'לראות', 'לעזור'] },
+    { p: 3, type: 'find', he: 'בממוצע (מילה אחת)', ans: ['average'] },
+    { p: 4, type: 'find', he: 'עמוסים; הומים', ans: ['busy'] },
+    { p: 4, type: 'mean', en: 'paying attention', he: 'לשים לב', d: ['לשלם', 'לחכות', 'לכתוב'] },
+    { p: 4, type: 'mean', en: 'accidents', he: 'תאונות', d: ['טעויות', 'מכוניות', 'רחובות'] }
+   ],
+   qs: [
+    { p: 1, tp: 'Scanning', q: 'According to paragraph 1, young people are more easily distracted when they:', qh: 'לפי פסקה 1, צעירים מוסחים יותר בקלות כאשר הם:', o: ['walk and use their phones at the same time', 'walk with their friends in the city', 'walk in a quiet park', 'listen to music at home'], ans: 'walk and use their phones at the same time', kw: ['distracted'], why: 'young people are more easily distracted when they walk and use their phones at the same time.' },
+    { p: 1, tp: 'Causes & Results', q: 'What are two results of this distraction while walking?', qh: 'מהן שתי תוצאות של ההסחה הזו בזמן הליכה?', pick: { valid: ['they made more mistakes', 'they walked more slowly'], wrong: ['they walked faster', 'they felt happier', 'they talked more'] }, open: 2, ans: 'a) they made more mistakes  b) they walked more slowly', kw: ['mistakes', 'slowly'], why: 'the students made more mistakes and walked more slowly' },
+    { p: 2, tp: 'Scanning', q: 'Who paid for the study?', qh: 'מי שילם על המחקר?', o: ['the city’s road safety department', 'the college students', 'a phone company', 'the researchers'], open: 1, ans: 'the city’s road safety department', kw: ['paid'], why: 'The study was paid for by the city’s road safety department.' },
+    { p: 2, tp: 'Scanning', q: 'Who participated in the study?', qh: 'מי השתתף במחקר?', o: ['60 college students', 'older people from the city', '500 drivers', 'six researchers'], open: 1, ans: '60 college students', kw: ['students'], why: 'Each of the 60 college students in the study...' },
+    { p: 2, tp: 'Table', tg: 'design', q: 'Fill in the table to show the design of the study.', qh: 'השלימי את הטבלה שמראה את מבנה המחקר.', row: 'First two walks', o: ['writing text messages', 'talking on the phone', 'without a phone'], ans: 'writing text messages', why: 'In two of the walks, the students wrote text messages on their phones.' },
+    { p: 2, tp: 'Table', tg: 'design', q: 'Fill in the table to show the design of the study.', qh: 'השלימי את הטבלה שמראה את מבנה המחקר.', row: 'Second two walks', o: ['talking on the phone', 'writing text messages', 'without a phone'], ans: 'talking on the phone', why: 'Two walks were done while the students talked on the phone' },
+    { p: 2, tp: 'Table', tg: 'design', q: 'Fill in the table to show the design of the study.', qh: 'השלימי את הטבלה שמראה את מבנה המחקר.', row: 'Third two walks', o: ['without a phone', 'writing text messages', 'talking on the phone'], ans: 'without a phone', why: 'and two walks were done without a phone at all.' },
+    { p: 3, tp: 'Scanning', q: 'How many mistakes did the students make in the two texting walks?', qh: 'כמה טעויות עשו הסטודנטים בשתי הליכות ההודעות?', o: ['4 on average', '95%', '25%', 'all of them'], ans: 'four mistakes on average', kw: ['mistakes', 'average'], why: '95% זה כמה סטודנטים. מספר הטעויות: four walking mistakes on average.' },
+    { p: 3, tp: 'Examples', q: 'Give 3 examples of walking mistakes that the students made.', qh: 'תני 3 דוגמאות לטעויות הליכה שהסטודנטים עשו.', pick: { valid: ['stopping suddenly', 'crossing the street without looking', 'walking into other people', 'missing the green light'], wrong: ['driving too fast', 'talking too loudly', 'running in the park'] }, need: 3, open: 3, ans: 'a) stopping suddenly  b) crossing the street without looking  c) walking into other people', kw: ['ranged'], why: 'These ranged from walking slowly and stopping suddenly, to crossing the street without looking...' },
+    { p: 3, tp: 'Scanning', q: 'What helped 25% of the students prevent an accident?', qh: 'מה עזר ל־25% מהסטודנטים למנוע תאונה?', o: ['the researcher stopped them quickly', 'they put their phones in their bags', 'they talked on the phone', 'they walked without a phone'], open: 1, ans: 'The researcher stopped them quickly.', kw: ['25%', 'prevent'], why: 'About one-quarter of the students (25%) needed the researcher to stop them quickly to prevent an accident.' },
+    { p: 4, tp: 'Causes & Results', q: 'Fill in the cause-and-effect chart: what causes accidents when people text and walk?', qh: 'השלימי את תרשים הסיבה והתוצאה: מה גורם לתאונות כשכותבים הודעות בזמן הליכה?', chart: 'Accidents are more likely.', pick: { valid: ['their eyes look down at the screen', 'they do not see cars and people in time'], wrong: ['they walk in busy streets', 'they talk on the phone', 'the light is green'] }, open: 2, ans: 'their eyes look down at the screen → they do not see cars and people in time', kw: ['eyes', 'see'], why: 'their eyes look down at the screen... they do not see cars, bicycles, or other people in time' },
+    { p: 4, tp: 'True / False', q: 'Read the statement. Is it TRUE or FALSE? Choose the answer with the support from the text.', qh: 'קראי את הטענה. נכון או לא נכון? בחרי את התשובה עם ההוכחה מהטקסט.', tf: 'According to the researcher, young people rarely look at their phones when they walk.', o: ['FALSE – they look at their phones more than 100 times a day', 'TRUE – they look at their phones more than 100 times a day', 'TRUE – they look only at the road', 'FALSE – they never walk in busy streets'], ans: 'FALSE – “most young people look at their phones more than 100 times a day, even when they walk in busy streets.”', kw: ['100'], why: 'most young people look at their phones more than 100 times a day' },
+    { p: 4, tp: 'Causes & Results', q: 'According to paragraph 4, explain why people make more mistakes when they text while walking. Give TWO reasons.', qh: 'לפי פסקה 4, הסבירי למה אנשים עושים יותר טעויות כשהם כותבים הודעות בזמן הליכה. תני שתי סיבות.', pick: { valid: ['their eyes look at the screen and not at the road', 'their minds move to thinking about the message'], wrong: ['they walk too fast', 'the streets are too quiet', 'they talk to other people'] }, open: 2, ans: 'a) their eyes look at the screen, not at the road  b) their minds think about the message, not the street', kw: ['eyes', 'minds'], why: 'their eyes look down at the screen... Their minds also move...' }
+   ],
+   wr: { task: 'oa3', text: 'What is your opinion about using phones while walking in the street? Write a short paragraph of 2–3 sentences.' } },
+ { id: 'p4', title: 'How Good Coaches Help Players Improve', he: 'איך מאמנים טובים עוזרים לשחקנים להשתפר', exam: 'L.D',
+   paras: [
+    'Coaches often tell players if they played well or badly. But a good coach does more than say “good” or “bad.” A good coach helps players understand what they did well and what they need to change. Advice from a coach can be a short comment, a demonstration, or a question. When it is clear and friendly, players are more willing to try again, even after they lose a game.',
+    'Imagine two young basketball players, Tamar and Amir. After a game, Tamar’s coach says only, “You played badly today.” She feels sad and does not know what to change. Amir’s coach also tells him that the game was difficult, but he adds, “Your passes were excellent. Next time, look up before you shoot.” Amir knows what to practice. This example shows why a general comment is not always enough.',
+    'Good advice is specific. Instead of saying only “Well done,” a coach can say, “Your defense was strong because you moved your feet quickly.” This tells the player which skill worked. When something needs to change, coaches can also give one small, practical tip: “Bend your knees a little more.” The player can then try the tip in the next practice.',
+    'However, giving too much advice at once can be a problem. A player who hears ten corrections after one game may feel that nothing is good enough. Coaches can choose one or two important points first. For example, with a new player, they might focus on running and passing before they talk about difficult moves. Later, the player can work on more details. This makes progress feel possible.',
+    'The right time for advice depends on the situation. During a game, players are busy and under pressure. If the coach shouts after every mistake, the player may lose confidence. The coach can watch, write down a few points, and talk about them after the game. But during a training exercise, a quick correction may help a player do the movement correctly right away.',
+    'Advice can also come from teammates. In one team, players watch short videos of their games together. Each player gives one positive comment and asks one question. For example, “Your shot was fast, but why did you pass to the left?” The player can use the question to think about better choices. Before players give advice to each other, the coach needs to teach them how to be respectful and kind.',
+    'Some coaches ask players to check their own performance after a game. They may use a short list: “Did I listen to the coach? Did I help my team? Did I try my best?” This is called self-evaluation. It helps players notice their strong points and weak points. It also teaches them that they are responsible for their own progress, not only the coach.',
+    'Advice is especially useful when players have time to use it. After a game, a coach can give the team fifteen minutes to practice one skill. Players try the skill again and notice the difference. If coaches only give advice and move on to the next game, players may never use it. Good advice should lead to more practice.',
+    'Players do not all feel the same about comments. Some players enjoy hearing praise in front of the whole team, while others feel embarrassed when the coach talks about their mistakes in public. Coaches can ask players how they prefer to receive advice. A private conversation or a short message may work better for a shy player. The goal is to help every player improve without feeling ashamed.',
+    'Good coaching is not about finding every mistake or winning every game. It is about showing players a clear next step and helping them believe they can take it. When coaches combine encouragement with practical advice, players become more confident and independent. They begin to see mistakes as part of learning, not as a reason to give up.'
+   ],
+   g: { coaches: 'מאמנים', coach: 'מאמן', players: 'שחקנים', player: 'שחקן', played: 'שיחקו', badly: 'רע; לא טוב', change: 'לשנות', advice: 'עצה; עצות', comment: 'הערה', demonstration: 'הדגמה', question: 'שאלה', clear: 'ברור', friendly: 'ידידותי', willing: 'מוכנים', lose: 'להפסיד', imagine: 'דמייני', basketball: 'כדורסל', game: 'משחק', difficult: 'קשה', passes: 'מסירות', excellent: 'מצוינות', shoot: 'לזרוק לסל', practice: 'לתרגל; אימון', general: 'כללי', enough: 'מספיק', specific: 'ספציפי; מדויק', defense: 'הגנה', strong: 'חזקה', skill: 'מיומנות', practical: 'מעשי', tip: 'טיפ; עצה קטנה', bend: 'לכופף', knees: 'ברכיים', however: 'אולם', corrections: 'תיקונים', important: 'חשוב', focus: 'להתמקד', details: 'פרטים', progress: 'התקדמות', possible: 'אפשרי', situation: 'מצב', pressure: 'לחץ', shouts: 'צועק', mistake: 'טעות', confidence: 'ביטחון עצמי', training: 'אימון', exercise: 'תרגיל', correction: 'תיקון', correctly: 'נכון', teammates: 'חברי קבוצה', positive: 'חיובית', choices: 'בחירות', respectful: 'מכבדים', kind: 'אדיבים', performance: 'ביצוע', evaluation: 'הערכה', notice: 'לשים לב', weak: 'חלשות', responsible: 'אחראים', especially: 'במיוחד', useful: 'שימושי', difference: 'הבדל', comments: 'הערות', praise: 'שבחים', embarrassed: 'נבוכים', public: 'בפומבי (in public)', prefer: 'מעדיפים', receive: 'לקבל', private: 'פרטי', shy: 'ביישן', goal: 'מטרה', improve: 'להשתפר', ashamed: 'מתביישים', coaching: 'אימון', encouragement: 'עידוד', confident: 'בטוחים בעצמם', independent: 'עצמאיים', reason: 'סיבה' },
+   vocab: [
+    { p: 1, type: 'find', he: 'מוכנים (לעשות משהו)', ans: ['willing'] },
+    { p: 2, type: 'mean', en: 'enough', he: 'מספיק', d: ['חשוב', 'ברור', 'קשה'] },
+    { p: 3, type: 'find', he: 'ספציפי; מדויק', ans: ['specific'] },
+    { p: 4, type: 'mean', en: 'progress', he: 'התקדמות', d: ['טעות', 'משחק', 'לחץ'] },
+    { p: 5, type: 'find', he: 'ביטחון עצמי', ans: ['confidence'] },
+    { p: 6, type: 'find', he: 'מכבדים (את האחר)', ans: ['respectful'] },
+    { p: 7, type: 'mean', en: 'responsible', he: 'אחראים', d: ['עצובים', 'חזקים', 'חלשים'] },
+    { p: 8, type: 'find', he: 'שימושי; מועיל', ans: ['useful'] },
+    { p: 9, type: 'find', he: 'נבוכים', ans: ['embarrassed'] },
+    { p: 10, type: 'mean', en: 'encouragement', he: 'עידוד', d: ['ביקורת', 'תחרות', 'עונש'] }
+   ],
+   qs: [
+    { p: 1, tp: 'Examples', q: 'According to paragraph 1, what are TWO ways coaches can give advice?', qh: 'לפי פסקה 1, מהן שתי דרכים שבהן מאמנים יכולים לתת עצה?', pick: { valid: ['a short comment', 'a demonstration', 'a question'], wrong: ['a grade', 'a prize', 'a long letter'] }, open: 2, ans: 'two of: a short comment / a demonstration / a question', kw: ['comment', 'demonstration', 'question'], why: 'Advice from a coach can be a short comment, a demonstration, or a question.' },
+    { p: 2, tp: 'Compare', q: 'What is the difference between the advice Tamar and Amir receive?', qh: 'מה ההבדל בין העצה שתמר ואמיר מקבלים?', o: ['Tamar hears only a general comment; Amir gets specific advice about what to practice.', 'Tamar gets more advice than Amir.', 'Amir hears only a general comment; Tamar knows what to practice.', 'Both coaches give the same advice.'], open: 2, ans: 'Tamar hears only “You played badly.” Amir gets specific advice: his passes were excellent and he should look up before he shoots.', kw: ['only', 'adds'], why: 'Tamar’s coach says only... Amir’s coach... adds “Your passes were excellent. Next time, look up before you shoot.”' },
+    { p: 3, tp: 'Explain', q: 'Why is “Your defense was strong because you moved your feet quickly” more useful than “Well done”?', qh: 'למה המשפט על ההגנה מועיל יותר מ־"כל הכבוד"?', o: ['It tells the player which skill worked.', 'It is shorter.', 'It gives the player a grade.', 'It talks about the whole team.'], open: 2, ans: 'Because it is specific: it tells the player which skill worked.', kw: ['specific', 'skill'], why: 'This tells the player which skill worked.' },
+    { p: 4, tp: 'Table', tg: 'coach', q: 'Complete the table: What should the coach do?', qh: 'השלימי את הטבלה: מה המאמן צריך לעשות?', row: 'A new player needs to improve many things.', o: ['choose one or two important points first', 'give ten corrections after the game', 'give a quick correction right away'], ans: 'choose one or two important points first', why: 'Coaches can choose one or two important points first.' },
+    { p: 5, tp: 'Table', tg: 'coach', q: 'Complete the table: What should the coach do?', qh: 'השלימי את הטבלה: מה המאמן צריך לעשות?', row: 'A player is in the middle of a game.', o: ['write down a few points and talk about them after the game', 'shout after every mistake', 'give a quick correction right away'], ans: 'watch, write down a few points, and talk about them after the game', why: 'The coach can watch, write down a few points, and talk about them after the game.' },
+    { p: 5, tp: 'Table', tg: 'coach', q: 'Complete the table: What should the coach do?', qh: 'השלימי את הטבלה: מה המאמן צריך לעשות?', row: 'Players are doing a training exercise.', o: ['give a quick correction right away', 'wait until the end of the season', 'write down a few points for later'], ans: 'give a quick correction right away', why: 'during a training exercise, a quick correction may help...' },
+    { p: 6, tp: 'Explain', q: 'According to paragraph 6, why do players need to learn how to give advice to teammates?', qh: 'לפי פסקה 6, למה שחקנים צריכים ללמוד איך לתת עצות לחברי הקבוצה?', o: ['so their advice is respectful and kind', 'so they can win every game', 'so the coach does not need to work', 'so they can watch more videos'], open: 2, ans: 'Because their advice must be respectful and kind.', kw: ['respectful', 'kind'], why: 'the coach needs to teach them how to be respectful and kind.' },
+    { p: 7, tp: 'Reference', q: 'What does the word “It” refer to in “It also teaches them that they are responsible…”?', qh: 'למה מתייחסת המילה It במשפט?', o: ['self-evaluation', 'the coach', 'the game', 'the team'], open: 1, ans: 'self-evaluation', kw: ['It'], why: 'This is called self-evaluation. It helps... It also teaches...' },
+    { p: 8, tp: 'True / False', q: 'Read the statement. Is it TRUE or FALSE? Choose the answer with the support from the text.', qh: 'קראי את הטענה. נכון או לא נכון? בחרי את התשובה עם ההוכחה מהטקסט.', tf: 'Advice is useful even if players never use it.', o: ['FALSE – good advice should lead to more practice', 'TRUE – good advice should lead to more practice', 'TRUE – players never need practice', 'FALSE – coaches never give advice'], ans: 'FALSE – “If coaches only give advice and move on to the next game, players may never use it. Good advice should lead to more practice.”', kw: ['practice'], why: 'Good advice should lead to more practice.' },
+    { p: 9, tp: 'Explain', q: 'Why might a coach choose to give advice privately?', qh: 'למה מאמן עשוי לבחור לתת עצה באופן פרטי?', o: ['Some players feel embarrassed when the coach talks about their mistakes in public.', 'Coaches do not like to talk in front of the team.', 'Private advice is always shorter.', 'Shy players never make mistakes.'], open: 2, ans: 'Because some players feel embarrassed when the coach talks about their mistakes in public.', kw: ['embarrassed', 'private'], why: 'others feel embarrassed when the coach talks about their mistakes in public.' },
+    { p: 10, tp: 'Main idea', q: 'What is the MAIN message of the text?', qh: 'מהו המסר המרכזי של הטקסט?', o: ['Good coaches give clear advice and a chance to improve.', 'Coaches should correct every mistake immediately.', 'Winning is more important than learning.', 'Players should only get advice from their coach.'], ans: 'Good coaches give clear advice and a chance to improve.', kw: ['next step'], why: 'It is about showing players a clear next step...' }
+   ],
+   wr: { task: 'pb3', text: 'Think of a time when someone (a coach, a parent or a friend) gave you advice. Was it helpful? Explain why or why not. Suggest ONE thing people can do to give useful advice. Write 4–5 sentences (about 45–60 words).' } }
 ];
 const PASM = Object.fromEntries(PAS.map(p => [p.id, p]));
 const kwStem = k => { k = k.toLowerCase(); return k.length > 5 ? k.slice(0, k.length - 2) : k; };
@@ -8143,11 +8232,12 @@ function ensurePas() { if (P && !P.pas) P.pas = {}; }
 function pasRec(id) { ensurePas(); return (P.pas[id] = P.pas[id] || { v: {}, c: {} }); }
 function pasQ(Pa, it, kind, idx) {
   const head = `<span class="qhead"><span class="parchip en">Paragraph ${it.p}</span>${it.tp ? `<span class="tpchip en">${it.tp}</span>` : ''}</span>`;
+  const extra = (it.row ? `<span class="qrow en" dir="ltr">${esc(it.row)} → ?</span>` : '') + (it.tf ? `<span class="qtf en" dir="ltr"><b>Statement:</b> ${esc(it.tf)}</span>` : '') + (it.chart ? `<span class="qrow en" dir="ltr">? → ? → ${esc(it.chart)}</span>` : '');
   let q;
   if (it.type === 'find') q = { t: 'find', prompt: `${head}<span class="qen en">Find a word in paragraph ${it.p} that means:</span>`, bigHe: it.he, find: it.ans.map(x => x.toLowerCase()), ansText: it.ans[0], sel: null, why: `בפסקה ${it.p}: ${it.ans[0]} = ${it.he}.` };
   else if (it.type === 'mean') { q = mcq({ prompt: `${head}<span class="qen en">What does “${esc(it.en)}” mean in the text?</span>`, opts: [it.he, ...it.d].map(heOpt), correct: it.he }); q.kw = [it.en]; q.showKw = true; }
-  else if (it.pick) q = { t: 'pick', prompt: `${head}<span class="qen en">${esc(it.q)}</span>`, opts: shuf([...it.pick.valid, ...it.pick.wrong]), valid: it.pick.valid, need: 2, sel: [], ansText: it.ans };
-  else { q = mcq({ prompt: `${head}<span class="qen en">${esc(it.q)}</span>`, opts: it.o.map(enOpt), correct: it.o[0] }); q.ansText = it.ans; }
+  else if (it.pick) q = { t: 'pick', prompt: `${head}<span class="qen en">${esc(it.q)}</span>${extra}`, opts: shuf([...it.pick.valid, ...it.pick.wrong]), valid: it.pick.valid, need: it.need || 2, sel: [], ansText: it.ans };
+  else { q = mcq({ prompt: `${head}<span class="qen en">${esc(it.q)}</span>${extra}`, opts: it.o.map(enOpt), correct: it.o[0] }); q.ansText = it.ans; }
   const ak = it.en && AEN[it.en.toLowerCase()];
   Object.assign(q, { p: it.p, kw: q.kw || it.kw || [], help: it.qh ? `<p>${esc(it.qh)}</p>` : null, why: q.why || it.why, model: it.pick ? it.ans : null,
     rec: kind === 'v' ? [ak ? { k: 'a:' + ak.id, s: 'expr' } : { s: 'mean' }] : [{ s: 'ctx' }], optAudio: false,
@@ -8217,18 +8307,181 @@ VIEWS.passage = () => {
   const Pa = PASM[V.id], r = pasRec(Pa.id);
   const vdone = Object.keys(r.v).length, cdone = Object.keys(r.c).length;
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
-  <section class="block card pas-head"><span class="eyebrow">קטע אקדמי · טרום-בסיסי א'</span><h1 class="h1 en">${esc(Pa.title)}</h1><p class="muted">${esc(Pa.he)} · ${Pa.paras.length} פסקאות · ${Pa.vocab.length} מילים · ${Pa.qs.length} שאלות</p>
+  <section class="block card pas-head"><span class="eyebrow">${Pa.exam ? 'תרגול לקראת המבחן · אותם סוגי שאלות' : "קטע אקדמי · טרום-בסיסי א'"}</span><h1 class="h1 en">${esc(Pa.title)}</h1><p class="muted">${esc(Pa.he)} · ${Pa.paras.length} פסקאות · ${Pa.vocab.length} מילים · ${Pa.qs.length} שאלות</p>
     <div class="tipline">${PIC.route}<span>טיפ: השאלות מציינות פסקה. קראי רק את הפסקה הזאת.</span><button class="link small" data-act="go" data-v="strat">לכל האסטרטגיות</button></div>${printBar(Pa.id)}</section>
   <section class="block card vstart"><div><span class="eyebrow en">Vocabulary</span><h2 class="h2">תרגיל אוצר מילים</h2><p class="muted small">${Pa.vocab.length} מילים מתוך הקטע</p></div>
     <div class="btns"><button class="btn" data-act="pasv" data-id="${Pa.id}">${vdone ? 'לתרגל שוב' : 'התחילי'}</button>${r.vs != null ? `<span class="chip ${r.vs >= 0.8 ? 'ok' : 'lr'}">${Math.round(r.vs * 100)}%</span>` : ''}</div></section>
   <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><span>לחצי על מילה לתרגום</span></div>${passageHtml(Pa, { audio: true })}</section>
   <section class="block card vstart"><div><span class="eyebrow en">Comprehension</span><h2 class="h2">שאלות הבנה</h2><p class="muted small">${Pa.qs.length} שאלות לפי פסקאות</p></div>
     <div class="btns"><button class="btn" data-act="pasc" data-id="${Pa.id}">${cdone ? 'לענות שוב' : 'התחילי'}</button>${r.cs != null ? `<span class="chip ${r.cs >= 0.6 ? 'ok' : 'lr'}">${Math.round(r.cs * 100)}%</span>` : ''}</div></section>
+  ${Pa.wr ? `<section class="block card vstart wrcard"><div><span class="eyebrow en">Writing task</span><h2 class="h2">משימת כתיבה</h2><p class="en small" dir="ltr">${esc(Pa.wr.text)}</p><p class="muted small">אפשר לתרגל משימה דומה, צעד אחר צעד, בחלק "כתיבה".</p></div>
+    <div class="btns"><button class="btn" data-act="wtask" data-id="${Pa.wr.task}">${PEN_IC}<span>לתרגול כתיבה</span></button></div></section>` : ''}
   ${paperCard(Pa.id)}`;
 };
 
+/* ===================== Writing section ===================== */
+const PEN_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.5 7l3 3M4 20h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const WRULES = [
+  { id: 'cap', t: 'אות גדולה', ic: 'Aa', rule: [['בתחילת כל משפט', 'My sister is a student.'], ['המילה I תמיד גדולה', 'I think that it is a good idea.'], ['שמות של אנשים, ערים וארצות', 'Dana lives in Haifa, Israel.'], ['ימים, חודשים ושפות', 'On Monday I study English.']],
+    qs: [['Which sentence is correct?', '', 'I study English on Monday.', 'i study English on Monday.', 'I study english on monday.', 'I, ימים ושפות כותבים תמיד באות גדולה.'],
+      ['Which sentence is correct?', '', 'My friend lives in Tel Aviv.', 'my friend lives in tel aviv.', 'My friend lives in tel Aviv.', 'תחילת משפט ושם של עיר: אות גדולה.'],
+      ['Which sentence is correct?', '', 'In my opinion, phones are useful.', 'in my opinion, phones are useful.', 'In My Opinion, Phones Are Useful.', 'אות גדולה רק בתחילת המשפט, לא בכל מילה.'],
+      ['Which sentence is correct?', '', 'Dana and I go to college.', 'dana and i go to college.', 'Dana and i go to college.', 'שם של אדם והמילה I באות גדולה.'],
+      ['Which sentence is correct?', '', 'We have a test in June.', 'We have a test in june.', 'we have a test in June.', 'חודשים באות גדולה, וגם תחילת המשפט.'],
+      ['Which sentence is correct?', '', 'She speaks Hebrew and Arabic.', 'She speaks hebrew and arabic.', 'she speaks Hebrew and arabic.', 'שפות כותבים באות גדולה.']] },
+  { id: 'end', t: 'נקודה, פסיק וסימן שאלה', ic: '.?', rule: [['כל משפט נגמר בנקודה', 'I like my job.'], ['שאלה נגמרת בסימן שאלה', 'Do you study at night?'], ['אחרי נקודה מתחילים באות גדולה', 'I like my job. It is interesting.'], ['פסיק אחרי מילת פתיחה', 'For example, I walk to work.']],
+    qs: [['Which sentence is correct?', '', 'I like my job. It is interesting.', 'I like my job it is interesting.', 'I like my job. it is interesting.', 'שני משפטים: נקודה ואז אות גדולה.'],
+      ['Which sentence is correct?', '', 'Do you study at night?', 'Do you study at night.', 'do you study at night?', 'שאלה נגמרת ב־?'],
+      ['Which sentence is correct?', '', 'For example, I walk to work.', 'For example I walk to work', 'for example, I walk to work.', 'פסיק אחרי For example ונקודה בסוף.'],
+      ['Which sentence is correct?', '', 'My teacher helped me. She was very kind.', 'My teacher helped me, she was very kind', 'My teacher helped me. she was very kind.', 'נקודה בין המשפטים ואות גדולה ב־She.'],
+      ['Which sentence is correct?', '', 'However, it can be dangerous.', 'however it can be dangerous.', 'However it can be dangerous', 'אות גדולה, פסיק אחרי However ונקודה בסוף.'],
+      ['Which sentence is correct?', '', 'Why is it important?', 'Why is it important.', 'why is it important', 'שאלה: אות גדולה בהתחלה ו־? בסוף.']] },
+  { id: 'be', t: 'am / is / are', ic: 'is', rule: [['I → am', 'I am a student.'], ['he / she / it → is (גם אדם אחד או דבר אחד)', 'My mother is a nurse. The phone is new.'], ['we / you / they → are (גם כמה אנשים או דברים)', 'My friends are kind. Phones are useful.'], ['שלילה: not אחרי am / is / are', 'It is not easy. They are not here.']],
+    qs: [['Choose the missing word.', 'My sister ___ a nurse.', 'is', 'am', 'are', 'My sister = she → is.'],
+      ['Choose the missing word.', 'I ___ a student at the college.', 'am', 'is', 'are', 'I → am.'],
+      ['Choose the missing word.', 'Phones ___ very useful.', 'are', 'is', 'am', 'Phones = they → are.'],
+      ['Choose the missing word.', 'My teacher ___ kind and patient.', 'is', 'are', 'am', 'My teacher = he / she → is.'],
+      ['Choose the missing word.', 'We ___ tired after work.', 'are', 'is', 'am', 'we → are.'],
+      ['Choose the missing word.', 'It ___ dangerous to text and drive.', 'is', 'are', 'am', 'it → is.'],
+      ['Choose the missing word.', 'My parents ___ not at home.', 'are', 'is', 'am', 'My parents = they → are.']] },
+  { id: 'sv', t: 's בפועל', ic: '+s', rule: [['אחרי he / she / it מוסיפים s לפועל', 'She works. My brother plays.'], ['אחרי I / you / we / they אין s', 'I work. They play.'], ['מילים מיוחדות', 'go → goes · study → studies · have → has'], ['אחרי doesn\'t הפועל בלי s', 'She doesn\'t work.']],
+    qs: [['Choose the missing word.', 'My mother ___ in a hospital.', 'works', 'work', 'working', 'My mother = she → works.'],
+      ['Choose the missing word.', 'I ___ English every day.', 'study', 'studies', 'studys', 'אחרי I אין s.'],
+      ['Choose the missing word.', 'Dana ___ to college by bus.', 'goes', 'go', 'gos', 'Dana = she. go → goes.'],
+      ['Choose the missing word.', 'They ___ to music in the car.', 'listen', 'listens', 'listening', 'אחרי they אין s.'],
+      ['Choose the missing word.', 'He ___ two children.', 'has', 'have', 'haves', 'he → has.'],
+      ['Choose the missing word.', 'She doesn\'t ___ coffee.', 'drink', 'drinks', 'drinking', 'אחרי doesn\'t הפועל בלי s.'],
+      ['Choose the missing word.', 'My friend ___ me with my homework.', 'helps', 'help', 'helping', 'My friend = he / she → helps.']] },
+  { id: 'link', t: 'מילות קישור', ic: '&', rule: [['and = ו־ · also = גם', 'I work and I study. I also read.'], ['but = אבל · however = אולם', 'It is fun, but it is dangerous.'], ['because = כי', 'I am tired because I work at night.'], ['so = לכן · for example = לדוגמה', 'It was late, so I went home.']],
+    qs: [['Choose the missing word.', 'I like music ___ it helps me relax.', 'because', 'but', 'so', 'הסיבה: כי זה עוזר לי להירגע → because.'],
+      ['Choose the missing word.', 'Texting is fun, ___ it is dangerous on the road.', 'but', 'because', 'so', 'ניגוד: כיף, אבל מסוכן → but.'],
+      ['Choose the missing word.', 'I was tired, ___ I went to sleep early.', 'so', 'because', 'but', 'תוצאה: הייתי עייפה, לכן הלכתי לישון → so.'],
+      ['Choose the missing words.', 'Some apps are useful. ___, I use a dictionary app every day.', 'For example', 'However', 'Because', 'דוגמה לאפליקציה שימושית → For example.'],
+      ['Choose the missing word.', 'Phones are useful. ___, they can hurt our sleep.', 'However', 'For example', 'So', 'ניגוד בין שני משפטים → However.'],
+      ['Choose the missing word.', 'I study at college ___ I work in a shop.', 'and', 'because', 'so', 'שני דברים שאני עושה → and.']] },
+  { id: 'opin', t: 'משפטי דעה ונימוק', ic: '!', rule: [['פתיחה', 'I think that… · In my opinion,… · I believe that…'], ['נימוק', '…because… · This is because…'], ['דוגמה', 'For example,…'], ['סיום', 'In conclusion,… · To sum up,…']],
+    qs: [['Which sentence gives an opinion?', '', 'In my opinion, music helps people relax.', 'Music is a type of art.', 'I listened to music yesterday.', 'In my opinion = לדעתי. זה משפט דעה.'],
+      ['Which sentence gives a reason?', '', 'I think it is dangerous because drivers do not look at the road.', 'I think it is dangerous.', 'Drivers drive cars.', 'because מביא נימוק.'],
+      ['Which is the best first sentence for an opinion paragraph?', '', 'I think that phones in class are a bad idea.', 'Phones.', 'My phone is black.', 'משפט הפתיחה אומר מה הדעה שלך.'],
+      ['Which sentence is correct?', '', 'I think that it is a good idea.', 'I think that it a good idea.', 'I am think that it is a good idea.', 'I think + that + it is…'],
+      ['Which sentence gives an example?', '', 'For example, I use a dictionary app every day.', 'However, I use it.', 'In conclusion, apps.', 'For example מביא דוגמה.'],
+      ['Choose the best last sentence.', '', 'In conclusion, I think young drivers should not text.', 'In conclusion, drivers.', 'In conclusion, I drive a car.', 'משפט הסיום חוזר על הדעה.']] },
+  { id: 'order', t: 'סדר מילים במשפט', ic: '1·2·3', rule: [['מי + מה עושה + השאר', 'She reads books.'], ['תואר לפני שם העצם', 'a good idea (לא idea good)'], ['זמן ומקום בסוף', 'I study English every day.']],
+    qs: [['Which sentence is correct?', '', 'She reads books every day.', 'She every day reads books.', 'Reads she books every day.', 'מי (She) + פועל (reads) + השאר.'],
+      ['Which sentence is correct?', '', 'It is a good idea.', 'It is an idea good.', 'Is it a good idea.', 'התואר good בא לפני idea.'],
+      ['Which sentence is correct?', '', 'My brother works in a big hospital.', 'My brother works in a hospital big.', 'Works my brother in a big hospital.', 'big לפני hospital.'],
+      ['Which sentence is correct?', '', 'I go to college on Sunday.', 'I on Sunday go to college.', 'Go I to college on Sunday.', 'הזמן (on Sunday) בסוף.'],
+      ['Which sentence is correct?', '', 'They have a new car.', 'They have a car new.', 'They a new car have.', 'מי + פועל + a new car.']] }
+];
+const WRM = Object.fromEntries(WRULES.map(r => [r.id, r]));
+const WA = { kind: 'A', label: 'פסקת דעה', sent: [2, 3], words: null,
+  need: ['לכתוב מה הדעה שלך (I think / In my opinion)', 'להסביר למה (because)', '2–3 משפטים'],
+  frames: [['משפט 1: הדעה שלך', 'In my opinion, '], ['משפט 2: למה? נימוק', 'This is because '], ['משפט 3: דוגמה או סיום (לא חובה)', 'For example, ']] };
+const WB = { kind: 'B', label: 'ניסיון אישי והצעה', sent: [4, 5], words: [45, 60],
+  need: ['לספר על פעם אחת שקרתה לך', 'לכתוב אם זה עזר ולמה (because)', 'להציע דבר אחד (should)', '4–5 משפטים, בערך 45–60 מילים'],
+  frames: [['משפט 1: מתי ומה קרה', 'When I was '], ['משפט 2: מה אמרו לך או מה עשו', ''], ['משפט 3: האם זה עזר? למה?', 'It was helpful because '], ['משפט 4: ההצעה שלך', 'I think people should '], ['משפט 5: סיום (לא חובה)', '']] };
+const WTASKS = [
+  Object.assign({ id: 'oa1', title: 'Phones in class', he: 'טלפונים בכיתה', prompt: 'What is your opinion about using phones in class? Write a short paragraph of 2–3 sentences about the benefits and/or the problems of phones in class.', key: ['opinion', '2–3 sentences', 'benefits', 'problems'],
+    bank: [['useful', 'שימושי'], ['distracting', 'מסיח את הדעת'], ['to concentrate', 'להתרכז'], ['a dictionary app', 'אפליקציית מילון'], ['students', 'סטודנטיות'], ['the lesson', 'השיעור']],
+    model: 'In my opinion, phones in class are a problem. This is because students look at messages and do not concentrate on the lesson. However, a dictionary app can be useful in class.' }, { t: WA }),
+  Object.assign({ id: 'oa2', title: 'Working while studying', he: 'לעבוד בזמן הלימודים', prompt: 'What is your opinion about working while you study? Write a short paragraph of 2–3 sentences about the benefits and/or the problems.', key: ['opinion', '2–3 sentences', 'benefits', 'problems'],
+    bank: [['money', 'כסף'], ['experience', 'ניסיון'], ['tired', 'עייפה'], ['time', 'זמן'], ['to pay for', 'לשלם על'], ['grades', 'ציונים']],
+    model: 'I think that working while you study is a good idea. This is because students need money to pay for rent and books. However, they should not work too many hours, because they need time to study.' }, { t: WA }),
+  Object.assign({ id: 'oa3', title: 'Phones on the street', he: 'טלפון בזמן הליכה', prompt: 'What is your opinion about using phones while walking in the street? Write a short paragraph of 2–3 sentences about the dangers and/or the benefits.', key: ['opinion', '2–3 sentences', 'dangers', 'benefits'],
+    bank: [['dangerous', 'מסוכן'], ['an accident', 'תאונה'], ['to look at', 'להסתכל על'], ['the road', 'הכביש'], ['a map', 'מפה'], ['to pay attention', 'לשים לב']],
+    model: 'In my opinion, using a phone while walking is dangerous. This is because people look at the screen and do not see the cars. For example, they can cross the street without looking.' }, { t: WA }),
+  Object.assign({ id: 'pb1', title: 'Learning something new', he: 'מישהו לימד אותי משהו חדש', prompt: 'Think of a time when a family member taught you something new. Was it helpful? Explain why or why not. Suggest ONE thing people can do to help others learn. Write 4–5 sentences (about 45–60 words).', key: ['a time', 'helpful', 'why or why not', 'Suggest ONE thing', '4–5 sentences'],
+    bank: [['my mother / my father', 'אמא שלי / אבא שלי'], ['taught me', 'לימד/ה אותי'], ['to cook', 'לבשל'], ['to drive', 'לנהוג'], ['patient', 'סבלני'], ['to explain', 'להסביר']],
+    model: 'When I was sixteen, my father taught me to drive. He was very patient, and he explained every step slowly. It was helpful because I did not feel afraid. I passed my test the first time. I think people should explain slowly and give a lot of practice.' }, { t: WB }),
+  Object.assign({ id: 'pb2', title: 'Learning from a mistake', he: 'למדתי מטעות', prompt: 'Think of a time when you made a mistake at school or at work. What did you learn from it? Suggest ONE thing students can do after they make a mistake. Write 4–5 sentences (about 45–60 words).', key: ['a time', 'a mistake', 'What did you learn', 'Suggest ONE thing', '4–5 sentences'],
+    bank: [['a mistake', 'טעות'], ['I forgot', 'שכחתי'], ['I learned', 'למדתי'], ['my boss', 'המנהל/ת שלי'], ['to check', 'לבדוק'], ['next time', 'בפעם הבאה']],
+    model: 'Last year, I made a mistake at work. I forgot to send an important email to a customer. My boss was not angry, but she explained the problem. I learned to check my work because small mistakes can cause big problems. I think students should ask for help after a mistake.' }, { t: WB }),
+  Object.assign({ id: 'pb3', title: 'Useful advice', he: 'עצה שקיבלתי', prompt: 'Think of a time when someone (a coach, a parent or a friend) gave you advice. Was it helpful? Explain why or why not. Suggest ONE thing people can do to give useful advice. Write 4–5 sentences (about 45–60 words).', key: ['a time', 'advice', 'helpful', 'why or why not', 'Suggest ONE thing', '4–5 sentences'],
+    bank: [['advice', 'עצה'], ['my friend', 'החברה שלי'], ['gave me', 'נתן/ה לי'], ['specific', 'ספציפי'], ['kind', 'אדיב'], ['to improve', 'להשתפר']],
+    model: 'When I was in high school, my friend gave me advice about my English test. She told me to read the questions before the text. It was helpful because I found the answers faster. I got a better grade. I think people should give one clear and kind tip.' }, { t: WB })
+];
+const WTM = Object.fromEntries(WTASKS.map(t => [t.id, t]));
+const ensureWrite = () => { if (!P.write) P.write = { r: {}, t: {}, d: {} }; ['r', 't', 'd'].forEach(k => { P.write[k] = P.write[k] || {}; }); return P.write; };
+const wDraft = id => { const W = ensureWrite(), T = WTM[id]; return W.d[id] || (W.d[id] = { f: T.t.frames.map(f => f[1]), txt: '' }); };
+const wJoin = d => d.f.map(s => (s || '').trim()).filter(s => s && /[a-z]/i.test(s) && !WTASKS.some(T => T.t.frames.some(f => f[1].trim() === s))).join(' ');
+function wq(r, x) {
+  const [prompt, sent, ...rest] = x, why = rest.pop();
+  const q = mcq({ prompt: `<span class="qen en">${esc(prompt)}</span>`, opts: rest.map(enOpt), correct: rest[0] });
+  return Object.assign(q, { sent: sent ? `<span class="en wsent" dir="ltr">${esc(sent).replace('___', '<span class="wblank">___</span>')}</span>` : null, why, optAudio: false, rec: [] });
+}
+function startWRule(id) {
+  const R = WRM[id];
+  startQuiz(arraySrc(shuf(R.qs.slice()).map(x => wq(R, x))), { kind: 'mixed', area: 'write', title: 'כתיבה · ' + R.t, tag: 'wr:' + id, back: { name: 'wrule', id }, again: () => startWRule(id),
+    onFinish: s => { const W = ensureWrite(); W.r[id] = Math.max(W.r[id] || 0, s.n ? s.ok / s.n : 0); } });
+}
+function wCheck(txt, T) {
+  const t = (txt || '').trim(), S = t.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => /[a-z]/i.test(s));
+  const words = (t.match(/[A-Za-z’']+/g) || []).length, [smin, smax] = T.t.sent, out = [];
+  const add = (ok, he, tip) => out.push({ ok, he, tip });
+  add(S.length >= smin && S.length <= smax, `${smin}–${smax} משפטים (כתבת ${S.length})`, S.length < smin ? 'הוסיפי עוד משפט.' : 'קצרי: יותר מדי משפטים.');
+  if (T.t.words) add(words >= T.t.words[0] - 5 && words <= T.t.words[1] + 10, `בערך ${T.t.words[0]}–${T.t.words[1]} מילים (כתבת ${words})`, words < T.t.words[0] ? 'הוסיפי פרטים.' : 'אפשר לקצר.');
+  else add(words >= 15, `לפחות 15 מילים (כתבת ${words})`, 'הוסיפי פרטים לנימוק.');
+  add(S.length > 0 && S.every(s => /^[“"']?[A-Z]/.test(s)), 'כל משפט מתחיל באות גדולה', 'בדקי את האות הראשונה בכל משפט.');
+  add(/[.!?]["”]?$/.test(t), 'יש נקודה בסוף', 'הוסיפי נקודה בסוף המשפט האחרון.');
+  add(!/(^|[^A-Za-z’'])i([^A-Za-z’']|$)/.test(t), 'המילה I באות גדולה', 'כתבי I ולא i.');
+  add(!/\b(I (is|are)|(he|she|it) (am|are)|(we|you|they) (is|am))\b/i.test(t), 'am / is / are נכונים', 'I am · he / she / it is · we / you / they are.');
+  add(!/\b(he|she|it|my (mother|father|friend|teacher|boss|coach|sister|brother))\s+(like|want|need|think|work|help|feel|say|know|study|play|go|make|give|take|tell|use|have|love|live|read|write|drive|walk|teach|learn|try|look|listen|talk|come|get|explain)\b/i.test(t), 's בפועל אחרי he / she / it', 'אחרי he / she / it מוסיפים s: she works, he helps.');
+  if (T.t.kind === 'A') add(/\b(i think|in my opinion|i believe|i feel|i agree|i disagree)\b/i.test(t), 'יש משפט דעה', 'התחילי ב־In my opinion או I think that.');
+  else add(/\b(should|can|need to|it is a good idea)\b/i.test(t), 'יש הצעה (should)', 'הוסיפי משפט עם I think people should…');
+  add(/\bbecause\b/i.test(t), 'יש נימוק (because)', 'הסבירי למה עם because.');
+  return { out, words, sents: S.length };
+}
+const wDictCard = () => `<section class="block card wdict"><span class="wd-ic" aria-hidden="true">📖</span><div><b>בכתיבה מותר להשתמש במילונית</b><p>לא יודעת איך אומרים מילה באנגלית? חפשי אותה במילונית, מעברית לאנגלית. רוצה לרענן? חזרי לחלק מיומנויות מילון.</p>
+  <div class="btns"><button class="btn sm" data-act="go" data-v="dict">${DICT_ICON}<span>מיומנויות מילון</span></button><a class="btn sm ghost" href="https://www.morfix.co.il" target="_blank" rel="noopener">מורפיקס</a></div></div></section>`;
+const wTile = (n, id, name, st, act, sub) => `<button class="dstep ${st ? 'done' : ''}" data-act="${act}" data-id="${id}"><span class="ds-n en">${st ? I.check : n}</span><span class="ds-ic wr-ic en">${sub}</span><b>${esc(name)}</b></button>`;
+VIEWS.write = () => {
+  const W = ensureWrite();
+  return `<section class="block"><h1 class="h1">כתיבה</h1><p class="muted">במבחן יש משימת כתיבה קצרה. כאן מתכוננות לה צעד אחר צעד.</p></section>
+  ${wDictCard()}
+  <section class="block"><h2 class="h2"><span class="wstep">1</span>חוקי כתיבה</h2><p class="muted small">7 חוקים קצרים. לכל חוק: הסבר קצר ותרגול.</p>
+    <div class="dsteps">${WRULES.map((r, i) => wTile(i + 1, r.id, r.t, (W.r[r.id] || 0) >= 0.8, 'wrule', esc(r.ic))).join('')}</div></section>
+  <section class="block"><h2 class="h2"><span class="wstep">2</span>פסקת דעה <small class="muted">2–3 משפטים</small></h2><p class="muted small">כמו במבחן: "What is your opinion about…?"</p>
+    <div class="dsteps">${WTASKS.filter(T => T.t.kind === 'A').map((T, i) => wTile(i + 1, T.id, T.he, W.t[T.id], 'wtask', 'A')).join('')}</div></section>
+  <section class="block"><h2 class="h2"><span class="wstep">3</span>ניסיון אישי והצעה <small class="muted">4–5 משפטים</small></h2><p class="muted small">כמו במבחן: "Think of a time when… Suggest ONE thing…"</p>
+    <div class="dsteps">${WTASKS.filter(T => T.t.kind === 'B').map((T, i) => wTile(i + 1, T.id, T.he, W.t[T.id], 'wtask', 'B')).join('')}</div></section>`;
+};
+VIEWS.wrule = () => {
+  const R = WRM[V.id], W = ensureWrite(), i = WRULES.indexOf(R), sc = W.r[R.id];
+  return `<button class="back" data-act="go" data-v="write">${I.arrow}<span>כתיבה</span></button>
+  <section class="block"><div class="dl-head"><span class="ds-ic big en">${esc(R.ic)}</span><div><span class="eyebrow">חוק ${i + 1} מתוך ${WRULES.length}</span><h1 class="h1">${esc(R.t)}</h1></div></div></section>
+  <section class="block card wrules">${R.rule.map(([he, ex]) => `<div class="wr-row"><b>${esc(he)}</b><span class="en" dir="ltr">${esc(ex)}</span></div>`).join('')}</section>
+  <section class="block card vstart"><div><span class="eyebrow">תרגול</span><h2 class="h2">${R.qs.length} שאלות קצרות</h2></div><div class="btns"><button class="btn" data-act="wrgo" data-id="${R.id}">${sc != null ? 'לתרגל שוב' : 'התחילי'}</button>${sc != null ? `<span class="chip ${sc >= 0.8 ? 'ok' : 'lr'}">${Math.round(sc * 100)}%</span>` : ''}</div></section>
+  ${i < WRULES.length - 1 ? `<section class="block center"><button class="link" data-act="wrule" data-id="${WRULES[i + 1].id}">לחוק הבא: ${esc(WRULES[i + 1].t)} ←</button></section>` : ''}`;
+};
+const WSTEPS = ['מבינים את המשימה', 'בונים משפט אחרי משפט', 'בודקים', 'דוגמה לתשובה'];
+function wPromptHtml(T) { let s = esc(T.prompt); T.key.forEach(k => { s = s.replace(esc(k), `<mark class="hl">${esc(k)}</mark>`); }); return s; }
+VIEWS.wtask = () => {
+  const T = WTM[V.id], d = wDraft(T.id), s = V.st || 0, W = ensureWrite();
+  const head = `<button class="back" data-act="go" data-v="write">${I.arrow}<span>כתיבה</span></button>
+  <section class="block"><span class="eyebrow">${T.t.label} · ${T.t.sent[0]}–${T.t.sent[1]} משפטים</span><h1 class="h1">${esc(T.he)}</h1>
+    <div class="tsteps">${WSTEPS.map((x, i) => `<button class="tstep ${i === s ? 'on' : i < s ? 'done' : ''}" data-act="wstep" data-i="${i}" aria-label="${x}">${i + 1}</button>`).join('')}</div><p class="muted small">שלב ${s + 1}: ${WSTEPS[s]}</p></section>`;
+  const promptCard = `<div class="card wprompt"><span class="eyebrow en">Writing task</span><p class="en" dir="ltr">${wPromptHtml(T)}</p></div>`;
+  let body = '';
+  if (s === 0) body = `${promptCard}<div class="card"><h2 class="h2">מה צריך לכתוב?</h2><ul class="wneed">${T.t.need.map(x => `<li>${I.check}<span>${esc(x)}</span></li>`).join('')}</ul>
+    <p class="muted small">טיפ: קראי את המילים המודגשות. הן אומרות מה בדיוק לכתוב.</p></div>
+    <div class="btns center"><button class="btn" data-act="wstep" data-i="1">הבנתי, בונים משפטים</button></div>`;
+  else if (s === 1) body = `${promptCard}<div class="card wbank"><span class="eyebrow">מילים שיכולות לעזור</span><div class="wbk">${T.bank.map(([a, b]) => `<span><b class="en" dir="ltr">${esc(a)}</b><small>${esc(b)}</small></span>`).join('')}</div></div>
+    ${T.t.frames.map(([lab], i) => `<div class="card wframe"><label for="wf${i}">${esc(lab)}</label><textarea id="wf${i}" class="en" dir="ltr" rows="2" data-wf="${T.id}:${i}" spellcheck="false">${esc(d.f[i] || '')}</textarea></div>`).join('')}
+    <div class="btns center"><button class="btn" data-act="wjoin" data-id="${T.id}">חיבור המשפטים לפסקה</button></div>`;
+  else if (s === 2) { const txt = d.txt || wJoin(d), r = wCheck(txt, T);
+    body = `${promptCard}<div class="card wframe"><label for="wtxt">הפסקה שלך</label><textarea id="wtxt" class="en" dir="ltr" rows="6" data-wtxt="${T.id}" spellcheck="false">${esc(txt)}</textarea>
+      <div class="btns"><button class="btn sm" data-act="wcheck" data-id="${T.id}">בדיקה</button></div></div>
+      <div class="card"><h2 class="h2">רשימת בדיקה</h2><ul class="wchk">${r.out.map(x => `<li class="${x.ok ? 'ok' : 'no'}"><span class="wc-ic">${x.ok ? '✓' : '!'}</span><span><b>${x.he}</b>${x.ok ? '' : `<small>${esc(x.tip)}</small>`}</span></li>`).join('')}</ul>
+      <p class="muted small">הבדיקה אוטומטית ופשוטה. היא לא בודקת הכול, אז קראי שוב גם בעצמך.</p></div>${wDictCard()}
+      <div class="btns center"><button class="btn" data-act="wstep" data-i="3">לדוגמה לתשובה</button></div>`; }
+  else body = `${promptCard}<div class="card wmodel"><span class="eyebrow">דוגמה לתשובה טובה</span><p class="en" dir="ltr">${esc(T.model)}</p><p class="muted small">זו רק דוגמה. התשובה שלך יכולה להיות שונה לגמרי.</p></div>
+    ${d.txt ? `<div class="card"><span class="eyebrow">התשובה שלך</span><p class="en" dir="ltr">${esc(d.txt)}</p></div>` : ''}
+    <div class="btns center"><button class="btn ${W.t[T.id] ? 'ok' : ''}" data-act="wdone" data-id="${T.id}">${I.check}<span>${W.t[T.id] ? 'סיימתי' : 'סיימתי את המשימה'}</span></button><button class="btn ghost" data-act="go" data-v="write">לכל משימות הכתיבה</button></div>`;
+  return head + `<section class="block wbody">${body}</section>`;
+};
+
 /* ===================== Worksheet check: upload a photo / PDF of the printed worksheet ===================== */
-const WKEY = {"t1": [["Q", 1, "mc", "a", "People learn new skills for different reasons."], ["Q", 2, "mc", "a", "To improve their lives."]], "t2": [["Q", 1, "mc", "a", "Sleep and students"], ["Q", 2, "mc", "a", "They can learn more."]], "t3": [["Q", 1, "mc", "b", "People know more words."], ["Q", 2, "mc", "b", "people who read every day"]], "t4": [["Q", 1, "mc", "c", "Students have less time to study."], ["Q", 2, "mc", "b", "the advantages and disadvantages of working while studying"]], "t5": [["Q", 1, "mc", "b", "Social media has both positive and negative effects."], ["Q", 2, "mc", "c", "using social media for many hours"], ["Q", 3, "mc", "c", "social media"]], "t6": [["Q", 1, "mc", "a", "water that was not clean"], ["Q", 2, "mc", "a", "Clean water is still a problem in some places."]], "p1": [["V", 1, "word", "affect", "להשפיע על"], ["V", 2, "mc", "c", "אולם"], ["V", 3, "word", "cause/causes", "סיבה; גורם"], ["V", 4, "mc", "d", "מועדי הגשה"], ["V", 5, "word", "appetite", "תיאבון"], ["V", 6, "word", "concentrate", "להתרכז"], ["V", 7, "mc", "a", "כתוצאה מכך"], ["V", 8, "word", "reduce", "להפחית"], ["V", 9, "mc", "a", "תמיכה"], ["V", 10, "word", "succeed", "להצליח"], ["C", 1, "mc", "a", "more than half"], ["C", 2, "pick", "academic pressure/money", "2"], ["C", 3, "mc", "b", "to pay for rent, food, and books"], ["C", 4, "pick", "headaches/stomach problems/trouble sleeping/losing appetite", "4"], ["C", 5, "pick", "it is difficult to concentrate/students forget information/students get lower grades", "3"], ["C", 6, "pick", "walking/dancing/riding a bike", "3"], ["C", 7, "mc", "c", "good time management"], ["C", 8, "pick", "workshops/meetings with counselors", "2"], ["C", 9, "mc", "a", "students who manage stress well"]], "p2": [["V", 1, "word", "habit", "הרגל"], ["V", 2, "mc", "c", "איכות"], ["V", 3, "word", "relax", "להירגע"], ["V", 4, "mc", "c", "סיבות"], ["V", 5, "word", "reduces", "מפחית; מקטין"], ["V", 6, "word", "negative", "שליליות"], ["V", 7, "mc", "c", "חוסר"], ["V", 8, "word", "appears", "נראה ש- (מופיע כפועל)"], ["V", 9, "word", "suggest", "מציעים (פועל)"], ["V", 10, "mc", "d", "לפגוע; להזיק"], ["C", 1, "mc", "c", "in bed, just before they go to sleep"], ["C", 2, "pick", "the blue light from the screen/phones keep the mind active", "2"], ["C", 3, "mc", "a", "a natural hormone that helps us fall asleep"], ["C", 4, "pick", "people need more time to fall asleep/people wake up during the night", "2"], ["C", 5, "pick", "people feel tired/people feel nervous/people make more mistakes/a higher risk of health problems", "4"], ["C", 6, "pick", "heart disease/diabetes", "2"], ["C", 7, "mc", "a", "about one hour"], ["C", 8, "pick", "stop using screens one hour before bedtime/turn on night mode/leave the phone in another room/read a paper book", "4"], ["C", 9, "mc", "c", "Phones are useful, but changing habits helps us sleep better."]]};
+const WKEY = {"t1": [["Q", 1, "mc", "a", "People learn new skills for different reasons."], ["Q", 2, "mc", "a", "To improve their lives."]], "t2": [["Q", 1, "mc", "a", "Sleep and students"], ["Q", 2, "mc", "a", "They can learn more."]], "t3": [["Q", 1, "mc", "b", "People know more words."], ["Q", 2, "mc", "b", "people who read every day"]], "t4": [["Q", 1, "mc", "c", "Students have less time to study."], ["Q", 2, "mc", "b", "the advantages and disadvantages of working while studying"]], "t5": [["Q", 1, "mc", "b", "Social media has both positive and negative effects."], ["Q", 2, "mc", "c", "using social media for many hours"], ["Q", 3, "mc", "c", "social media"]], "t6": [["Q", 1, "mc", "a", "water that was not clean"], ["Q", 2, "mc", "a", "Clean water is still a problem in some places."]], "p1": [["V", 1, "word", "affect", "להשפיע על"], ["V", 2, "mc", "c", "אולם"], ["V", 3, "word", "cause/causes", "סיבה; גורם"], ["V", 4, "mc", "d", "מועדי הגשה"], ["V", 5, "word", "appetite", "תיאבון"], ["V", 6, "word", "concentrate", "להתרכז"], ["V", 7, "mc", "a", "כתוצאה מכך"], ["V", 8, "word", "reduce", "להפחית"], ["V", 9, "mc", "a", "תמיכה"], ["V", 10, "word", "succeed", "להצליח"], ["C", 1, "mc", "a", "more than half"], ["C", 2, "pick", "academic pressure/money", "2"], ["C", 3, "mc", "b", "to pay for rent, food, and books"], ["C", 4, "pick", "headaches/stomach problems/trouble sleeping/losing appetite", "4"], ["C", 5, "pick", "it is difficult to concentrate/students forget information/students get lower grades", "3"], ["C", 6, "pick", "walking/dancing/riding a bike", "3"], ["C", 7, "mc", "c", "good time management"], ["C", 8, "pick", "workshops/meetings with counselors", "2"], ["C", 9, "mc", "a", "students who manage stress well"]], "p2": [["V", 1, "word", "habit", "הרגל"], ["V", 2, "mc", "c", "איכות"], ["V", 3, "word", "relax", "להירגע"], ["V", 4, "mc", "c", "סיבות"], ["V", 5, "word", "reduces", "מפחית; מקטין"], ["V", 6, "word", "negative", "שליליות"], ["V", 7, "mc", "c", "חוסר"], ["V", 8, "word", "appears", "נראה ש- (מופיע כפועל)"], ["V", 9, "word", "suggest", "מציעים (פועל)"], ["V", 10, "mc", "d", "לפגוע; להזיק"], ["C", 1, "mc", "c", "in bed, just before they go to sleep"], ["C", 2, "pick", "the blue light from the screen/phones keep the mind active", "2"], ["C", 3, "mc", "a", "a natural hormone that helps us fall asleep"], ["C", 4, "pick", "people need more time to fall asleep/people wake up during the night", "2"], ["C", 5, "pick", "people feel tired/people feel nervous/people make more mistakes/a higher risk of health problems", "4"], ["C", 6, "pick", "heart disease/diabetes", "2"], ["C", 7, "mc", "a", "about one hour"], ["C", 8, "pick", "stop using screens one hour before bedtime/turn on night mode/leave the phone in another room/read a paper book", "4"], ["C", 9, "mc", "c", "Phones are useful, but changing habits helps us sleep better."]], "p3": [["V", 1, "word", "distracted", "מוסחים (דעתם מוסחת)"], ["V", 2, "mc", "d", "מחקר"], ["V", 3, "word", "route", "מסלול"], ["V", 4, "mc", "c", "בלי"], ["V", 5, "word", "suddenly", "פתאום"], ["V", 6, "mc", "b", "למנוע"], ["V", 7, "word", "average", "בממוצע (מילה אחת)"], ["V", 8, "word", "busy", "עמוסים; הומים"], ["V", 9, "mc", "d", "לשים לב"], ["V", 10, "mc", "a", "תאונות"], ["C", 1, "mc", "a", "walk and use their phones at the same time"], ["C", 2, "open", "a) they made more mistakes  b) they walked more slowly", ""], ["C", 3, "open", "the city’s road safety department", ""], ["C", 4, "open", "60 college students", ""], ["C", "5a", "open", "writing text messages", "First two walks"], ["C", "5b", "open", "talking on the phone", "Second two walks"], ["C", "5c", "open", "without a phone", "Third two walks"], ["C", 6, "mc", "b", "4 on average"], ["C", 7, "open", "a) stopping suddenly  b) crossing the street without looking  c) walking into other people", ""], ["C", 8, "open", "The researcher stopped them quickly.", ""], ["C", 9, "open", "their eyes look down at the screen → they do not see cars and people in time", ""], ["C", 10, "open", "FALSE – “most young people look at their phones more than 100 times a day, even when they walk in busy streets.”", ""], ["C", 11, "open", "a) their eyes look at the screen, not at the road  b) their minds think about the message, not the street", ""]], "p4": [["V", 1, "word", "willing", "מוכנים (לעשות משהו)"], ["V", 2, "mc", "a", "מספיק"], ["V", 3, "word", "specific", "ספציפי; מדויק"], ["V", 4, "mc", "b", "התקדמות"], ["V", 5, "word", "confidence", "ביטחון עצמי"], ["V", 6, "word", "respectful", "מכבדים (את האחר)"], ["V", 7, "mc", "a", "אחראים"], ["V", 8, "word", "useful", "שימושי; מועיל"], ["V", 9, "word", "embarrassed", "נבוכים"], ["V", 10, "mc", "b", "עידוד"], ["C", 1, "open", "two of: a short comment / a demonstration / a question", ""], ["C", 2, "open", "Tamar hears only “You played badly.” Amir gets specific advice: his passes were excellent and he should look up before he shoots.", ""], ["C", 3, "open", "Because it is specific: it tells the player which skill worked.", ""], ["C", "4a", "open", "choose one or two important points first", "A new player needs to improve many things."], ["C", "4b", "open", "watch, write down a few points, and talk about them after the game", "A player is in the middle of a game."], ["C", "4c", "open", "give a quick correction right away", "Players are doing a training exercise."], ["C", 5, "open", "Because their advice must be respectful and kind.", ""], ["C", 6, "open", "self-evaluation", ""], ["C", 7, "open", "FALSE – “If coaches only give advice and move on to the next game, players may never use it. Good advice should lead to more practice.”", ""], ["C", 8, "open", "Because some players feel embarrassed when the coach talks about their mistakes in public.", ""], ["C", 9, "mc", "d", "Good coaches give clear advice and a chance to improve."]]};
 const WSEC = { Q: 'Questions', V: 'Vocabulary', C: 'Comprehension' };
 const WC = {};
 let SAMPLE = null, SAMPLE_IMG = false;
@@ -8293,7 +8546,7 @@ async function wcGo(id) {
 
 /* ===================== RENDER & EVENTS ===================== */
 let SHEET = null, timerH = null; const OPEN = new Set(); let PANEL = null;
-const NAV = [['home', 'מסלול', PIC.route], ['phon', 'דפוסים', I.abc], ['sight', 'מילים', I.cards], ['acad', 'אקדמי', I.cap], ['dict', 'מילון', DICT_ICON], ['read', 'ספרייה', I.book], ['games', 'משחקים', I.play]];
+const NAV = [['home', 'מסלול', PIC.route], ['phon', 'דפוסים', I.abc], ['sight', 'מילים', I.cards], ['acad', 'אקדמי', I.cap], ['dict', 'מילון', DICT_ICON], ['read', 'ספרייה', I.book], ['write', 'כתיבה', PEN_IC], ['games', 'משחקים', I.play]];
 const FOCUS = ['bcards', 'teacher', 'stageres', 'quiz', 'lesson', 'cards', 'aclearn', 'diagintro', 'results', 'profiles', 'qdone'];
 function render(top) {
   const app = document.getElementById('app'), nav = document.getElementById('nav');
@@ -8305,7 +8558,7 @@ function render(top) {
   const showNav = P && P.diag.done && !FOCUS.includes(V.name);
   if (P && P.bg) document.body.dataset.bg = P.bg; else delete document.body.dataset.bg;
   nav.hidden = !showNav; document.body.classList.toggle('has-nav', !!showNav);
-  if (showNav) nav.innerHTML = NAV.map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
+  if (showNav) nav.innerHTML = NAV.map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) || (v === 'write' && (V.name === 'wrule' || V.name === 'wtask')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
   if (top) window.scrollTo(0, 0);
   if (V.name === 'quiz' && Q && Q.q && Q.q.p) { const box = document.querySelector('.ctx .reading'), el = document.getElementById('pp' + Q.q.p); if (box && el) box.scrollTop = el.offsetTop - 8; }
   if (V.name === 'home' && V.scrollPath) { V.scrollPath = false; const c = document.querySelector('.pnode.cur'); if (c) c.scrollIntoView({ block: 'center' }); }
@@ -8696,6 +8949,13 @@ const ACT = {
   pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key) && !nodeOpen(n, cur)) { toast(n.t === 'boss' ? 'הבוחן נפתח אחרי כל הצעדים בשלב' : 'הצעד הזה ייפתח בשלב הבא'); return; } SFX.play('tap'); NS = n.key; render(); },
   pstart: () => { const n = findNode(NS); NS = null; startNode(n, false); },
   pquick: () => { const n = findNode(NS); NS = null; startNode(n, true); },
+  wrule: el => go('wrule', { id: el.dataset.id }),
+  wrgo: el => startWRule(el.dataset.id),
+  wtask: el => go('wtask', { id: el.dataset.id, st: 0 }),
+  wstep: el => { V.st = +el.dataset.i; render(true); },
+  wjoin: el => { const d = wDraft(el.dataset.id); d.txt = wJoin(d); save(); V.st = 2; render(true); },
+  wcheck: () => { save(); render(); },
+  wdone: el => { const W = ensureWrite(), id = el.dataset.id; if (W.t[id]) delete W.t[id]; else { W.t[id] = now(); try { SFX.play('win'); confetti(24); } catch (e) {} } save(); render(); },
   pjump: el => go('jumpinfo', { k: +el.dataset.k }),
   pjumpgo: el => startJump(+el.dataset.k),
   fpick: el => { const q = Q && Q.q; if (!q || q.answered || q.t !== 'find') return; q.sel = el.dataset.w; render(); },
@@ -8782,6 +9042,11 @@ function boot() {
   });
   document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.keep) { if (d.open) OPEN.add(d.dataset.keep); else OPEN.delete(d.dataset.keep); } }, true);
   document.addEventListener('input', e => {
+    if (e.target && e.target.dataset && (e.target.dataset.wf || e.target.dataset.wtxt)) {
+      if (e.target.dataset.wf) { const [id, i] = e.target.dataset.wf.split(':'); wDraft(id).f[+i] = e.target.value; wDraft(id).txt = ''; }
+      else wDraft(e.target.dataset.wtxt).txt = e.target.value;
+      clearTimeout(window.__wsv); window.__wsv = setTimeout(save, 800);
+    }
     if (e.target && e.target.dataset && e.target.dataset.wcin) { const [id, i] = e.target.dataset.wcin.split(':'); wcState(id).self[i] = e.target.value; }
     if (e.target && e.target.id === 'dsearch') { const box = document.getElementById('dsug'); if (box) box.innerHTML = dsug(e.target.value).map(k => `<button class="chipbtn en" data-act="dpickw" data-w="${k}">${k}</button>`).join(''); }
   });
