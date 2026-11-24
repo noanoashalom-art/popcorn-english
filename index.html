@@ -1017,6 +1017,8 @@ body[data-bg=rainbow]{background:radial-gradient(60vmax 50vmax at 0% 0%,color-mi
 .bc-ex{width:100%;box-sizing:border-box;background:var(--lav);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .bc-ex p{margin:0;font-size:1.15rem;line-height:1.5}
 .bentry-w .h2{margin:0}
+.brec{outline:3px solid var(--plum);outline-offset:-3px}.brec-tag{position:absolute;bottom:10px;inset-inline-end:10px;z-index:2;background:var(--plum);color:#fff;font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 9px}
+.bandrec{text-align:center;margin:10px 0 0;font-size:1.05rem}
 .btiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
 .btile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;padding:14px 14px 12px;border-radius:22px;border:1px solid color-mix(in srgb,var(--plum) 18%,var(--line));cursor:pointer;font:inherit;color:var(--ink);box-shadow:var(--shadow);min-width:0;transition:transform .15s}
 .btile:active{transform:scale(.98)}
@@ -5885,10 +5887,28 @@ const CATS_UI = {
   'ביטויים שימושיים': ['chat', '#4F79C2'], 'פעלים מורכבים (Phrasal verbs)': ['bolt', '#9361D1'], 'קניות וכסף': ['cart', '#C4831A'], 'עבודה וטכנולוגיה': ['laptop', '#3E6DB5']
 };
 const catUI = n => { const c = CATS_UI[n] || ['sparkle', '#8C6BC8']; return { ic: SVGI(CI[c[0]]), col: c[1] }; };
+/* which Band list she most likely needs: placement test words + her practice so far */
+function bandLevel() {
+  const res = P.diag && P.diag.res && P.diag.res.band, pct = a => a && a.length ? a.filter(Boolean).length / a.length : null;
+  let rec, why;
+  if (res) {
+    const s1 = pct(res[1]), s2 = pct(res[2]), s3 = pct(res[3]);
+    if (s1 != null && s1 < 0.67) { rec = 1; why = 'בבוחן הפתיחה היו חסרות מילים בסיסיות'; }
+    else if (s2 != null && s2 < 0.67) { rec = 2; why = 'את המילים הבסיסיות את מכירה. החוסר העיקרי ברמה הבינונית'; }
+    else { rec = 3; why = 'את רוב המילים בבוחן הכרת. אפשר להתקדם לרמה המתקדמת'; }
+  } else { rec = vocabWeak() ? 1 : 2; why = vocabWeak() ? 'כדי לבנות בסיס של מילים שכיחות' : 'לפי התשובות שלך עד עכשיו'; }
+  /* practice moves her up: most sets of the recommended list done well */
+  while (rec < 3) {
+    const B = BANDS[rec - 1], r = bandRec()[rec] || {}, done = B.sets.filter((_, i) => (r[i] || 0) >= 0.8).length, kn = B.words.filter(bKnown).length / B.words.length;
+    if (done / B.sets.length >= 0.7 || kn >= 0.8) { rec++; why = `כבר שולטת ברוב המילים של Band ${rec - 1}. כל הכבוד!`; } else break;
+  }
+  return { b: rec, why };
+}
 function bandTile(B) {
   const r = bandRec()[B.id] || {}, kn = B.words.filter(bKnown).length, done = B.sets.filter((_, i) => (r[i] || 0) >= 0.8).length;
   const icons = [['people', 'cup', 'house', 'clock'], ['globe', 'laptop', 'ticket', 'bulb'], ['flask', 'scale', 'link', 'book']][B.id - 1];
-  return `<button class="btile bt${B.id}" data-act="bopen" data-b="${B.id}"><span class="bt-ics" aria-hidden="true">${icons.map((k, j) => `<i style="--j:${j}">${SVGI(CI[k])}</i>`).join('')}</span><span class="bt-name en">${B.name}</span><span class="bt-sub">${B.he} · ${B.words.length} מילים · ${B.cats.length} נושאים</span><span class="bt-prog">${bar(B.sets.length ? done / B.sets.length : 0)}<small>${done}/${B.sets.length} סטים</small></span></button>`;
+  const recB = bandLevel().b === B.id;
+  return `<button class="btile bt${B.id} ${recB ? 'brec' : ''}" data-act="bopen" data-b="${B.id}">${recB ? '<span class="brec-tag">מומלץ לך</span>' : ''}<span class="bt-ics" aria-hidden="true">${icons.map((k, j) => `<i style="--j:${j}">${SVGI(CI[k])}</i>`).join('')}</span><span class="bt-name en">${B.name}</span><span class="bt-sub">${B.he} · ${B.words.length} מילים · ${B.cats.length} נושאים</span><span class="bt-prog">${bar(B.sets.length ? done / B.sets.length : 0)}<small>${done}/${B.sets.length} סטים</small></span></button>`;
 }
 function bNext() {
   if (V.i < V.deck.length - 1) { V.i++; V.flip = false; render(); }
@@ -6767,7 +6787,7 @@ function diagWord(u, n, used) {
   return { w: rnd(pool.length ? pool : u.words.map(x => x.w)), he: '' };
 }
 const STAGE_NAMES = ['צלילים בסיסיים', 'תנועות ארוכות', 'OO, OU ו-OI', 'E שקטה, C ו-PH', 'סיומות מתקדמות'];
-const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר', 'כתיבה'];
+const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר', 'כתיבה', 'אוצר מילים כללי'];
 const PART_INFO = ['', 'בודקות כמה צלילים בכל פעם. כשהכול נכון ממשיכות הלאה, וכשיש קושי עוצרות ולומדות.', '6 מילים קצרות שמופיעות בכל טקסט.', '5 מילים וביטויים מתוך שאלות במבחנים.', '4 מילים: האם את יודעת מה הן אומרות?', '3 משפטים קצרים מתוך טקסטים אקדמיים.'];
 const stageUnits = (sg, onlyNew) => STAGES[sg].filter(id => !onlyNew || P.units[id].st === 'nt');
 function nextStageIdx() { return STAGES.findIndex(sg => sg.some(id => P.units[id].st === 'nt')); }
@@ -6780,7 +6800,7 @@ function newDiagState(stageOnly) {
   const only = stageOnly != null, sg = only ? stageOnly : 0;
   return { only, part: 1, intro: {}, stage: sg, order: stageUnits(sg, only), ui: 0, ua: [], uw: [], udk: 0, needs: 0, stoppedAt: null, fin: false, passed: 0,
     sl: shuf(SG.flatMap(g => sample(g.words, 2).map(w => w.w))), si: 0, sfu: null, al: shuf(AC.flatMap(c => sample(c.items, 1).map(x => x.id))), ai: 0, afu: null, ml: sample(DIAG_MEAN, 4), mi: 0, cl: sample([0, 1, 2, 3, 4], 3), ci: 0, count: 0,
-    wl: WRULES.map(r => r.id), wi: 0,
+    wl: WRULES.map(r => r.id), wi: 0, bl: [1, 2, 3].flatMap(b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3)).map(w => [w.b, w.i]), bi: 0,
     res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [], write: {} } };
 }
 const infoCard = (eyebrow, title, text, cls = '') => ({ t: 'info', html: `<div class="part-intro ${cls}">${cls === 'win' ? OWL('cheer') : ''}<span class="eyebrow">${eyebrow}</span><h2>${title}</h2><p>${text}</p></div>` });
@@ -6844,6 +6864,12 @@ function diagSrc(st) {
         if (st.part === 6) {
           if (!st.wl) { st.wl = WRULES.map(r => r.id); st.wi = 0; st.res.write = st.res.write || {}; }
           if (st.wi < st.wl.length) { const R0 = WRM[st.wl[st.wi]]; const q = wq(R0, rnd(R0.qs)); q.variant = null; q.dm = { p: 6, id: R0.id }; return q; }
+          st.part = 7; continue;
+        }
+        if (st.part === 7) {
+          if (!st.bl) { st.bl = [1, 2, 3].flatMap(b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3)).map(w => [w.b, w.i]); st.bi = 0; }
+          if (st.bi < st.bl.length) { const [b0] = st.bl[st.bi], prev = st.res.band && st.res.band[b0 - 1]; if (b0 > 1 && prev && prev.length >= 3 && prev.filter(Boolean).length <= 1) return null; }
+          if (st.bi < st.bl.length) { const [b, wi] = st.bl[st.bi], w = BANDS[b - 1].words[wi]; const q = qBand(w, 'meaning', sample(BANDS[b - 1].words, 8)); q.variant = null; q.rec = []; q.dm = { p: 7, b }; return q; }
           return null;
         }
         return null;
@@ -6863,17 +6889,18 @@ function diagSrc(st) {
         else if (dk) { st.res.acad[d.id] = 'x'; st.ai++; }
         else st.afu = d.id;
       } else if (d.p === 4) { st.res.mean[d.w] = ok; st.mi++; }
+      else if (d.p === 7) { st.res.band = st.res.band || { 1: [], 2: [], 3: [] }; st.res.band[d.b].push(ok); st.bi++; }
       else if (d.p === 6) { st.res.write = st.res.write || {}; st.res.write[d.id] = ok; st.wi++; }
       else { st.res.ctx.push(ok ? 1 : 0); st.ci++; }
     },
     prog() {
       const ph = st.part <= 1 && !P.noPhon ? Math.max(0, (st.order.length - st.ui) * 2 - st.ua.length) : 0;
-      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + ((st.wl || WRULES).length - (st.wi || 0));
+      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + (st.part <= 6 ? (st.wl || WRULES).length - (st.wi || 0) : 0) + ((st.bl || [1, 2, 3, 4, 5, 6, 7, 8, 9]).length - (st.bi || 0));
       return [st.count, st.count + ph + rest];
     }
   };
 }
-const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${P.noPhon ? st.part - 1 : st.part} · ${PART_NAMES[Math.min(6, st.part)]}`) : '';
+const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${P.noPhon ? st.part - 1 : st.part} · ${PART_NAMES[Math.min(7, st.part)]}`) : '';
 function startDiag() {
   if (!P.diag.state || !P.diag.state.order) P.diag.state = newDiagState();
   save();
@@ -7204,7 +7231,7 @@ VIEWS.results = () => {
   const ctx = r.ctx && r.ctx.length ? r.ctx.reduce((a, b) => a + b, 0) / r.ctx.length : 0;
   const ring = (v, ic, label) => { const d = Math.round(v * 100); return `<div class="rs"><svg viewBox="0 0 64 64" class="rs-r" aria-hidden="true"><circle cx="32" cy="32" r="27" pathLength="100" class="rs-bg"/><circle cx="32" cy="32" r="27" pathLength="100" class="rs-fg" style="stroke-dasharray:${d} 100"/></svg><span class="rs-ic">${ic}</span><b class="en">${d}%</b><small>${label}</small></div>`; };
   return `<section class="block card resdone">${OWL('cheer')}<h1 class="h1">כל הכבוד, ${esc(P.name)}!</h1>
-    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}${r.write ? ring(part(r.write), PEN_IC, 'כתיבה') : ''}</div>
+    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}${r.write ? ring(part(r.write), PEN_IC, 'כתיבה') : ''}</div>${(() => { const L = bandLevel(); return `<p class="bandrec">אוצר מילים: ${L.b === 1 ? 'מומלץ להתחיל מ־' : 'מומלץ להתמקד ב־'}<b class="en">Band ${L.b}</b></p>`; })()}
     <button class="btn big-btn" data-act="go" data-v="home">${PIC.route}<span>למסלול שלי</span></button></section>`;
 };
 
@@ -7242,12 +7269,11 @@ function vocabWeak() {
   return (dm != null && dm < 0.7) || (sp != null && sp < 65);
 }
 function vocabNudge() {
-  if (!vocabWeak() || (P.vnudge && P.vnudge > now())) return '';
-  const r = P.bandc || {}, started = [1, 2].some(b => r[b] && Object.keys(r[b]).length);
-  if (P.bandDay === today()) return '';
-  return `<section class="block"><div class="vnudge"><span class="vn-pop" aria-hidden="true">🍿</span><div class="vn-t"><b>${started ? 'עוד סט אחד היום?' : '10 דקות של מילים ביום = קריאה הרבה יותר קלה'}</b>
-    <p>${started ? 'כל סט מוסיף לך מילים שלא תצטרכי לחפש במבחן. ממשיכות מאיפה שעצרת ב־<span class="en">Band 1</span> וב־<span class="en">Band 2</span>.' : 'כל מילה שאת מכירה היא מילה שלא צריך לחפש במבחן. ברשימות <span class="en">Band 1</span> ו־<span class="en">Band 2</span> של משרד החינוך מחכים לך כרטיסיות פופקורן, משחקי התאמה ומשפטים קצרים. סט אחד ביום, וזה מצטבר מהר!'}</p>
-    <div class="btns"><button class="btn sm" data-act="vngo">${started ? 'לסט הבא' : 'כן, תראו לי איפה זה'}</button><button class="btn sm ghost" data-act="vnlater">אחר כך</button></div></div></div></section>`;
+  if ((P.vnudge && P.vnudge > now()) || P.bandDay === today()) return '';
+  const L = bandLevel(), B = BANDS[L.b - 1], si = bCurSet(L.b), r = bandRec()[L.b] || {}, started = Object.keys(r).length > 0;
+  return `<section class="block"><div class="vnudge"><span class="vn-pop" aria-hidden="true">🍿</span><div class="vn-t"><b>${L.b === 1 ? 'כדאי להתחיל מ־' : 'כדאי להתמקד ב־'}<span class="en">Band ${L.b}</span></b>
+    <p>${esc(L.why)}. ${started ? 'ממשיכות מהסט הבא' : '10 דקות של מילים ביום, וכל מילה שתכירי היא מילה שלא צריך לחפש במבחן'}.</p>
+    <div class="btns"><button class="btn sm" data-act="vngo">${si >= 0 ? (started ? 'לסט הבא' : 'להתחיל') + ': ' + esc(bSetName(B, si)) : 'לרשימה'}</button><button class="btn sm ghost" data-act="vnlater">אחר כך</button></div></div></div></section>`;
 }
 VIEWS.home = () => {
   if (!P.diag.done) return VIEWS.diagintro();
@@ -8914,7 +8940,7 @@ function tStudentHtml() {
       const reads = TEXTS.map(t => [t.title, d.reads && d.reads[t.id]]).filter(x => x[1] != null);
       const pas = PAS.map(p => [p.title, d.pas && d.pas[p.id] && d.pas[p.id].cs, d.paper && d.paper[p.id]]).filter(x => x[1] != null || x[2]);
       const dl = DORDER.filter(id => d.dict[id] && d.dict[id].st === 'mast').map(id => DLM[id].short);
-      out += `<section class="block"><div class="tstats">${tile('התקדמות כללית', pct(pr.all))}${tile('כוכבים', d.stars || 0)}${tile('שלבים במסלול', `${done}/${LV.length}`, pi.cur ? 'עכשיו: ' + esc(nodeTitle(pi.cur)) : 'סיימה את המסלול')}${tile('צלילים בשליטה', `${mast}/${UNITS.length}`, d.noPhon ? 'בלי תרגולי קריאה' : '')}${tile('מילים קטנות', pct(pr.si))}${tile('אוצר מילים אקדמי', pct(pr.ac))}${tile('מיומנויות מילון', `${dl.length}/${DORDER.length}`)}${tile('טקסטים שנקראו', pct(pr.rd))}</div></section>`;
+      out += `<section class="block"><div class="tstats">${tile('התקדמות כללית', pct(pr.all))}${tile('כוכבים', d.stars || 0)}${tile('שלבים במסלול', `${done}/${LV.length}`, pi.cur ? 'עכשיו: ' + esc(nodeTitle(pi.cur)) : 'סיימה את המסלול')}${tile('צלילים בשליטה', `${mast}/${UNITS.length}`, d.noPhon ? 'בלי תרגולי קריאה' : '')}${tile('מילים קטנות', pct(pr.si))}${tile('אוצר מילים אקדמי', pct(pr.ac))}${tile('מיומנויות מילון', `${dl.length}/${DORDER.length}`)}${tile('טקסטים שנקראו', pct(pr.rd))}${tile('רמת אוצר מילים', 'Band ' + bandLevel().b, 'לפי הבוחן והתרגולים')}</div></section>`;
       if (dr) out += `<section class="block card"><h2 class="h2">בוחן פתיחה · ${tFmt(d.diag.at)}</h2><p class="muted">מילים קטנות ${dpart(dr.sight)} · אקדמי ${dpart(dr.acad)} · משמעות ${dpart(dr.mean)} · הבנה ${dr.ctx && dr.ctx.length ? pct(dr.ctx.reduce((a, b) => a + b, 0) / dr.ctx.length) : '—'}${dr.write ? ' · כתיבה ' + dpart(dr.write) : ''}</p></section>`;
       out += `<section class="block card"><h2 class="h2">קריאה</h2>${reads.length || pas.length ? `<ul class="tdl">${reads.map(([t, s]) => `<li><span class="en">${esc(t)}</span><b>${pct(s)}</b></li>`).join('')}${pas.map(([t, s, pp]) => `<li><span class="en">${esc(t)}</span><b>${s != null ? pct(s) : ''}${pp ? ` · דף מודפס${pp.s != null ? ' ' + pct(pp.s) : ' ✓'}` : ''}</b></li>`).join('')}</ul>` : '<p class="muted">עוד לא קראה טקסטים.</p>'}</section>`;
       out += `<section class="block card"><h2 class="h2">כתיבה</h2><ul class="tdl">${WRULES.map(x => `<li><span>${esc(x.t)}</span><b>${W.r && W.r[x.id] != null ? pct(W.r[x.id]) : '—'}</b></li>`).join('')}</ul>${wt.length ? `<p class="muted">משימות שהושלמו: ${wt.map(T => esc(T.he)).join(', ')}</p>` : ''}</section>`;
@@ -9213,11 +9239,7 @@ const ACT = {
   },
   diagskip: () => { P.diag.done = true; P.diag.skipped = true; P.diag.state = null; P.rlvl = P.rlvl || 1; save(); toast('מתחילות מהשלב הראשון'); go('home'); },
   nophon: el => { P.noPhon = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noPhon ? 'תרגולי הקריאה הוסרו מהמסלול' : 'תרגולי הקריאה חזרו למסלול'); render(); },
-  vngo: () => {
-    const r = P.bandc || {}, started = [1, 2].some(b => r[b] && Object.keys(r[b]).length);
-    if (started) { const bid = (r[1] && bCurSet(1) >= 0) ? 1 : 2, si = bCurSet(bid); if (si >= 0) { startBandSet(bid, si); return; } }
-    go('sight'); setTimeout(() => { const e = document.querySelector('.btiles'); if (e) e.scrollIntoView({ block: 'center' }); setTimeout(() => startTour('bandgo'), 350); }, 150);
-  },
+  vngo: () => { const L = bandLevel(), si = bCurSet(L.b); if (si >= 0) startBandSet(L.b, si); else go('band', { bid: L.b }); },
   vnlater: () => { P.vnudge = now() + 2 * 864e5; save(); render(); },
   bopen: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(true); },
   btab: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(); },
