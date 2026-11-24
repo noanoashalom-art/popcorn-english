@@ -126,6 +126,8 @@ p{margin:0}
 .hello-mark span{font-size:1.2rem;padding:6px 14px;border-radius:12px;background:var(--pink);color:var(--rose);font-weight:500}
 .hello-mark span:nth-child(2n){background:var(--lav);color:var(--plum)}
 .plist{display:flex;flex-direction:column;gap:10px}
+.prow{display:flex;gap:8px;align-items:stretch}.prow .pcard{flex:1;min-width:0}
+.ptrash{flex:none;width:52px;display:grid;place-items:center;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:#B23F6A;cursor:pointer;box-shadow:var(--shadow)}.ptrash svg{width:22px;height:22px}.ptrash:hover{background:#FBE2EB}
 .pcard{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);text-align:start;box-shadow:var(--shadow)}
 .pcard svg{width:20px;height:20px;color:var(--muted);flex:none}
 .pc-main{display:flex;flex-direction:column;flex:1;min-width:0}
@@ -7148,7 +7150,8 @@ VIEWS.profiles = () => {
   </section>
   ${list.length ? `<section class="block"><h2 class="h2">מי מתרגלת עכשיו?</h2><div class="plist">${list.map(p => {
     let pr = null; try { const save = P; P = p; pr = p.diag.done ? progress().all : null; P = save; } catch (e) { }
-    return `<button class="pcard" data-act="pick" data-id="${p.id}"><span class="avatar" aria-hidden="true">${esc(p.name.trim()[0] || '?')}</span><span class="pc-main"><b>${esc(p.name)}</b><small>${p.diag.done ? 'התקדמות כללית ' + Math.round(pr * 100) + '%' : 'טרם סיימה את בוחן הפתיחה'}</small></span>${I.arrow}</button>`;
+    return `<div class="prow"><button class="pcard" data-act="pick" data-id="${p.id}"><span class="avatar" aria-hidden="true">${esc(p.name.trim()[0] || '?')}</span><span class="pc-main"><b>${esc(p.name)}</b><small>${p.diag.done ? 'התקדמות כללית ' + Math.round(pr * 100) + '%' : 'טרם סיימה את בוחן הפתיחה'}</small></span>${I.arrow}</button><button class="ptrash" data-act="pdel" data-id="${p.id}" aria-label="מחיקת ${esc(p.name)} מהמחשב">${TRASH_IC}</button></div>
+    ${V.pdel === p.id ? `<div class="confirm" role="alert"><p>${p.cloud ? `להסיר את ${esc(p.name)} מהמחשב הזה? החשבון בענן לא יימחק, ואפשר להיכנס אליו שוב עם הכינוי והקוד.` : `למחוק את ${esc(p.name)} מהמחשב? כל ההתקדמות והכוכבים יימחקו, ואי אפשר לבטל את זה.`}</p><div class="btns"><button class="btn danger-solid" data-act="pdel-yes" data-id="${p.id}">${p.cloud ? 'כן, להסיר' : 'כן, למחוק'}</button><button class="btn ghost" data-act="pdel-no">ביטול</button></div></div>` : ''}`;
   }).join('')}</div></section>` : ''}
   ${CLOUD.on ? `<section class="block card cloudin">
     <div class="seg" role="tablist">${[['in', 'כניסה'], ['up', 'הרשמה חדשה']].map(([k, l]) => `<button role="tab" aria-selected="${(V.ctab || 'in') === k}" class="${(V.ctab || 'in') === k ? 'on' : ''}" data-act="ctab" data-k="${k}">${l}</button>`).join('')}</div>
@@ -7539,6 +7542,7 @@ const libBadge = (id, site) => { const s = bestScore(id, site); return s != null
 const paperCard = id => { const r = paperRec(id), on = !!r, N = paperN(id), has = r && r.n != null;
   return `<section class="block card paperdone ${on ? 'on' : ''}"><div class="row-card"><div><b>${on ? 'סימנת שסיימת את דף העבודה' : 'פתרת על דף מודפס?'}</b><p class="muted small">${on ? 'הטקסט מסומן כבוצע' : 'בסיום ההשוואה לדף התשובות, סמני כאן'}</p></div><button class="btn ${on ? 'ok' : 'soft'}" data-act="paperdone" data-id="${id}" aria-pressed="${on}"><span class="pd-ic">✓</span><span>ביצעתי</span></button></div>
   ${on && N ? `<div class="pd-score"><label>כמה תשובות נכונות? <input type="number" inputmode="numeric" min="0" max="${N}" data-pdin="${id}" value="${has ? r.n : ''}" placeholder="0"> <span>מתוך ${N}</span></label><button class="btn sm" data-act="pdsave" data-id="${id}">${has ? 'עדכון ציון' : 'שמירת ציון'}</button>${has ? `<span class="chip ${r.s >= 0.6 ? 'ok' : 'lr'} en">${Math.round(r.s * 100)}%</span>` : ''}</div>` : ''}</section>`; };
+const TRASH_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const PRINT_BASE = 'https://noanoashalom-art.github.io/popcorn-english/print/';
 const PRINT_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>';
 const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn sm soft" data-act="printit" data-id="${id}">${PRINT_IC}<span>הדפסה</span></button>` : `<a class="btn sm soft" href="${PRINT_BASE}${id}.html?print" target="_blank" rel="noopener">${PRINT_IC}<span>הדפסה</span></a>`}<a class="btn sm ghost" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}.pdf" target="_blank" rel="noopener"><span>קובץ PDF</span></a><a class="btn sm ghost keybtn" href="${CLOUD.on ? 'print/' : PRINT_BASE}${id}-key.html?print" target="_blank" rel="noopener">✓<span>דף תשובות</span></a><small class="muted">דף עבודה ודף תשובות להשוואה</small></div>`;
@@ -8903,6 +8907,15 @@ const ACT = {
       V.busy = false;
     }
     P.name = nm; V.rn = false; save(); lbQueue(); CLOUD.lbAt = 0; toast('הכינוי עודכן'); render();
+  },
+  pdel: el => { V.pdel = V.pdel === el.dataset.id ? null : el.dataset.id; render(); },
+  'pdel-no': () => { V.pdel = null; render(); },
+  'pdel-yes': el => {
+    const id = el.dataset.id, p = DB.profiles[id]; if (!p) return;
+    if (!p.cloud) { if (LB.db && LB.uid && !LB.ro && LB.exists) { try { LB.db.doc('lb/' + LB.uid).update({ ['p' + id]: null }); } catch (e) { } } if (LB.sent) delete LB.sent['p' + id]; }
+    delete DB.profiles[id]; if (DB.cur === id) DB.cur = null; if (P && P.id === id) P = null; V.pdel = null;
+    try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { }
+    toast(p.cloud ? 'הוסר מהמחשב' : 'נמחק'); render();
   },
   'del-ask': () => { V.delc = true; V.rn = V.confirm = false; render(); },
   'del-no': () => { V.delc = false; render(); },
