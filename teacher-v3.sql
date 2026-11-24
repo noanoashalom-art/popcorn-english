@@ -4,6 +4,19 @@
 
 create extension if not exists pgcrypto with schema extensions;
 
+-- ===== make sure the students table has every column the site uses (adds only what is missing) =====
+alter table public.students add column if not exists name_key   text;
+alter table public.students add column if not exists pin_hash   text;
+alter table public.students add column if not exists token      uuid default gen_random_uuid();
+alter table public.students add column if not exists data       jsonb;
+alter table public.students add column if not exists stars      int not null default 0;
+alter table public.students add column if not exists week_id    int not null default 0;
+alter table public.students add column if not exists week_stars int not null default 0;
+alter table public.students add column if not exists level      int not null default 1;
+alter table public.students add column if not exists created_at timestamptz not null default now();
+alter table public.students add column if not exists updated_at timestamptz not null default now();
+update public.students set token = gen_random_uuid() where token is null;
+
 -- ===== tables =====
 create table if not exists public.teachers (
   id uuid primary key default gen_random_uuid(),
