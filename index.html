@@ -379,6 +379,8 @@ i.lg.ac{background:var(--pink)}
 .sheet-bg{position:fixed;inset:0;background:rgba(30,20,45,.35);z-index:40}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--surface);border-radius:24px 24px 0 0;padding:22px max(16px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;align-items:center;max-width:560px;margin:0 auto;box-shadow:0 -8px 30px rgba(40,20,60,.2);animation:rise .2s}
 .sheet-w{font-size:2.4rem;font-weight:500}
+#ttsstop{position:fixed;z-index:40;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border:0;border-radius:999px;background:#2B2238;color:#fff;font:inherit;font-weight:600;box-shadow:0 6px 20px rgba(43,34,56,.3);cursor:pointer}
+#ttsstop .ts-sq{width:14px;height:14px;border-radius:3px;background:#E86A92}
 #nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
 #nav button{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;color:var(--muted);font-size:.76rem}
 #nav svg{width:24px;height:24px}
@@ -1568,8 +1570,22 @@ const TTS = {
     return this.cl ? 'c:airy' : this.voice ? 'd:' + this.voice.name : '';
   },
   choose(id) { this.sel = id; if (id.startsWith('d:')) { const v = this.list.find(x => x.name === id.slice(2)); if (v) this.voice = v; } try { localStorage.setItem(KEY + '-voice2', id); } catch (e) { } },
+  long: false,
+  showStop(on) {
+    this.long = !!on; let b = document.getElementById('ttsstop');
+    if (!b && on) { b = document.createElement('button'); b.id = 'ttsstop'; b.dataset.act = 'ttsstop'; b.innerHTML = '<span class="ts-sq" aria-hidden="true"></span><span>עצירת ההקראה</span>'; document.body.appendChild(b); }
+    if (b) b.hidden = !on;
+    document.querySelectorAll('[data-act="sayall"] span').forEach(s => { s.textContent = on ? 'עצירה' : 'השמעת הטקסט'; });
+  },
+  stop() {
+    try { if (this.cl && this.cl.stop) this.cl.stop(); } catch (e) { }
+    try { if (this.ok) speechSynthesis.cancel(); } catch (e) { }
+    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
+    this.showStop(false);
+  },
   say(t, slowOne, el, retry) {
     if (!t) return;
+    const isLong = String(t).trim().length > 60; if (isLong) this.showStop(true); else if (this.long) this.showStop(false);
     /* wait (briefly) to learn whether the Claude voices are available, so the first taps don't use a different voice */
     if (!this.clDone && this.clP) { this.clP.then(() => { this.clDone = true; this.say(t, slowOne, el); }); return; }
     const txt = String(t).trim(), slow = !!(slowOne || SLOW), multi = /\s/.test(txt);
@@ -1580,6 +1596,7 @@ const TTS = {
       const voice = id.slice(2); let p;
       /* natural statement intonation: end with a full stop (keep ? and !); slow = one reading with short comma pauses, no extra lines or breaths */
       p = this.cl.speak(slow ? slowText(txt) : natural(txt), { voice, language: 'en-US', rate: slow ? 0.7 : 0.95 });
+      if (p && p.then && isLong) p.then(() => this.showStop(false), () => this.showStop(false));
       if (p && p.catch) p.catch(err => {
         const c = err && err.code;
         if (c === 'not_granted') { this.cl = null; this.denied = true; toast('ההקראה בקול של Claude כבויה. אפשר לבחור קול אחר ב"קול ההקראה".'); }
@@ -1592,6 +1609,7 @@ const TTS = {
     this.dsay(txt, slow, multi);
   },
   dsay(txt, slow, multi) {
+    const isLong = txt.length > 60;
     if (!this.ok) { toast('ההשמעה לא זמינה בדפדפן הזה. נסי Chrome או Edge.'); return; }
     try {
       speechSynthesis.cancel();
@@ -1599,6 +1617,7 @@ const TTS = {
       const said = slow ? slowText(txt) : natural(txt);
       const u = new SpeechSynthesisUtterance(said); u.lang = 'en-US'; if (this.voice) u.voice = this.voice;
       u.rate = slow ? (multi ? 0.6 : 0.4) : (multi ? 0.85 : 0.75); u.pitch = 1;
+      if (isLong) { u.onend = u.onerror = () => this.showStop(false); }
       setTimeout(() => speechSynthesis.speak(u), 40);
     } catch (e) { }
   }
@@ -7523,7 +7542,7 @@ const printBar = id => `<div class="printbar">${CLOUD.on ? `<button class="btn s
 VIEWS.text = () => {
   const T = TEXTS.find(t => t.id === V.id);
   return `<button class="back" data-act="go" data-v="read">${I.arrow}<span>הספרייה</span></button>
-  <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><button class="btn sm soft" data-act="sayall">${I.spk}<span>השמעת הטקסט</span></button></div>${textBlock(T, true, V.tr)}</section>
+  <section class="block"><div class="legend"><span><i class="lg sw"></i>מילה שכיחה</span><span><i class="lg ac"></i>מילה אקדמית</span><button class="btn sm soft" data-act="sayall">${I.spk}<span>${TTS.long ? 'עצירה' : 'השמעת הטקסט'}</span></button></div>${textBlock(T, true, V.tr)}</section>
   <section class="block card row-card"><div><b>${T.q.length} שאלות הבנה</b></div><button class="btn" data-act="rstart">לשאלות</button></section>
   <section class="block">${printBar(T.id)}</section>
   ${paperCard(T.id)}`;
@@ -8808,7 +8827,7 @@ function sheetView() {
     <p class="he-mean">${SHEET.he ? esc(SHEET.he) : '<span class="muted">אין תרגום שמור למילה הזאת. נסי לנחש מההקשר.</span>'}</p><button class="btn ghost" data-act="sheet-close">סגירה</button></div>`;
 }
 function toast(m) { const t = document.getElementById('toast'); if (!t) return; t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600); }
-function go(v, extra = {}) { V = { name: v, ...extra }; render(true); }
+function go(v, extra = {}) { if (TTS.long) TTS.stop(); V = { name: v, ...extra }; render(true); }
 
 const ACT = {
   say: el => TTS.say(el.dataset.t, el.dataset.s === '1', el.closest('[data-hl]') || el),
@@ -8969,7 +8988,8 @@ const ACT = {
   sfx: () => { SFX.on = !SFX.on; try { localStorage.setItem(KEY + '-sfx', SFX.on ? '1' : '0'); } catch (e) { } if (SFX.on) SFX.play('ok'); render(); },
   vpick: el => { TTS.choose(el.dataset.v); render(); const b = document.querySelector(`.vopt[data-v="${CSS.escape(el.dataset.v)}"]`); TTS.say('Reading every day can improve your English.', false, b); },
   voicetest: () => TTS.say('The main idea of the text is clear. Research shows that reading every day can improve your English.'),
-  sayall: () => { const T = TEXTS.find(t => t.id === V.id); TTS.say(T.s.map(x => x[0]).join(' ')); },
+  sayall: () => { if (TTS.long) { TTS.stop(); return; } const T = TEXTS.find(t => t.id === V.id); TTS.say(T.s.map(x => x[0]).join(' ')); },
+  ttsstop: () => TTS.stop(),
   tok: el => { SHEET = { w: el.dataset.w, he: el.dataset.he }; TTS.say(el.dataset.w); render(); },
   'sheet-close': () => { SHEET = null; NS = null; GS = null; GSL = null; HELP = false; PROF = false; V.rn = V.delc = V.confirm = false; render(); },
   pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key) && !nodeOpen(n, cur)) { toast(n.t === 'boss' ? 'הבוחן נפתח אחרי כל הצעדים בשלב' : 'הצעד הזה ייפתח בשלב הבא'); return; } SFX.play('tap'); NS = n.key; render(); },
@@ -9062,7 +9082,7 @@ function boot() {
       const a = el && el.dataset.act;
       if (a === 'say' || a === 'aplay' || a === 'tok') { if (Q.q._auto && !Q.q._hold) scheduleAuto(2000); }
       else if (a === 'hold' || Q.q._hold) { /* held: only the continue button moves on */ }
-      else if (!['qexit', 'help', 'qhelp', 'kw', 'slow', 'sheet-close', 'switch'].includes(a) && !e.target.closest('.top')) { e.preventDefault(); clearTimeout(AUTO); nextQ(); return; }
+      else if (!['qexit', 'help', 'qhelp', 'kw', 'slow', 'sheet-close', 'switch', 'ttsstop'].includes(a) && !e.target.closest('.top')) { e.preventDefault(); clearTimeout(AUTO); nextQ(); return; }
     }
     if (!el || el.disabled) return;
     const f = ACT[el.dataset.act]; if (f) { e.preventDefault(); f(el, e); }
