@@ -5893,9 +5893,9 @@ function bandLevel() {
   let rec, why;
   if (res) {
     const s1 = pct(res[1]), s2 = pct(res[2]), s3 = pct(res[3]);
-    if (s1 != null && s1 < 0.67) { rec = 1; why = 'בבוחן הפתיחה היו חסרות מילים בסיסיות'; }
+    if (!res.skip1 && s1 != null && s1 < 0.67) { rec = 1; why = 'בבוחן הפתיחה היו חסרות מילים בסיסיות'; }
     else if (s2 != null && s2 < 0.67) { rec = 2; why = 'את המילים הבסיסיות את מכירה. החוסר העיקרי ברמה הבינונית'; }
-    else { rec = 3; why = 'את רוב המילים בבוחן הכרת. אפשר להתקדם לרמה המתקדמת'; }
+    else { rec = 3; why = s3 != null && s3 < 0.67 ? 'את המילים הבסיסיות והבינוניות את מכירה. החוסר העיקרי ברמה המתקדמת' : 'את רוב המילים בבוחן הכרת. אפשר להתקדם לרמה המתקדמת'; }
   } else { rec = vocabWeak() ? 1 : 2; why = vocabWeak() ? 'כדי לבנות בסיס של מילים שכיחות' : 'לפי התשובות שלך עד עכשיו'; }
   /* practice moves her up: most sets of the recommended list done well */
   while (rec < 3) {
@@ -6800,7 +6800,7 @@ function newDiagState(stageOnly) {
   const only = stageOnly != null, sg = only ? stageOnly : 0;
   return { only, part: 1, intro: {}, stage: sg, order: stageUnits(sg, only), ui: 0, ua: [], uw: [], udk: 0, needs: 0, stoppedAt: null, fin: false, passed: 0,
     sl: shuf(SG.flatMap(g => sample(g.words, 2).map(w => w.w))), si: 0, sfu: null, al: shuf(AC.flatMap(c => sample(c.items, 1).map(x => x.id))), ai: 0, afu: null, ml: sample(DIAG_MEAN, 4), mi: 0, cl: sample([0, 1, 2, 3, 4], 3), ci: 0, count: 0,
-    wl: WRULES.map(r => r.id), wi: 0, bl: [1, 2, 3].flatMap(b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3)).map(w => [w.b, w.i]), bi: 0,
+    wl: WRULES.map(r => r.id), wi: 0,
     res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [], write: {} } };
 }
 const infoCard = (eyebrow, title, text, cls = '') => ({ t: 'info', html: `<div class="part-intro ${cls}">${cls === 'win' ? OWL('cheer') : ''}<span class="eyebrow">${eyebrow}</span><h2>${title}</h2><p>${text}</p></div>` });
@@ -6867,8 +6867,14 @@ function diagSrc(st) {
           st.part = 7; continue;
         }
         if (st.part === 7) {
-          if (!st.bl) { st.bl = [1, 2, 3].flatMap(b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3)).map(w => [w.b, w.i]); st.bi = 0; }
-          if (st.bi < st.bl.length) { const [b0] = st.bl[st.bi], prev = st.res.band && st.res.band[b0 - 1]; if (b0 > 1 && prev && prev.length >= 3 && prev.filter(Boolean).length <= 1) return null; }
+          /* adaptive: start at Band 2. All 3 right → check Band 3 and skip Band 1. Otherwise → check Band 1 and stop. */
+          const pick = b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3).map(w => [w.b, w.i]);
+          if (!st.bplan) { st.bplan = [2]; st.bl = pick(2); st.bi = 0; st.res.band = { 1: [], 2: [], 3: [] }; }
+          if (st.bi >= st.bl.length && st.bplan.length === 1) {
+            const r2 = st.res.band[2] || [], all = r2.length >= 3 && r2.every(Boolean);
+            const nx = all ? 3 : 1; st.bplan.push(nx); st.bl = st.bl.concat(pick(nx));
+            if (all) st.res.band.skip1 = true;
+          }
           if (st.bi < st.bl.length) { const [b, wi] = st.bl[st.bi], w = BANDS[b - 1].words[wi]; const q = qBand(w, 'meaning', sample(BANDS[b - 1].words, 8)); q.variant = null; q.rec = []; q.dm = { p: 7, b }; return q; }
           return null;
         }
@@ -6889,13 +6895,13 @@ function diagSrc(st) {
         else if (dk) { st.res.acad[d.id] = 'x'; st.ai++; }
         else st.afu = d.id;
       } else if (d.p === 4) { st.res.mean[d.w] = ok; st.mi++; }
-      else if (d.p === 7) { st.res.band = st.res.band || { 1: [], 2: [], 3: [] }; st.res.band[d.b].push(ok); st.bi++; }
+      else if (d.p === 7) { st.res.band = st.res.band || { 1: [], 2: [], 3: [] }; (st.res.band[d.b] = st.res.band[d.b] || []).push(ok); st.bi++; }
       else if (d.p === 6) { st.res.write = st.res.write || {}; st.res.write[d.id] = ok; st.wi++; }
       else { st.res.ctx.push(ok ? 1 : 0); st.ci++; }
     },
     prog() {
       const ph = st.part <= 1 && !P.noPhon ? Math.max(0, (st.order.length - st.ui) * 2 - st.ua.length) : 0;
-      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + (st.part <= 6 ? (st.wl || WRULES).length - (st.wi || 0) : 0) + ((st.bl || [1, 2, 3, 4, 5, 6, 7, 8, 9]).length - (st.bi || 0));
+      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + (st.part <= 6 ? (st.wl || WRULES).length - (st.wi || 0) : 0) + (st.bplan ? (st.bl.length - st.bi) + (st.bplan.length < 2 ? 3 : 0) : 6);
       return [st.count, st.count + ph + rest];
     }
   };
