@@ -6744,7 +6744,7 @@ function diagWord(u, n, used) {
   return { w: rnd(pool.length ? pool : u.words.map(x => x.w)), he: '' };
 }
 const STAGE_NAMES = ['צלילים בסיסיים', 'תנועות ארוכות', 'OO, OU ו-OI', 'E שקטה, C ו-PH', 'סיומות מתקדמות'];
-const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר'];
+const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר', 'כתיבה'];
 const PART_INFO = ['', 'בודקות כמה צלילים בכל פעם. כשהכול נכון ממשיכות הלאה, וכשיש קושי עוצרות ולומדות.', '6 מילים קצרות שמופיעות בכל טקסט.', '5 מילים וביטויים מתוך שאלות במבחנים.', '4 מילים: האם את יודעת מה הן אומרות?', '3 משפטים קצרים מתוך טקסטים אקדמיים.'];
 const stageUnits = (sg, onlyNew) => STAGES[sg].filter(id => !onlyNew || P.units[id].st === 'nt');
 function nextStageIdx() { return STAGES.findIndex(sg => sg.some(id => P.units[id].st === 'nt')); }
@@ -6756,8 +6756,9 @@ function stageReady() { return nextStageIdx() >= 0 && UNITS.every(u => P.units[u
 function newDiagState(stageOnly) {
   const only = stageOnly != null, sg = only ? stageOnly : 0;
   return { only, part: 1, intro: {}, stage: sg, order: stageUnits(sg, only), ui: 0, ua: [], uw: [], udk: 0, needs: 0, stoppedAt: null, fin: false, passed: 0,
-    sl: sample(DIAG_SIGHT, 6), si: 0, sfu: null, al: sample(DIAG_ACAD, 5).map(slug), ai: 0, afu: null, ml: sample(DIAG_MEAN, 4), mi: 0, cl: sample([0, 1, 2, 3, 4], 3), ci: 0, count: 0,
-    res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [] } };
+    sl: shuf(SG.flatMap(g => sample(g.words, 2).map(w => w.w))), si: 0, sfu: null, al: shuf(AC.flatMap(c => sample(c.items, 1).map(x => x.id))), ai: 0, afu: null, ml: sample(DIAG_MEAN, 4), mi: 0, cl: sample([0, 1, 2, 3, 4], 3), ci: 0, count: 0,
+    wl: WRULES.map(r => r.id), wi: 0,
+    res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [], write: {} } };
 }
 const infoCard = (eyebrow, title, text, cls = '') => ({ t: 'info', html: `<div class="part-intro ${cls}">${cls === 'win' ? OWL('cheer') : ''}<span class="eyebrow">${eyebrow}</span><h2>${title}</h2><p>${text}</p></div>` });
 function diagSrc(st) {
@@ -6815,6 +6816,11 @@ function diagSrc(st) {
         }
         if (st.part === 5) {
           if (st.ci < st.cl.length) { const q = qCtx(DIAG_CTX[st.cl[st.ci]]); q.dkk = 'c:' + st.cl[st.ci]; q.dm = { p: 5 }; return q; }
+          st.part = 6; continue;
+        }
+        if (st.part === 6) {
+          if (!st.wl) { st.wl = WRULES.map(r => r.id); st.wi = 0; st.res.write = st.res.write || {}; }
+          if (st.wi < st.wl.length) { const R0 = WRM[st.wl[st.wi]]; const q = wq(R0, rnd(R0.qs)); q.variant = null; q.dm = { p: 6, id: R0.id }; return q; }
           return null;
         }
         return null;
@@ -6834,16 +6840,17 @@ function diagSrc(st) {
         else if (dk) { st.res.acad[d.id] = 'x'; st.ai++; }
         else st.afu = d.id;
       } else if (d.p === 4) { st.res.mean[d.w] = ok; st.mi++; }
+      else if (d.p === 6) { st.res.write = st.res.write || {}; st.res.write[d.id] = ok; st.wi++; }
       else { st.res.ctx.push(ok ? 1 : 0); st.ci++; }
     },
     prog() {
       const ph = st.part <= 1 && !P.noPhon ? Math.max(0, (st.order.length - st.ui) * 2 - st.ua.length) : 0;
-      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.cl.length - st.ci);
+      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + ((st.wl || WRULES).length - (st.wi || 0));
       return [st.count, st.count + ph + rest];
     }
   };
 }
-const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${P.noPhon ? st.part - 1 : st.part} · ${PART_NAMES[Math.min(5, st.part)]}`) : '';
+const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${P.noPhon ? st.part - 1 : st.part} · ${PART_NAMES[Math.min(6, st.part)]}`) : '';
 function startDiag() {
   if (!P.diag.state || !P.diag.state.order) P.diag.state = newDiagState();
   save();
@@ -6866,6 +6873,7 @@ function applyPlacement(res) {
   Object.entries(res.sight).forEach(([w, v]) => setItem('s:' + w, v === 'k' ? 4 : v === 'p' ? 2 : 1));
   Object.entries(res.acad).forEach(([id, v]) => setItem('a:' + id, v === 'k' ? 4 : v === 'p' ? 2 : 1));
   Object.entries(res.mean).forEach(([w, v]) => setItem('m:' + w, v ? 4 : 1));
+  if (res.write) { const W = ensureWrite(); W.dg = W.dg || {}; Object.entries(res.write).forEach(([id, ok]) => { W.dg[id] = ok ? 1 : 0; }); }
   const c = res.ctx.reduce((a, b) => a + b, 0); P.rlvl = res.ctx.length && c / res.ctx.length >= 0.67 ? 2 : 1;
   P.diag.done = true; P.diag.res = res; P.diag.at = now(); P.diag.state = null;
   P.hist.unshift({ t: now(), l: 'בוחן פתיחה', ok: null, n: null });
@@ -7171,7 +7179,7 @@ VIEWS.results = () => {
   const ctx = r.ctx && r.ctx.length ? r.ctx.reduce((a, b) => a + b, 0) / r.ctx.length : 0;
   const ring = (v, ic, label) => { const d = Math.round(v * 100); return `<div class="rs"><svg viewBox="0 0 64 64" class="rs-r" aria-hidden="true"><circle cx="32" cy="32" r="27" pathLength="100" class="rs-bg"/><circle cx="32" cy="32" r="27" pathLength="100" class="rs-fg" style="stroke-dasharray:${d} 100"/></svg><span class="rs-ic">${ic}</span><b class="en">${d}%</b><small>${label}</small></div>`; };
   return `<section class="block card resdone">${OWL('cheer')}<h1 class="h1">כל הכבוד, ${esc(P.name)}!</h1>
-    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}</div>
+    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}${r.write ? ring(part(r.write), PEN_IC, 'כתיבה') : ''}</div>
     <button class="btn big-btn" data-act="go" data-v="home">${PIC.route}<span>למסלול שלי</span></button></section>`;
 };
 
@@ -7418,7 +7426,7 @@ VIEWS.qdone = () => {
     ${s.newMast.length ? `<div class="newmast">${I.star}<div><b>שליטה חדשה!</b><p>${s.newMast.map(id => en(uLabel(UM[id]))).join(', ')}</p></div></div>` : ''}
     ${s.path && s.path.retry ? `<div class="pathok best">${I.star}<b>${s.path.rec ? `שיא חדש! ${Math.round(s.path.best * 100)}%` : `השיא שלך נשמר: ${Math.round(s.path.best * 100)}%`}</b></div>` : s.path ? (s.path.pass ? `<div class="pathok">${PIC.route}<b>${s.path.jump ? 'דילגת על השלב!' : 'התקדמת במסלול!'}</b></div>` : `<p class="note">כדי להתקדם במסלול צריך ${Math.round(s.path.thr * 100)}% תשובות נכונות. נסי שוב, את קרובה.</p>`) : ''}
     ${s.gUnlock ? `<div class="newmast lvup">${PIC.crown}<div><b>שלב ${s.gUnlock} נפתח!</b></div></div>` : ''}
-    ${s.levelUp != null ? `<div class="newmast lvup">${PIC.crown}<div><b>שלב ${s.levelUp + 1} הושלם!</b><p>${esc(LV[s.levelUp].name)}</p></div></div>` : ''}
+    ${s.levelUp != null ? `<div class="newmast lvup">${PIC.crown}<div><b>שלב ${s.levelUp + 1} הושלם!</b><p>${esc(lvName(s.levelUp))}</p></div></div>` : ''}
     ${(s.newDict || []).length ? `<div class="newmast">${I.star}<div><b>מיומנות מילון בשליטה!</b><p>${s.newDict.map(id => DLM[id].short).join(', ')}</p></div></div>` : ''}
     ${s.techDone ? `<div class="newmast">${I.star}<div><b>סיימת את מדריך המילון!</b></div></div>` : ''}
     ${(s.reassessD || []).length ? `<p class="note">${s.reassessD.map(id => DLM[id].short).join(', ')} חזרה לתרגול אחרי כמה טעויות בחזרה.</p>` : ''}
@@ -7852,13 +7860,14 @@ VIEWS.dlesson = () => {
    adds a mixed-practice step after every few steps, a reading text, and a checkpoint quiz.
    Steps she already knows are skipped automatically; every step can also be tested out. */
 const LV = [
-  { name: 'יסודות הקריאה', sight: [0], acad: [0], dict: ['tech', 'ebase'], read: ['t1'] },
-  { name: 'תנועות ארוכות', sight: [1], acad: [1], dict: ['everb', 'comp', 'pos'], read: ['t2'] },
-  { name: 'צלילים מורכבים', sight: [2], acad: [2, 3], dict: ['prefix', 'suffix', 'multi'], read: ['t3'] },
-  { name: 'מילים של מבחן', sight: [3], acad: [4], dict: ['need'], read: ['t4'], strat: true, pas: ['p1'] },
-  { name: 'קוראת עצמאית', sight: [], acad: [5, 6], dict: [], read: ['t5', 't6'], pas: ['p2'] }
+  { name: 'יסודות הקריאה', nn: 'יסודות', sight: [0], acad: [0], dict: ['tech', 'ebase'], wr: [], read: ['t1'] },
+  { name: 'תנועות ארוכות', nn: 'מילים ומילון', sight: [1], acad: [1], dict: ['everb', 'comp', 'pos'], wr: [], read: ['t2'] },
+  { name: 'צלילים מורכבים', nn: 'בונות אוצר מילים', sight: [2], acad: [2, 3], dict: ['prefix', 'suffix', 'multi'], wr: ['cap', 'end', 'be'], read: ['t3'] },
+  { name: 'מילים של מבחן', nn: 'מילים של מבחן', sight: [3], acad: [4], dict: ['need'], wr: ['sv', 'link', 'order'], wt: ['oa1'], read: ['t4'], strat: true, pas: ['p1'] },
+  { name: 'קוראת עצמאית', nn: 'קוראת וכותבת', sight: [], acad: [5, 6], dict: [], wr: ['opin'], wt: ['oa3', 'pb3'], read: ['t5', 't6'], pas: ['p2', 'p3', 'p4'] }
 ];
 let PN = null, NS = null;
+const lvName = k => P && P.noPhon ? LV[k].nn : LV[k].name;
 const STEP_SECTIONS = ['sight', 'acad', 'dict', 'phon', 'unit', 'read', 'games', 'band', 'library', 'lib'];
 const PCACHE = {};
 function ensurePath() { ensurePas(); if (P && !P.path) P.path = { done: {}, lv: {} }; if (P && !P.path.lv) P.path.lv = {}; }
@@ -7866,7 +7875,7 @@ function levelNodes(k) {
   const ck = k + (P && P.noPhon ? 'n' : '');
   if (PCACHE[ck]) return PCACHE[ck];
   const L = LV[k], ph = P && P.noPhon ? [] : STAGES[k].map(id => ({ t: 'pl', id })), oth = [];
-  for (let i = 0; i < 3; i++) { if (L.sight[i] != null) oth.push({ t: 'sg', id: L.sight[i] }); if (L.dict[i] != null) oth.push({ t: 'dc', id: L.dict[i] }); if (L.acad[i] != null) oth.push({ t: 'ac', id: L.acad[i] }); }
+  for (let i = 0; i < 3; i++) { if (L.sight[i] != null) oth.push({ t: 'sg', id: L.sight[i] }); if (L.dict[i] != null) oth.push({ t: 'dc', id: L.dict[i] }); if (L.acad[i] != null) oth.push({ t: 'ac', id: L.acad[i] }); if (L.wr[i] != null) oth.push({ t: 'wr', id: L.wr[i] }); }
   const content = []; let pi = 0, oi = 0;
   while (pi < ph.length || oi < oth.length) { if (pi < ph.length) content.push(ph[pi++]); if (oi < oth.length) content.push(oth[oi++]); }
   const out = P && P.noPhon ? [] : [{ t: 'stage', id: k }]; let c = 0, m = 0, pc = 0, r = 0;
@@ -7874,10 +7883,11 @@ function levelNodes(k) {
   L.read.forEach(id => out.push({ t: 'rd', id }));
   if (L.strat) out.push({ t: 'st', id: 0 });
   (L.pas || []).forEach(id => out.push({ t: 'ps', id }));
+  (L.wt || []).forEach(id => out.push({ t: 'wt', id }));
   out.push({ t: 'mix', id: m++ }); out.push({ t: 'boss', id: 0 });
   return (PCACHE[ck] = out.map((n, i) => ({ ...n, k, i, key: `${k}:${n.t}:${n.id}` })));
 }
-const CONTENT_T = ['pl', 'sg', 'ac', 'dc'];
+const CONTENT_T = ['pl', 'sg', 'ac', 'dc', 'wr'];
 function nodeDone(n) {
   if (P.path.done[n.key]) return true;
   if (n.t === 'pl') return !!P.units[n.id].lesson;
@@ -7885,43 +7895,42 @@ function nodeDone(n) {
   if (n.t === 'st') return !!P.stratSeen;
   if (n.t === 'ps') return !!(P.pas && P.pas[n.id] && (P.pas[n.id].cs || 0) >= 0.6) || paperDone(n.id);
   if (n.t === 'dc' && n.id === 'tech') return P.dict.tech.st === 'mast';
+  if (n.t === 'wr') return ((P.write && P.write.r[n.id]) || 0) >= 0.8;
+  if (n.t === 'wt') return !!(P.write && P.write.t[n.id]);
   return false;
 }
 function nodeKnown(n) {
   if (n.t === 'stage') return !STAGES[n.id].some(id => P.units[id].st === 'nt');
   if (n.t === 'pl') return P.units[n.id].st === 'mast';
-  if (n.t === 'sg') return SG[n.id].words.every(w => known('s:' + w.w));
-  if (n.t === 'ac') return AC[n.id].items.every(a => known('a:' + a.id));
+  if (n.t === 'sg') { const r = P.diag.res && P.diag.res.sight || {}, t = SG[n.id].words.filter(w => r[w.w]); if (t.length >= 2 && t.every(w => r[w.w] === 'k')) return true; return SG[n.id].words.every(w => known('s:' + w.w)); }
+  if (n.t === 'ac') { const r = P.diag.res && P.diag.res.acad || {}, t = AC[n.id].items.filter(a => r[a.id]); if (t.length >= 1 && t.every(a => r[a.id] === 'k')) return true; return AC[n.id].items.every(a => known('a:' + a.id)); }
   if (n.t === 'dc') return P.dict[n.id].st === 'mast';
+  if (n.t === 'wr') return !!(P.write && P.write.dg && P.write.dg[n.id] === 1);
+  if (n.t === 'rv') return !P.path.done[n.key] && levelNodes(n.k).filter(x => x.t === 'pl').every(x => nodeKnown(x) && !nodeDone(x));
   if (n.t === 'mix') return levelNodes(n.k).filter(x => CONTENT_T.includes(x.t)).every(x => !nodeDone(x) && nodeKnown(x));
   return false;
 }
 const nodeState = n => nodeDone(n) ? 'done' : nodeKnown(n) ? 'skip' : 'todo';
 /* every step of the current level is open; the end-of-level quiz opens once the other steps are done or skipped */
-const nodeOpen = (n, cur) => !!cur && n.k === cur.k && (n.t !== 'boss' || levelNodes(n.k).every(x => x.t === 'boss' || nodeState(x) !== 'todo'));
+const nodeOpen = (n, cur) => !!cur && n.key === cur.key;
 function pathInfo() {
   ensurePath(); ensureDict();
   let cur = null; const lv = LV.map((L, k) => {
-    const nodes = levelNodes(k).map(n => ({ n, s: nodeState(n) }));
+    const nodes = levelNodes(k).map(n => ({ n, s: nodeState(n) })).filter(x => x.s !== 'skip');
     nodes.forEach(x => { if (!cur && x.s === 'todo') cur = x.n; });
     const fin = nodes.filter(x => x.s !== 'todo').length;
     return { k, nodes, fin, total: nodes.length, complete: fin === nodes.length };
   });
-  /* the current step follows her: the step she opened last, or the next open step after it */
-  const at = P.path.at;
-  if (cur && at && at.startsWith(cur.k + ':')) {
-    const ns = lv[cur.k].nodes, ai = ns.findIndex(x => x.n.key === at), ok = x => x.s === 'todo' && (x.n.t !== 'boss' || nodeOpen(x.n, cur));
-    if (ai >= 0) { const pick = ok(ns[ai]) ? ns[ai] : ns.slice(ai + 1).find(ok) || ns.find(ok); if (pick) cur = pick.n; }
-  }
+  /* strict order: the current step is the first step not yet passed; the next one opens only after it */
   return { lv, cur };
 }
 const pathCurrent = () => pathInfo().cur;
 const findNode = key => { const [k] = key.split(':'); return levelNodes(+k).find(n => n.key === key); };
 function nodeTitle(n) {
   return n.t === 'st' ? 'אסטרטגיות קריאה' : n.t === 'ps' ? PASM[n.id].he : n.t === 'stage' ? 'בוחן צלילים' : n.t === 'pl' ? 'הצליל ' + uLabel(UM[n.id]) : n.t === 'sg' ? SG[n.id].name : n.t === 'ac' ? AC[n.id].name
-    : n.t === 'dc' ? (n.id === 'tech' ? 'מדריך המילון' : DLM[n.id].short) : n.t === 'rd' ? TEXTS.find(t => t.id === n.id).he : n.t === 'mix' ? 'תרגול משולב' : n.t === 'rv' ? 'חזרה: צלילים ומילים' : 'בוחן סוף שלב';
+    : n.t === 'wr' ? 'כתיבה: ' + WRM[n.id].t : n.t === 'wt' ? 'משימת כתיבה: ' + WTM[n.id].he : n.t === 'dc' ? (n.id === 'tech' ? 'מדריך המילון' : DLM[n.id].short) : n.t === 'rd' ? TEXTS.find(t => t.id === n.id).he : n.t === 'mix' ? 'תרגול משולב' : n.t === 'rv' ? 'חזרה: צלילים ומילים' : 'בוחן סוף שלב';
 }
-const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים קטנות וחשובות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', rv: 'חזרה', boss: 'בוחן' };
+const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים קטנות וחשובות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', rv: 'חזרה', boss: 'בוחן', wr: 'כתיבה', wt: 'משימת כתיבה' };
 const PIC = {
   rv: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4m0 1h10l-2 3.5L16 12H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -7937,11 +7946,13 @@ const PIC = {
 const PL_SHORT = { e: 'a_e', ck: 'k', sc: 'ce', ool: 'oo', oos: 'oo', oi: 'oi' };
 function nodeIcon(n) {
   if (n.t === 'pl') { const t = PL_SHORT[n.id] || UM[n.id].name.toLowerCase(); return `<span class="pn-txt en ${t.length > 3 ? 'sm' : ''}">${esc(t)}</span>`; }
-  return { st: PIC.bulb, ps: PIC.doc, stage: PIC.flag, sg: I.cards, ac: I.cap, dc: DICT_ICON, rd: I.book, mix: PIC.mix, rv: PIC.rv, boss: PIC.crown }[n.t];
+  return { st: PIC.bulb, ps: PIC.doc, stage: PIC.flag, sg: I.cards, ac: I.cap, dc: DICT_ICON, rd: I.book, mix: PIC.mix, rv: PIC.rv, boss: PIC.crown, wr: PEN_IC, wt: PEN_IC }[n.t];
 }
 function nodeDesc(n) {
   if (n.t === 'stage') return `כמה שאלות על הצלילים ${STAGES[n.id].map(id => uLabel(UM[id])).join(', ')}. מה שכבר יודעת, מדלגים.`;
   if (n.t === 'pl') return P.units[n.id].st === 'nt' ? 'עוד לא בדקנו את הצליל הזה. התחילי בבוחן קצר: אם תצליחי, נדלג על השיעור.' : `שיעור קצר: הכלל, הקשבה, קריאה לבד ותרגול. ${UM[n.id].he}`;
+  if (n.t === 'wr') return 'חוק כתיבה קצר ותרגול: ' + WRM[n.id].rule.map(r => r[0]).join(' · ');
+  if (n.t === 'wt') return 'משימת כתיבה כמו במבחן, צעד אחר צעד: מבינים את המשימה, בונים משפטים, בודקים ומשווים לדוגמה.';
   if (n.t === 'rv') return 'חזרה קצרה על הצלילים והמילים מהשלבים הקודמים, כדי שלא יישכחו.';
   if (n.t === 'sg') return 'כרטיסיות ותרגול קצר: ' + SG[n.id].words.slice(0, 6).map(w => w.w).join(', ') + '…';
   if (n.t === 'ac') return 'מילים וביטויים מתוך שאלות ומבחנים: ' + AC[n.id].items.slice(0, 4).map(a => a.en).join(', ') + '…';
@@ -7995,6 +8006,7 @@ function bossQs(k) {
   const dl = L.dict.filter(x => x !== 'tech');
   sample(dl, Math.min(2, dl.length)).forEach(id => add(bankQ(id)));
   if (L.dict.includes('tech')) add(rnd(TECHQ)());
+  sample(L.wr || [], 2).forEach(id => add(wq(WRM[id], rnd(WRM[id].qs))));
   return shuf(out);
 }
 function sightQuick(gi) {
@@ -8009,8 +8021,8 @@ function acadQuick(ci) {
 /* starting a step */
 function startNode(n, quick) {
   if (!n) return;
-  const thr = n.t === 'boss' ? 0.8 : n.t === 'rd' ? 0.5 : quick ? 0.85 : n.t === 'dc' && n.id === 'tech' ? 0.83 : 0.6;
-  const tag = { stage: 'stage:' + n.id, pl: (quick || P.units[n.id] && P.units[n.id].st === 'nt' ? 'ucheck:' : 'pl:') + n.id, sg: 'sight:' + n.id, ac: 'acad:' + n.id, dc: 'dict:' + n.id, rd: 'read:' + n.id, st: 'strat', ps: 'pas:' + n.id, mix: 'mix:' + n.key, rv: 'rv:' + n.key, boss: 'boss:' + n.k }[n.t];
+  const thr = n.t === 'boss' || n.t === 'wr' ? 0.8 : n.t === 'rd' ? 0.5 : quick ? 0.85 : n.t === 'dc' && n.id === 'tech' ? 0.83 : 0.6;
+  const tag = { stage: 'stage:' + n.id, pl: (quick || P.units[n.id] && P.units[n.id].st === 'nt' ? 'ucheck:' : 'pl:') + n.id, sg: 'sight:' + n.id, ac: 'acad:' + n.id, dc: 'dict:' + n.id, rd: 'read:' + n.id, st: 'strat', ps: 'pas:' + n.id, mix: 'mix:' + n.key, rv: 'rv:' + n.key, boss: 'boss:' + n.k, wr: 'wr:' + n.id, wt: 'wt:' + n.id }[n.t];
   PN = { key: n.key, tag, thr, again: nodeState(n) !== 'todo' }; ensurePath(); P.path.at = n.key; save();
   const o = (title, extra = {}) => ({ kind: 'mixed', title, tag, back: { name: 'home', scrollPath: true }, again: () => startNode(n, quick), ...extra });
   if (n.t === 'stage') startStageCheck(n.id);
@@ -8021,18 +8033,20 @@ function startNode(n, quick) {
   else if (n.t === 'rd') go('text', { id: n.id, tr: {} });
   else if (n.t === 'st') go('strat');
   else if (n.t === 'ps') go('passage', { id: n.id });
+  else if (n.t === 'wr') startWRule(n.id);
+  else if (n.t === 'wt') go('wtask', { id: n.id, st: 0 });
   else if (n.t === 'mix') startQuiz(arraySrc(mixQs(n.k)), o('תרגול משולב'));
   else if (n.t === 'rv') startQuiz(arraySrc(rvQs(n)), o('חזרה: צלילים ומילים'));
   else startQuiz(arraySrc(bossQs(n.k)), o('בוחן סוף שלב ' + (n.k + 1)));
 }
 VIEWS.jumpinfo = () => { const k = V.k, L = LV[k];
-  return `<section class="block card intro diagstart">${OWL('cheer')}<span class="eyebrow">בוחן דילוג</span><h1 class="h1">לדלג על שלב ${k + 1}: ${esc(L.name)}</h1>
+  return `<section class="block card intro diagstart">${OWL('cheer')}<span class="eyebrow">בוחן דילוג</span><h1 class="h1">לדלג על שלב ${k + 1}: ${esc(lvName(k))}</h1>
     <p>אם את כבר מכירה את החומר של השלב, אפשר לבדוק את זה בבוחן קצר ולעבור הלאה.</p>
     <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים קטנות וחשובות, אוצר מילים אקדמי ומילון</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
     <div class="btns center"><button class="btn big-btn" data-act="pjumpgo" data-k="${k}">${I.play}<span>להתחיל את הבוחן</span></button><button class="btn ghost" data-act="go" data-v="home">חזרה למסלול</button></div></section>`; };
 function startJump(k) {
   PN = { key: 'jump:' + k, tag: 'jump:' + k, thr: 0.9 };
-  startQuiz(arraySrc(bossQs(k)), { kind: 'mixed', title: 'בוחן דילוג: שלב ' + (k + 1) + ' · ' + LV[k].name, tag: 'jump:' + k, back: { name: 'home', scrollPath: true } });
+  startQuiz(arraySrc(bossQs(k)), { kind: 'mixed', title: 'בוחן דילוג: שלב ' + (k + 1) + ' · ' + lvName(k), tag: 'jump:' + k, back: { name: 'home', scrollPath: true } });
 }
 function markNode(key) {
   ensurePath();
@@ -8079,8 +8093,8 @@ function levelMap(L, cur) {
 }
 function pathHtml() {
   const info = pathInfo(), cur = info.cur, ck = cur ? cur.k : LV.length;
-  return info.lv.map(L => {
-    const name = LV[L.k].name, isCur = L.k === ck, past = L.k < ck;
+  return info.lv.filter(L => L.total > 0).map(L => {
+    const name = lvName(L.k), isCur = L.k === ck, past = L.k < ck;
     const jump = isCur && L.total - L.fin >= 4 ? `<button class="lv-jlink" data-act="pjump" data-k="${L.k}"><span>« לדלג על כל שלב ${L.k + 1}</span></button>` : '';
     const head = `<div class="lv-head"><div class="lv-t"><h3>שלב ${L.k + 1}: ${esc(name)}</h3>${jump}</div>
       <div class="lv-p">${past ? `<span class="lv-crown">${PIC.crown}</span>` : !isCur ? `<span class="lv-lock">${PIC.lock}</span>` : ''}<b class="en">${L.fin}/${L.total}</b></div></div>${bar(L.fin / L.total)}`;
@@ -8436,7 +8450,7 @@ const WTASKS = [
     model: 'When I was in high school, my friend gave me advice about my English test. She told me to read the questions before the text. It was helpful because I found the answers faster. I got a better grade. I think people should give one clear and kind tip.' }, { t: WB })
 ];
 const WTM = Object.fromEntries(WTASKS.map(t => [t.id, t]));
-const ensureWrite = () => { if (!P.write) P.write = { r: {}, t: {}, d: {} }; ['r', 't', 'd'].forEach(k => { P.write[k] = P.write[k] || {}; }); return P.write; };
+const ensureWrite = () => { if (!P.write) P.write = { r: {}, t: {}, d: {}, dg: {} }; ['r', 't', 'd', 'dg'].forEach(k => { P.write[k] = P.write[k] || {}; }); return P.write; };
 const wDraft = id => { const W = ensureWrite(), T = WTM[id]; return W.d[id] || (W.d[id] = { f: T.t.frames.map(f => f[1]), txt: '' }); };
 const wJoin = d => d.f.map(s => (s || '').trim()).filter(s => s && /[a-z]/i.test(s) && !WTASKS.some(T => T.t.frames.some(f => f[1].trim() === s))).join(' ');
 function wq(r, x) {
@@ -8986,7 +9000,7 @@ const ACT = {
   ttsstop: () => TTS.stop(),
   tok: el => { SHEET = { w: el.dataset.w, he: el.dataset.he }; TTS.say(el.dataset.w); render(); },
   'sheet-close': () => { SHEET = null; NS = null; GS = null; GSL = null; HELP = false; PROF = false; V.rn = V.delc = V.confirm = false; render(); },
-  pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key) && !nodeOpen(n, cur)) { toast(n.t === 'boss' ? 'הבוחן נפתח אחרי כל הצעדים בשלב' : 'הצעד הזה ייפתח בשלב הבא'); return; } SFX.play('tap'); NS = n.key; render(); },
+  pnode: el => { const n = findNode(el.dataset.k); if (!n) return; const st = nodeState(n), cur = pathCurrent(); if (st === 'todo' && (!cur || cur.key !== n.key)) { toast(n.k === (cur && cur.k) ? 'קודם מסיימות את הצעד הנוכחי. ככה נפתח הצעד הבא.' : 'השלב הזה ייפתח אחרי שתעברי את השלב הקודם.'); return; } SFX.play('tap'); NS = n.key; render(); },
   pstart: () => { const n = findNode(NS); NS = null; startNode(n, false); },
   pquick: () => { const n = findNode(NS); NS = null; startNode(n, true); },
   wrule: el => go('wrule', { id: el.dataset.id }),
