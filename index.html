@@ -1799,6 +1799,7 @@ function streak() {
   for (;;) { const k = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); if (set.has(k)) { n++; d.setDate(d.getDate() - 1); } else break; }
   return n;
 }
+const achList = () => Object.entries(ACH).filter(([k]) => !(P && P.noDict && (k === 'tech' || k === 'dict1')) && !(P && P.noPhon && k === 'pat1'));
 const ACH = { diag: 'בוחן פתיחה הושלם', lesson1: 'שיעור ראשון', pat1: 'דפוס ראשון בשליטה', w25: '25 מילים בשליטה', w100: '100 מילים בשליטה', g5: '5 משחקים', read1: 'טקסט ראשון', streak3: '3 ימי תרגול ברצף', lvl1: 'שלב ראשון במסלול', tech: 'מדריך המילון הושלם', dict1: 'מיומנות מילון ראשונה' };
 function checkAch() {
   const a = P.ach, set = k => { if (!a[k]) { a[k] = now(); toast('הישג חדש: ' + ACH[k]); } };
@@ -7294,15 +7295,15 @@ VIEWS.home = () => {
   ${vocabNudge()}
   <section class="block path-wrap"><div class="path-top"><h2 class="h2">${PIC.route}<span>המסלול שלי</span></h2><span class="ptb">${dkKeys().length ? `<button class="btn sm soft" data-act="dkall">חזרה: לא ידעתי · ${dkKeys().length}</button>` : ''}${due ? `<button class="btn sm soft" data-act="mixed">חזרה יומית</button>` : ''}</span></div>${pathHtml()}</section>
   ${asgCard()}<section class="block">${lbMini()}</section>
-  <section class="block card prog"><h2 class="h2">הישגים <small class="muted">${Object.keys(ACH).filter(k => P.ach[k]).length}/${Object.keys(ACH).length}</small></h2>
-    <div class="ach">${Object.entries(ACH).sort((x, y) => (!!P.ach[y[0]]) - (!!P.ach[x[0]])).map(([k, l]) => `<div class="badge ${P.ach[k] ? 'on' : ''}">${I.star}<span>${l}</span></div>`).join('')}</div></section>
+  <section class="block card prog"><h2 class="h2">הישגים <small class="muted">${achList().filter(([k]) => P.ach[k]).length}/${achList().length}</small></h2>
+    <div class="ach">${achList().sort((x, y) => (!!P.ach[y[0]]) - (!!P.ach[x[0]])).map(([k, l]) => `<div class="badge ${P.ach[k] ? 'on' : ''}">${I.star}<span>${l}</span></div>`).join('')}</div></section>
   <section class="block hbtns"><div class="btnrow">${[['prog', 'ההתקדמות שלי'], ['voice', 'קול ההקראה']].map(([k, l]) => `<button class="btn ghost ${PANEL === k ? 'on' : ''}" data-act="panel" data-k="${k}" aria-expanded="${PANEL === k}">${l}</button>`).join('')}</div>
   ${PANEL === 'prog' ? `<div class="card prog progc">
     <div class="stats">
       <div class="stat"><b>${ws.mastered}</b><span>מילים בשליטה</span></div>
       <div class="stat"><b>${ws.need}</b><span>מילים לתרגול</span></div>
       <div class="stat"><b>${mastU.length}<small>/${UNITS.length}</small></b><span>דפוסי קריאה</span></div>
-      <div class="stat"><b>${dictMastered().length + (P.dict.tech.st === 'mast' ? 1 : 0)}<small>/${DORDER.length + 1}</small></b><span>מיומנויות מילון</span></div>
+      ${P.noDict ? '' : `<div class="stat"><b>${dictMastered().length + (P.dict.tech.st === 'mast' ? 1 : 0)}<small>/${DORDER.length + 1}</small></b><span>מיומנויות מילון</span></div>`}
       <div class="stat"><b>${Object.keys(P.reads).length + PAS.filter(x => P.pas && P.pas[x.id] && P.pas[x.id].cs != null).length}<small>/${TEXTS.length + PAS.length}</small></b><span>טקסטים שנקראו</span></div>
       <div class="stat"><b>${P.games}</b><span>משחקים</span></div>
     </div></div>` : PANEL === 'voice' ? `<div class="card settings setc">
@@ -7314,6 +7315,7 @@ const BGS = [['cream','קרם','var(--bg)'],['lav','לילך','linear-gradient(1
 function profSheet() {
   return `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet psheet" role="dialog" aria-label="הפרופיל שלי"><div class="ps-head"><span class="avatar lg" aria-hidden="true">${esc(P.name.trim()[0] || '?')}</span><div><h2 class="ns-t">${esc(P.name)}</h2><p class="muted">${I.star} ${P.stars || 0} כוכבים</p></div><button class="icon-btn ps-x" data-act="sheet-close" aria-label="סגירה">${I.close}</button></div>
   <label class="ps-tog"><input type="checkbox" data-act="nophon" ${P.noPhon ? 'checked' : ''}><span>לדלג על תרגולי הקריאה (צלילים ודפוסים)</span></label>
+  <label class="ps-tog"><input type="checkbox" data-act="nodict" ${P.noDict ? 'checked' : ''}><span>להסתיר את אסטרטגיות המילונית</span></label>
   <div class="bgpick"><b>רקע</b><div class="bgsw">${BGS.map(([k, n, c]) => `<button data-act="bgset" data-k="${k}" title="${n}" aria-label="רקע ${n}" aria-pressed="${(P.bg || 'cream') === k}" style="background:${c}"></button>`).join('')}</div></div>
     <div class="btns wrapb"><button class="btn ghost" data-act="rn-ask">שינוי כינוי</button><button class="btn ghost" data-act="switch">החלפת סטודנטית</button><button class="btn ghost" data-act="rediag">בוחן פתיחה מחדש</button><button class="btn ghost" data-act="reset-ask">איפוס ההתקדמות</button><button class="btn danger-solid" data-act="del-ask">מחיקת החשבון</button></div>
     ${V.rn ? `<div class="confirm rnbox"><label class="lbl" for="rnname">כינוי חדש</label><input id="rnname" maxlength="24" value="${esc(P.name)}" autocomplete="off"><div class="btns"><button class="btn" data-act="rn-yes">${V.busy ? 'שומרת…' : 'שמירה'}</button><button class="btn ghost" data-act="rn-no">ביטול</button></div></div>` : ''}
@@ -7583,7 +7585,7 @@ const cover = id => { const c = COVERS[id] || ['#EEE7FA', '']; return `<svg clas
 const bookBtn = (act, id, title, he, meta, badge) => `<button class="book" data-act="${act}" data-id="${id}"><span class="cover">${cover(id)}${badge || ''}</span><b class="bk-t en">${esc(title)}</b><small class="bk-he">${esc(he)}</small>${meta ? `<small class="bk-m">${meta}</small>` : ''}</button>`;
 const scoreBadge = v => v == null ? '' : `<span class="ribbon ${v >= 0.6 ? 'ok' : 'lr'}">${v >= 0.6 ? I.check : ''}<span class="en">${Math.round(v * 100)}%</span></span>`;
 VIEWS.read = () => `<section class="block"><h1 class="h1">הספרייה</h1></section>
-  ${(ensureDict(), dictProg() < 0.5) ? `<section class="block card row-card"><div><b>לפני הקריאה: מיומנויות מילון</b></div><button class="btn sm" data-act="go" data-v="dict">למילון</button></section>` : ''}
+  ${(ensureDict(), !P.noDict && dictProg() < 0.5) ? `<section class="block card row-card"><div><b>לפני הקריאה: מיומנויות מילון</b></div><button class="btn sm" data-act="go" data-v="dict">למילון</button></section>` : ''}
   <section class="block"><h2 class="h2 shelf-t">${PIC.doc}<span>קטעים אקדמיים</span></h2><div class="shelf">
     <button class="book" data-act="go" data-v="strat"><span class="cover">${cover('strat')}${P.stratSeen ? `<span class="ribbon ok">${I.check}</span>` : '<span class="ribbon new">התחילי כאן</span>'}</span><b class="bk-t en">Reading Strategies</b><small class="bk-he">אסטרטגיות קריאה</small></button>
     ${PAS.map(Pa => { const r = (P.pas || {})[Pa.id]; return bookBtn('pas', Pa.id, Pa.title, Pa.he, `${Pa.paras.length} פסקאות`, libBadge(Pa.id, r && r.cs != null ? r.cs : null)); }).join('')}</div></section>
@@ -7932,10 +7934,10 @@ const STEP_SECTIONS = ['sight', 'acad', 'dict', 'phon', 'unit', 'read', 'games',
 const PCACHE = {};
 function ensurePath() { ensurePas(); if (P && !P.path) P.path = { done: {}, lv: {} }; if (P && !P.path.lv) P.path.lv = {}; }
 function levelNodes(k) {
-  const ck = k + (P && P.noPhon ? 'n' : '');
+  const ck = k + (P && P.noPhon ? 'n' : '') + (P && P.noDict ? 'd' : '');
   if (PCACHE[ck]) return PCACHE[ck];
   const L = LV[k], ph = P && P.noPhon ? [] : STAGES[k].map(id => ({ t: 'pl', id })), oth = [];
-  for (let i = 0; i < 3; i++) { if (L.sight[i] != null) oth.push({ t: 'sg', id: L.sight[i] }); if (L.dict[i] != null) oth.push({ t: 'dc', id: L.dict[i] }); if (L.acad[i] != null) oth.push({ t: 'ac', id: L.acad[i] }); if (L.wr[i] != null) oth.push({ t: 'wr', id: L.wr[i] }); }
+  for (let i = 0; i < 3; i++) { if (L.sight[i] != null) oth.push({ t: 'sg', id: L.sight[i] }); if (L.dict[i] != null && !(P && P.noDict)) oth.push({ t: 'dc', id: L.dict[i] }); if (L.acad[i] != null) oth.push({ t: 'ac', id: L.acad[i] }); if (L.wr[i] != null) oth.push({ t: 'wr', id: L.wr[i] }); }
   const content = []; let pi = 0, oi = 0;
   while (pi < ph.length || oi < oth.length) { if (pi < ph.length) content.push(ph[pi++]); if (oi < oth.length) content.push(oth[oi++]); }
   const out = P && P.noPhon ? [] : [{ t: 'stage', id: k }]; let c = 0, m = 0, pc = 0, r = 0;
@@ -8052,7 +8054,7 @@ function mixQs(k) {
   const ai = okPool(LV.slice(0, k + 1).flatMap(l => l.acad).flatMap(c => AC[c].items), 6, a => a.en), aiSeen = ai.filter(a => P.items['a:' + a.id]);
   const aiPool = aiSeen.filter(a => !known('a:' + a.id)).length >= 2 ? aiSeen.filter(a => !known('a:' + a.id)) : aiSeen.length >= 2 ? aiSeen : ai;
   sample(aiPool, 2).forEach(a => add(qAcad(a, aiSeen.includes(a) ? rnd(ACAD_TYPES) : 'meaning')));
-  const dls = LV.slice(0, k + 1).flatMap(l => l.dict).filter(id => id !== 'tech' && P.dict[id].st !== 'nt');
+  const dls = P.noDict ? [] : LV.slice(0, k + 1).flatMap(l => l.dict).filter(id => id !== 'tech' && P.dict[id].st !== 'nt');
   if (dls.length) add(bankQ(rnd(dls)));
   dueKeys().filter(key => wordOK(keyWord(key))).slice(0, 3).forEach(key => { if (out.length < 9) add(qFromKey(key)); });
   while (out.length < 8) add(qSight(rnd(sw), rnd(SIGHT_TYPES)));
@@ -8063,9 +8065,9 @@ function bossQs(k) {
   if (!P.noPhon) sample(STAGES[k], 3).forEach(id => add(qPhon(UM[id], rnd(['listen', 'contains', 'say']), rnd(UM[id].words), 2, { plain: true })));
   sample(L.sight.flatMap(g => SG[g].words), P.noPhon ? 3 : 2).forEach(w => add(qSight(w, rnd(['meaning', 'listen', 'reverse']))));
   sample(L.acad.flatMap(c => AC[c].items), 3).forEach((a, i) => add(qAcad(a, i === 0 ? 'context' : rnd(['meaning', 'reverse', 'cloze']))));
-  const dl = L.dict.filter(x => x !== 'tech');
+  const dl = P.noDict ? [] : L.dict.filter(x => x !== 'tech');
   sample(dl, Math.min(2, dl.length)).forEach(id => add(bankQ(id)));
-  if (L.dict.includes('tech')) add(rnd(TECHQ)());
+  if (!P.noDict && L.dict.includes('tech')) add(rnd(TECHQ)());
   sample(L.wr || [], 2).forEach(id => add(wq(WRM[id], rnd(WRM[id].qs))));
   return shuf(out);
 }
@@ -8102,7 +8104,7 @@ function startNode(n, quick) {
 VIEWS.jumpinfo = () => { const k = V.k, L = LV[k];
   return `<section class="block card intro diagstart">${OWL('cheer')}<span class="eyebrow">בוחן דילוג</span><h1 class="h1">לדלג על שלב ${k + 1}: ${esc(lvName(k))}</h1>
     <p>אם את כבר מכירה את החומר של השלב, אפשר לבדוק את זה בבוחן קצר ולעבור הלאה.</p>
-    <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים קטנות וחשובות, אוצר מילים אקדמי ומילון</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
+    <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים קטנות וחשובות, אוצר מילים אקדמי${P.noDict ? '' : ' ומילון'}</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
     <div class="btns center"><button class="btn big-btn" data-act="pjumpgo" data-k="${k}">${I.play}<span>להתחיל את הבוחן</span></button><button class="btn ghost" data-act="go" data-v="home">חזרה למסלול</button></div></section>`; };
 function startJump(k) {
   PN = { key: 'jump:' + k, tag: 'jump:' + k, thr: 0.9 };
@@ -8540,7 +8542,7 @@ function wCheck(txt, T) {
   add(/\bbecause\b/i.test(t), 'יש נימוק (because)', 'הסבירי למה עם because.');
   return { out, words, sents: S.length };
 }
-const wDictCard = () => `<section class="block card wdict"><span class="wd-ic" aria-hidden="true">📖</span><div><b>בכתיבה מותר להשתמש במילונית</b><p>לא יודעת איך אומרים מילה באנגלית? חפשי אותה במילונית, מעברית לאנגלית. רוצה לרענן? חזרי לחלק מיומנויות מילון.</p>
+const wDictCard = () => P && P.noDict ? '' : `<section class="block card wdict"><span class="wd-ic" aria-hidden="true">📖</span><div><b>בכתיבה מותר להשתמש במילונית</b><p>לא יודעת איך אומרים מילה באנגלית? חפשי אותה במילונית, מעברית לאנגלית. רוצה לרענן? חזרי לחלק מיומנויות מילון.</p>
   <div class="btns"><button class="btn sm" data-act="go" data-v="dict">${DICT_ICON}<span>מיומנויות מילון</span></button><a class="btn sm ghost" href="https://www.morfix.co.il" target="_blank" rel="noopener">מורפיקס</a></div></div></section>`;
 const wTile = (n, id, name, st, act, sub) => `<button class="dstep ${st ? 'done' : ''}" data-act="${act}" data-id="${id}"><span class="ds-n en">${st ? I.check : n}</span><span class="ds-ic wr-ic en">${sub}</span><b>${esc(name)}</b></button>`;
 VIEWS.write = () => {
@@ -8667,7 +8669,7 @@ function render(top) {
   const showNav = P && P.diag.done && !FOCUS.includes(V.name);
   if (P && P.bg) document.body.dataset.bg = P.bg; else delete document.body.dataset.bg;
   nav.hidden = !showNav; document.body.classList.toggle('has-nav', !!showNav);
-  if (showNav) nav.innerHTML = NAV.map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) || (v === 'write' && (V.name === 'wrule' || V.name === 'wtask')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
+  if (showNav) nav.innerHTML = NAV.filter(([v]) => !(v === 'dict' && P.noDict)).map(([v, l, ic]) => `<button data-act="go" data-v="${v}" class="${V.name === v || (v === 'phon' && V.name === 'unit') || (v === 'read' && (V.name === 'text' || V.name === 'passage' || V.name === 'strat')) || (v === 'dict' && (V.name === 'dlesson' || V.name === 'dtech')) || (v === 'write' && (V.name === 'wrule' || V.name === 'wtask')) ? 'on' : ''}">${ic}<span>${l}</span></button>`).join('');
   if (top) window.scrollTo(0, 0);
   if (V.name === 'quiz' && Q && Q.q && Q.q.p) { const box = document.querySelector('.ctx .reading'), el = document.getElementById('pp' + Q.q.p); if (box && el) box.scrollTop = el.offsetTop - 8; }
   if (V.name === 'home' && V.scrollPath) { V.scrollPath = false; const c = document.querySelector('.pnode.cur'); if (c) c.scrollIntoView({ block: 'center' }); }
@@ -9269,6 +9271,7 @@ const ACT = {
     f.src = url; document.body.appendChild(f); toast('פותחת הדפסה…');
   },
   diagskip: () => { P.diag.done = true; P.diag.skipped = true; P.diag.state = null; P.rlvl = P.rlvl || 1; save(); toast('מתחילות מהשלב הראשון'); go('home'); },
+  nodict: el => { P.noDict = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noDict ? 'אסטרטגיות המילונית הוסרו' : 'אסטרטגיות המילונית חזרו'); render(); },
   nophon: el => { P.noPhon = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noPhon ? 'תרגולי הקריאה הוסרו מהמסלול' : 'תרגולי הקריאה חזרו למסלול'); render(); },
   vngo: () => { const L = bandLevel(), si = bCurSet(L.b); if (si >= 0) startBandSet(L.b, si); else go('band', { bid: L.b }); },
   vnlater: () => { P.vnudge = now() + 2 * 864e5; save(); render(); },
