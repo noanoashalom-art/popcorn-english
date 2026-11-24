@@ -966,6 +966,13 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .cloudin input.pin{font-family:var(--f-en);letter-spacing:.4em;direction:ltr;text-align:center;font-size:1.3rem}
 .cloudst{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--good-bg);color:var(--good);font-size:1rem}
 .cloudst.off{background:var(--warn-bg);color:var(--warn)}
+.tstats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tst{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:2px}.tst b{font-size:1.4rem;color:var(--plum)}.tst span{font-weight:600}.tst small{color:var(--muted)}
+.tdl{list-style:none;padding:0;margin:6px 0 0;display:flex;flex-direction:column}.tdl li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}.tdl li:last-child{border-bottom:0}
+.tlink{background:none;border:0;padding:0;font:inherit;color:inherit;text-align:start;cursor:pointer;display:flex;flex-direction:column;flex:1;min-width:0}.tlink b{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.t-blocked{color:#B23F6A;font-weight:600}.tcode{font-weight:700;letter-spacing:2px;color:var(--plum);background:var(--lav);border-radius:8px;padding:4px 10px}
+.trow{display:flex;gap:8px;flex-wrap:wrap}.trow input{flex:1;min-width:0;padding:10px 12px;border:2px solid var(--line);border-radius:12px;font:inherit;background:var(--surface);color:var(--ink)}
+.warnc{background:var(--warn-bg)}.pendmsg{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:#E7F3EB;color:#2C7A57;font-weight:600}
+#tmove{width:100%;padding:10px;border-radius:12px;border:2px solid var(--line);font:inherit;background:var(--surface);color:var(--ink)}
 .tlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .tlist li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;flex-wrap:wrap}
 .t-main{flex:1;min-width:140px;display:flex;flex-direction:column}
@@ -1664,7 +1671,7 @@ const CLOUD = {
   }
 };
 const cloudBadge = () => CLOUD.on && P && P.cloud ? `<span id="cloudst" class="cloudst ${CLOUD.state}" title="${CLOUD.state === 'ok' ? 'ההתקדמות נשמרת בענן' : 'אין חיבור. נשמור כשיחזור'}">${CLOUD.state === 'ok' ? '☁︎' : '⚠︎'}</span>` : '';
-const cloudErr = e => /name_taken/.test(e.message) ? 'הכינוי הזה כבר תפוס. בחרי כינוי אחר.' : /bad_login/.test(e.message) ? 'הכינוי או הקוד לא נכונים.' : /bad_pin/.test(e.message) ? 'הקוד צריך להיות 4 ספרות.' : /bad_name/.test(e.message) ? 'כינוי של 2 עד 24 תווים.' : 'אין חיבור לאינטרנט. נסי שוב.';
+const cloudErr = e => /pending/.test(e.message) ? 'החשבון מחכה לאישור המורה. אחרי האישור אפשר להיכנס.' : /bad_class/.test(e.message) ? 'קוד הכיתה לא נכון. בדקי עם המורה.' : /name_taken/.test(e.message) ? 'הכינוי הזה כבר תפוס. בחרי כינוי אחר.' : /bad_login/.test(e.message) ? 'הכינוי או הקוד לא נכונים.' : /bad_pin/.test(e.message) ? 'הקוד צריך להיות 4 ספרות.' : /bad_name/.test(e.message) ? 'כינוי של 2 עד 24 תווים.' : 'אין חיבור לאינטרנט. נסי שוב.';
 function cloudEnter(data, token, name) {
   if (data && data.deleted) { toast('החשבון הזה נמחק. אפשר לפתוח חשבון חדש.'); return; }
   let p = data && data.id ? data : null;
@@ -7158,7 +7165,8 @@ VIEWS.profiles = () => {
     <label class="lbl" for="cname">כינוי</label><input id="cname" maxlength="24" autocomplete="username" placeholder="לדוגמה: noa22">
     <label class="lbl" for="cpin">קוד אישי (4 ספרות)</label><input id="cpin" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="current-password" placeholder="••••" class="pin">
     <button class="btn big-btn" data-act="${(V.ctab || 'in') === 'in' ? 'clogin' : 'csignup'}">${(V.ctab || 'in') === 'in' ? 'כניסה' : 'יצירת חשבון'}</button>
-    ${(V.ctab || 'in') === 'up' ? '<p class="muted small">זכרי את הכינוי והקוד. איתם נכנסים מכל מכשיר.</p>' : ''}
+    ${(V.ctab || 'in') === 'up' ? '<label class="lbl" for="cclass">קוד כיתה (מהמורה)</label><input id="cclass" class="en" dir="ltr" maxlength="8" autocomplete="off" placeholder="ABCDE" style="text-transform:uppercase"><p class="muted small">זכרי את הכינוי והקוד. איתם נכנסים מכל מכשיר. אחרי ההרשמה המורה צריכה לאשר את החשבון.</p>' : ''}
+    ${V.pendMsg && (V.ctab || 'in') === 'in' ? `<p class="pendmsg" role="status">הבקשה של ${esc(V.pendMsg)} נשלחה למורה. אחרי האישור נכנסים כאן עם הכינוי והקוד.</p>` : ''}
   </section>
   <section class="block center"><button class="link small" data-act="go" data-v="teacher">כניסת מורה</button></section>` : ''}
   <section class="block card" ${CLOUD.on ? 'hidden' : ''}>
@@ -8818,14 +8826,68 @@ function lbMini() {
   const rows = lbRows('w'), top = rows.slice(0, 3), me = rows.findIndex(r => r.me);
   return `<button class="card lbmini" id="lbmini" data-act="go" data-v="lb"><span class="lbm-ic">${PIC.trophy}</span><span class="lbm-t"><b>לוח המובילות</b><small>${me >= 0 && rows[me].w > 0 ? `המקום שלך השבוע: ${me + 1}` : 'השבוע'}</small></span><span class="lbm-top">${top.map((r, i) => `<span class="lbm-av m${i}" title="${esc(r.n)}">${esc(r.n.trim()[0] || '?')}</span>`).join('')}</span>${I.arrow}</button>`;
 }
-/* teacher page (standalone site only): list and delete students */
-let TCH = { pass: null, rows: null, del: null, busy: false };
+/* teacher page (standalone site only): classes, approvals, each student's progress, block or delete */
+let TCH = { pass: null, rows: null, classes: [], v2: false, tab: 'pend', cls: '', del: null, busy: false, cur: null, data: null };
+const tFmt = t => t ? new Date(t).toLocaleDateString('he-IL') : '';
+const tClassName = id => { const c = TCH.classes.find(x => x.id === id); return c ? c.name : 'בלי כיתה'; };
+async function tLoad() {
+  try { TCH.rows = await CLOUD.rpc('admin_students', { p_pass: TCH.pass }); TCH.v2 = true; TCH.classes = await CLOUD.rpc('admin_classes', { p_pass: TCH.pass }) || []; }
+  catch (e) {
+    if (/bad_admin/.test(e.message)) throw e;
+    TCH.v2 = false; TCH.classes = []; TCH.rows = (await CLOUD.rpc('admin_list', { p_pass: TCH.pass })).map(r => ({ ...r, approved: true }));
+  }
+}
+function tStudentHtml() {
+  const r = TCH.rows.find(x => x.id === TCH.cur), d = TCH.data;
+  const back = `<button class="back" data-act="tcur0">${I.arrow}<span>כל הסטודנטיות</span></button>`;
+  if (!r) return back;
+  const head = `${back}<section class="block"><div class="ps-head"><span class="avatar lg" aria-hidden="true">${esc((r.name || '?').trim()[0] || '?')}</span><div><h1 class="h1">${esc(r.name)}</h1><p class="muted">${esc(tClassName(r.class_id))} · נרשמה ${tFmt(r.created_at)} · פעילה לאחרונה ${tFmt(r.updated_at)}</p></div></div></section>`;
+  if (d === 'loading') return head + '<p class="muted center">טוען…</p>';
+  if (!d || !d.units) return head + '<section class="block card"><p>אין עדיין נתוני תרגול לחשבון הזה.</p></section>';
+  let out = '', save = P;
+  try {
+    P = d; ensurePath(); ensureDict();
+    const pr = progress(), pi = pathInfo(), done = pi.lv.filter(L => L.complete && L.total).length;
+    const pct = v => Math.round((v || 0) * 100) + '%';
+    const tile = (label, val, sub) => `<div class="tst"><b>${val}</b><span>${label}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
+    const dr = d.diag && d.diag.res, dpart = o => { const v = Object.values(o || {}); return v.length ? pct(v.reduce((a, x) => a + (x === 'k' || x === true ? 1 : x === 'p' ? 0.5 : 0), 0) / v.length) : '—'; };
+    const W = d.write || {}, wr = WRULES.map(x => [x.t, W.r && W.r[x.id]]), wt = WTASKS.filter(T => W.t && W.t[T.id]);
+    const mast = UNITS.filter(u => d.units[u.id] && d.units[u.id].st === 'mast').length;
+    const reads = TEXTS.map(t => [t.title, d.reads && d.reads[t.id]]).filter(x => x[1] != null);
+    const pas = PAS.map(p => [p.title, d.pas && d.pas[p.id] && d.pas[p.id].cs, d.paper && d.paper[p.id]]).filter(x => x[1] != null || x[2]);
+    const dl = DORDER.filter(id => d.dict[id] && d.dict[id].st === 'mast').map(id => DLM[id].short);
+    out += `<section class="block"><div class="tstats">
+      ${tile('התקדמות כללית', pct(pr.all))}${tile('כוכבים', d.stars || 0)}${tile('שלבים במסלול', `${done}/${LV.length}`, pi.cur ? 'עכשיו: ' + esc(nodeTitle(pi.cur)) : 'סיימה את המסלול')}${tile('צלילים בשליטה', `${mast}/${UNITS.length}`, d.noPhon ? 'בלי תרגולי קריאה' : '')}
+      ${tile('מילים קטנות', pct(pr.si))}${tile('אוצר מילים אקדמי', pct(pr.ac))}${tile('מיומנויות מילון', `${dl.length}/${DORDER.length}`)}${tile('טקסטים שנקראו', pct(pr.rd))}</div></section>`;
+    if (dr) out += `<section class="block card"><h2 class="h2">בוחן פתיחה · ${tFmt(d.diag.at)}</h2><p class="muted">מילים קטנות ${dpart(dr.sight)} · אקדמי ${dpart(dr.acad)} · משמעות ${dpart(dr.mean)} · הבנה ${dr.ctx && dr.ctx.length ? pct(dr.ctx.reduce((a, b) => a + b, 0) / dr.ctx.length) : '—'}${dr.write ? ' · כתיבה ' + dpart(dr.write) : ''}</p></section>`;
+    out += `<section class="block card"><h2 class="h2">קריאה</h2>${reads.length || pas.length ? `<ul class="tdl">${reads.map(([t, s]) => `<li><span class="en">${esc(t)}</span><b>${pct(s)}</b></li>`).join('')}${pas.map(([t, s, pp]) => `<li><span class="en">${esc(t)}</span><b>${s != null ? pct(s) : ''}${pp ? ` · דף מודפס${pp.s != null ? ' ' + pct(pp.s) : ' ✓'}` : ''}</b></li>`).join('')}</ul>` : '<p class="muted">עוד לא קראה טקסטים.</p>'}</section>`;
+    out += `<section class="block card"><h2 class="h2">כתיבה</h2><ul class="tdl">${wr.map(([t, s]) => `<li><span>${esc(t)}</span><b>${s != null ? pct(s) : '—'}</b></li>`).join('')}</ul>${wt.length ? `<p class="muted">משימות שהושלמו: ${wt.map(T => esc(T.he)).join(', ')}</p>` : ''}</section>`;
+    if (dl.length) out += `<section class="block card"><h2 class="h2">מילון: בשליטה</h2><p>${dl.map(esc).join(' · ')}</p></section>`;
+    const h = (d.hist || []).slice(0, 25);
+    out += `<section class="block card"><h2 class="h2">מה תרגלה לאחרונה</h2>${h.length ? `<ul class="tdl">${h.map(x => `<li><span>${esc(x.l || '')} <small class="muted">${tFmt(x.t)}</small></span><b>${x.n ? `${x.ok}/${x.n}` : ''}</b></li>`).join('')}</ul>` : '<p class="muted">אין עדיין פעילות.</p>'}</section>`;
+  } catch (e) { out += '<section class="block card"><p>לא הצלחתי להציג את כל הנתונים של החשבון הזה.</p></section>'; }
+  P = save;
+  return head + out + `<section class="block card"><div class="btns">${r.approved ? `<button class="btn ghost" data-act="tappr" data-id="${r.id}" data-ok="0">חסימת גישה</button>` : `<button class="btn" data-act="tappr" data-id="${r.id}" data-ok="1">אישור גישה</button>`}<button class="btn danger-solid" data-act="tdel" data-id="${r.id}">מחיקת החשבון</button></div>
+    ${TCH.v2 && TCH.classes.length ? `<label class="lbl" for="tmove">כיתה</label><select id="tmove" data-act="tmove" data-id="${r.id}"><option value="">בלי כיתה</option>${TCH.classes.map(c => `<option value="${c.id}" ${c.id === r.class_id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select>` : ''}
+    ${TCH.del === r.id ? `<div class="confirm" role="alert"><p>למחוק את ${esc(r.name)} לצמיתות? כל ההתקדמות תימחק.</p><div class="btns"><button class="btn danger-solid" data-act="tdel2" data-id="${r.id}">כן, למחוק</button><button class="btn ghost" data-act="tdel0">ביטול</button></div></div>` : ''}</section>`;
+}
 VIEWS.teacher = () => {
-  const head = `<button class="back" data-act="tback">${I.arrow}<span>חזרה</span></button><section class="block"><h1 class="h1">כניסת מורה</h1></section>`;
+  const head = `<button class="back" data-act="tback">${I.arrow}<span>חזרה</span></button><section class="block"><h1 class="h1">ניהול מורה</h1></section>`;
   if (!CLOUD.on) return head + '<section class="block card"><p>הניהול זמין רק באתר העצמאי.</p></section>';
   if (!TCH.rows) return head + `<section class="block card cloudin"><label class="lbl" for="tpass">סיסמת מורה</label><input id="tpass" type="password" autocomplete="current-password"><button class="btn big-btn" data-act="tlogin">${TCH.busy ? 'בודקת…' : 'כניסה'}</button></section>`;
-  const fmt = t => t ? new Date(t).toLocaleDateString('he-IL') : '';
-  return head + `<section class="block"><p class="muted">${TCH.rows.length} סטודנטיות</p><ul class="tlist">${TCH.rows.map(r => `<li><span class="avatar" aria-hidden="true">${esc((r.name || '?').trim()[0] || '?')}</span><span class="t-main"><b>${esc(r.name)}</b><small>${I.star}${+r.stars || 0} · שלב ${+r.level || 1} · עודכן ${fmt(r.updated_at)}</small></span>${TCH.del === r.id ? `<span class="t-conf"><button class="btn sm danger" data-act="tdel2" data-id="${esc(r.id)}">למחוק לצמיתות</button><button class="btn sm ghost" data-act="tdel0">ביטול</button></span>` : `<button class="btn sm ghost" data-act="tdel" data-id="${esc(r.id)}">מחיקה</button>`}</li>`).join('')}</ul></section>`;
+  if (TCH.cur) return tStudentHtml();
+  const pend = TCH.rows.filter(r => !r.approved && r.updated_at === r.created_at), list = TCH.rows.filter(r => !pend.includes(r));
+  const shown = TCH.cls ? list.filter(r => (r.class_id || 'none') === TCH.cls) : list;
+  const tabs = [['pend', `ממתינות לאישור${pend.length ? ` (${pend.length})` : ''}`], ['all', 'סטודנטיות'], ['cls', 'כיתות']];
+  let body = '';
+  if (!TCH.v2) body = `<section class="block card warnc"><p><b>כדי לפתוח כיתות, לאשר הרשמות ולראות התקדמות</b> צריך להריץ פעם אחת את הקובץ teacher-v2.sql ב־Supabase.</p></section>`;
+  const row = (r, extra) => `<li><span class="avatar" aria-hidden="true">${esc((r.name || '?').trim()[0] || '?')}</span><button class="t-main tlink" data-act="tcur" data-id="${r.id}"><b>${esc(r.name)}</b><small>${TCH.v2 ? esc(tClassName(r.class_id)) + ' · ' : ''}${I.star}${+r.stars || 0} · שלב ${+r.level || 1} · ${r.approved ? 'פעילה ' + tFmt(r.updated_at) : r.updated_at === r.created_at ? '<span class="t-blocked">ממתינה לאישור · ' + tFmt(r.created_at) + '</span>' : '<span class="t-blocked">חסומה</span>'}</small></button>${extra || ''}</li>`;
+  if ((TCH.tab || 'pend') === 'pend' && TCH.v2) body += pend.length ? `<section class="block"><ul class="tlist">${pend.map(r => row(r, `<span class="t-conf"><button class="btn sm" data-act="tappr" data-id="${r.id}" data-ok="1">אישור</button><button class="btn sm ghost" data-act="tdel" data-id="${r.id}">דחייה</button></span>${TCH.del === r.id ? `<span class="t-conf"><button class="btn sm danger" data-act="tdel2" data-id="${r.id}">למחוק את הבקשה</button><button class="btn sm ghost" data-act="tdel0">ביטול</button></span>` : ''}`)).join('')}</ul></section>` : '<section class="block card"><p class="muted">אין בקשות הרשמה חדשות.</p></section>';
+  else if (TCH.tab === 'cls' && TCH.v2) body += `<section class="block card"><h2 class="h2">פתיחת כיתה חדשה</h2><div class="trow"><input id="tclsname" maxlength="40" placeholder="לדוגמה: טרום בסיסי א׳ · ערב"><button class="btn" data-act="tcadd">פתיחה</button></div><p class="muted small">כל כיתה מקבלת קוד. הסטודנטיות כותבות אותו בהרשמה, ואת מאשרת אותן.</p></section>
+    <section class="block"><ul class="tlist">${TCH.classes.map(c => `<li><span class="t-main"><b>${esc(c.name)}</b><small>${+c.n || 0} סטודנטיות</small></span><span class="tcode en" dir="ltr">${esc(c.code)}</span><button class="btn sm ghost" data-act="tcopy" data-t="${esc(c.code)}">העתקה</button><button class="btn sm ghost" data-act="tcls" data-id="${c.id}">לרשימה</button>${TCH.del === 'c' + c.id ? `<span class="t-conf"><button class="btn sm danger" data-act="tcdel2" data-id="${c.id}">למחוק את הכיתה</button><button class="btn sm ghost" data-act="tdel0">ביטול</button></span>` : `<button class="btn sm ghost" data-act="tcdel" data-id="${c.id}" aria-label="מחיקת הכיתה">${TRASH_IC}</button>`}</li>`).join('') || '<li><span class="muted">עוד אין כיתות.</span></li>'}</ul><p class="muted small">מחיקת כיתה לא מוחקת את הסטודנטיות. הן נשארות בלי כיתה.</p></section>`;
+  else body += `<section class="block">${TCH.v2 && TCH.classes.length ? `<div class="chips">${[['', 'כולן'], ...TCH.classes.map(c => [c.id, c.name]), ['none', 'בלי כיתה']].map(([k, l]) => `<button class="chipbtn ${TCH.cls === k ? 'on' : ''}" data-act="tcls" data-id="${k}">${esc(l)}</button>`).join('')}</div>` : ''}
+    <p class="muted">${shown.length} סטודנטיות · לחיצה על שם פותחת את ההתקדמות</p><ul class="tlist">${shown.map(r => row(r)).join('')}</ul></section>`;
+  return head + (TCH.v2 ? `<section class="block"><div class="seg" role="tablist">${tabs.map(([k, l]) => `<button role="tab" aria-selected="${(TCH.tab || 'pend') === k}" class="${(TCH.tab || 'pend') === k ? 'on' : ''}" data-act="ttab" data-k="${k}">${l}</button>`).join('')}</div></section>` : '') + body;
 };
 VIEWS.lb = () => {
   if (CLOUD.on) CLOUD.board();
@@ -8856,24 +8918,49 @@ const ACT = {
   },
   pick: async el => {
     const p = DB.profiles[el.dataset.id];
-    if (CLOUD.on && p && p.cloud) { try { const r = await CLOUD.rpc('load_progress', { p_token: p.cloud }); cloudEnter(r && r.data, p.cloud, (r && r.name) || p.name); return; } catch (e) { if (e.status && e.status < 500) { delete p.cloud; toast('צריך להתחבר שוב עם הכינוי והקוד.'); render(); return; } } }
+    if (CLOUD.on && p && p.cloud) { try { const r = await CLOUD.rpc('load_progress', { p_token: p.cloud }); cloudEnter(r && r.data, p.cloud, (r && r.name) || p.name); return; } catch (e) { if (e.status && e.status < 500) { if (/pending/.test(e.message)) { toast('החשבון מחכה לאישור המורה.'); return; } delete p.cloud; toast('צריך להתחבר שוב עם הכינוי והקוד.'); render(); return; } } }
     enterProfile(el.dataset.id); go(P.diag.done ? 'home' : 'diagintro');
   },
   ctab: el => { V.ctab = el.dataset.k; render(); },
-  tback: () => { TCH = { pass: null, rows: null, del: null, busy: false }; go(P ? 'home' : 'profiles'); },
+  tback: () => { TCH = { pass: null, rows: null, classes: [], v2: false, tab: 'pend', cls: '', del: null, busy: false, cur: null, data: null }; go(P ? 'home' : 'profiles'); },
   tlogin: async () => {
     const pw = (document.getElementById('tpass').value || ''); if (!pw) return;
-    TCH.busy = true; render();
-    try { TCH.rows = await CLOUD.rpc('admin_list', { p_pass: pw }); TCH.pass = pw; } catch (e) { toast(/bad_admin/.test(e.message) ? 'סיסמה שגויה' : /admin_list/.test(e.message) || e.status === 404 ? 'צריך להריץ קודם את teacher-setup.sql ב-Supabase' : 'אין חיבור. נסי שוב.'); }
+    TCH.busy = true; TCH.pass = pw; render();
+    try { await tLoad(); } catch (e) { TCH.pass = null; TCH.rows = null; toast(/bad_admin/.test(e.message) ? 'סיסמה שגויה' : /admin_list/.test(e.message) || e.status === 404 ? 'צריך להריץ קודם את teacher-setup.sql ב-Supabase' : 'אין חיבור. נסי שוב.'); }
     TCH.busy = false; render();
   },
+  ttab: el => { TCH.tab = el.dataset.k; TCH.del = null; render(); },
+  tcls: el => { TCH.cls = el.dataset.id || ''; TCH.tab = 'all'; render(); },
+  tcur: async el => { TCH.cur = el.dataset.id; TCH.del = null; TCH.data = 'loading'; render(true); if (!TCH.v2) { TCH.data = null; render(); return; }
+    try { TCH.data = await CLOUD.rpc('admin_student', { p_pass: TCH.pass, p_id: TCH.cur }); } catch (e) { TCH.data = null; toast('לא הצלחתי לטעון את הנתונים'); } render(); },
+  tcur0: () => { TCH.cur = null; TCH.data = null; TCH.del = null; render(true); },
+  tappr: async el => {
+    if (!TCH.v2) { toast('צריך להריץ קודם את teacher-v2.sql'); return; }
+    const ok = el.dataset.ok === '1';
+    try { await CLOUD.rpc('admin_approve', { p_pass: TCH.pass, p_id: el.dataset.id, p_ok: ok }); const r = TCH.rows.find(x => x.id === el.dataset.id); if (r) { r.approved = ok; if (ok && r.updated_at === r.created_at) r.updated_at = new Date().toISOString(); } CLOUD.lbAt = 0; toast(ok ? 'הגישה אושרה' : 'הגישה נחסמה'); }
+    catch (e) { toast('הפעולה נכשלה. נסי שוב.'); }
+    render();
+  },
+  tcadd: async () => {
+    const i = document.getElementById('tclsname'), n = (i && i.value || '').trim(); if (!n) { if (i) i.focus(); return; }
+    try { const code = await CLOUD.rpc('admin_class_add', { p_pass: TCH.pass, p_name: n }); TCH.classes = await CLOUD.rpc('admin_classes', { p_pass: TCH.pass }) || []; toast('הכיתה נפתחה. הקוד: ' + code); }
+    catch (e) { toast('הפתיחה נכשלה. נסי שוב.'); }
+    render();
+  },
+  tcdel: el => { TCH.del = 'c' + el.dataset.id; render(); },
+  tcdel2: async el => {
+    try { await CLOUD.rpc('admin_class_del', { p_pass: TCH.pass, p_id: el.dataset.id }); TCH.classes = TCH.classes.filter(c => c.id !== el.dataset.id); TCH.rows.forEach(r => { if (r.class_id === el.dataset.id) r.class_id = null; }); TCH.del = null; toast('הכיתה נמחקה'); }
+    catch (e) { toast('המחיקה נכשלה. נסי שוב.'); }
+    render();
+  },
+  tcopy: el => { const t = el.dataset.t; try { navigator.clipboard.writeText(t).then(() => toast('הקוד הועתק: ' + t), () => toast('הקוד: ' + t)); } catch (e) { toast('הקוד: ' + t); } },
   dkall: () => startDk(),
   dkthis: () => startDk(V.sum && V.sum.dk),
   tdel: el => { TCH.del = el.dataset.id; render(); },
   tdel0: () => { TCH.del = null; render(); },
   tdel2: async el => {
     const id = el.dataset.id;
-    try { await CLOUD.rpc('admin_delete', { p_pass: TCH.pass, p_id: id }); TCH.rows = TCH.rows.filter(r => r.id !== id); TCH.del = null; CLOUD.lbAt = 0; toast('נמחק'); }
+    try { await CLOUD.rpc('admin_delete', { p_pass: TCH.pass, p_id: id }); TCH.rows = TCH.rows.filter(r => r.id !== id); TCH.del = null; if (TCH.cur === id) { TCH.cur = null; TCH.data = null; } CLOUD.lbAt = 0; toast('נמחק'); }
     catch (e) { toast('המחיקה נכשלה. נסי שוב.'); }
     render();
   },
@@ -8885,7 +8972,15 @@ const ACT = {
   csignup: async () => {
     const n = (document.getElementById('cname').value || '').trim(), pin = (document.getElementById('cpin').value || '').trim();
     if (n.length < 2 || !/^\d{4}$/.test(pin)) { toast('כתבי כינוי (2 תווים לפחות) וקוד של 4 ספרות'); return; }
-    try { const t = await CLOUD.rpc('sign_up', { p_name: n, p_pin: pin }); cloudEnter(null, t, n); } catch (e) { toast(cloudErr(e)); }
+    const ce = document.getElementById('cclass'), cls = (ce && ce.value || '').trim();
+    let t;
+    try { t = await CLOUD.rpc('sign_up', cls ? { p_name: n, p_pin: pin, p_class: cls } : { p_name: n, p_pin: pin }); }
+    catch (e) {
+      if (/sign_up|PGRST202|Could not find/.test(e.message) && cls) { try { t = await CLOUD.rpc('sign_up', { p_name: n, p_pin: pin }); } catch (e2) { toast(cloudErr(e2)); return; } }
+      else { toast(cloudErr(e)); return; }
+    }
+    if (t) { cloudEnter(null, t, n); return; }
+    V.ctab = 'in'; V.pendMsg = n; render();
   },
   switch: () => { PROF = false; save(); if (CLOUD.on) { clearTimeout(CLOUD.h); CLOUD.push(); } P = null; DB.cur = null; try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { } go('profiles'); },
   diag: () => startDiag(),
@@ -9127,7 +9222,8 @@ function boot() {
     if (e.target && e.target.dataset && e.target.dataset.wcin) { const [id, i] = e.target.dataset.wcin.split(':'); wcState(id).self[i] = e.target.value; }
     if (e.target && e.target.id === 'dsearch') { const box = document.getElementById('dsug'); if (box) box.innerHTML = dsug(e.target.value).map(k => `<button class="chipbtn en" data-act="dpickw" data-w="${k}">${k}</button>`).join(''); }
   });
-  document.addEventListener('change', e => {
+  document.addEventListener('change', async e => {
+    if (e.target && e.target.id === 'tmove') { const id = e.target.dataset.id, c = e.target.value || null; try { await CLOUD.rpc('admin_set_class', { p_pass: TCH.pass, p_id: id, p_class: c }); const r = TCH.rows.find(x => x.id === id); if (r) r.class_id = c; TCH.classes = await CLOUD.rpc('admin_classes', { p_pass: TCH.pass }) || []; toast('הכיתה עודכנה'); } catch (er) { toast('העדכון נכשל'); } return; }
     if (e.target && e.target.dataset && e.target.dataset.wcfile) { const S = wcState(e.target.dataset.wcfile); S.files = [...e.target.files].slice(0, 4); S.err = ''; render(); return; }
     if (e.target && e.target.id === 'voicesel') {
       const v = (TTS.list || []).find(x => x.name === e.target.value);
