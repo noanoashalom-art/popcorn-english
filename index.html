@@ -1182,16 +1182,10 @@ const U_RAW = [
 
 /* Sight words: 10 groups x 10 */
 const SG_RAW = [
- ['מילים בסיסיות','the:ה- (הידיעה)|of:של|to:אל; ל-|in:ב-; בתוך|is:הוא/היא (להיות, יחיד)|are:הם/הן (להיות, רבים)|was:היה; הייתה|were:היו|and:ו-; וגם|for:בשביל; עבור'],
- ['מילות הפניה','this:זה; זאת|that:ההוא; ש-|these:אלה|those:ההם|it:זה (לא אדם)|they:הם; הן|their:שלהם; שלהן|them:אותם; להם|which:איזה; אשר|what:מה'],
- ['פעלים נפוצים','have:יש ל-|has:יש לו/לה|do:לעשות|does:עושה (הוא/היא)|can:יכולה; יכול|could:היה יכול|will:(סימן לעתיד)|would:היה... (תנאי)|make:ליצור; לגרום|use:להשתמש'],
- ['מילות קישור','because:כי; מפני ש-|but:אבל|also:גם|if:אם|when:כאשר; מתי|so:אז; כל כך|until:עד ש-|since:מאז; מכיוון ש-|too:גם; מדי|even:אפילו'],
- ['מילים נפוצות בטקסט','about:על; בערך|between:בין|question:שאלה|people:אנשים|time:זמן; פעם|way:דרך|new:חדש|year:שנה|same:אותו; זהה|good:טוב'],
- ['מילות יחס','on:על (משטח)|at:ב- (מקום, שעה)|by:על ידי; ליד|from:מ-; מן|with:עם|as:בתור; כמו|or:או|not:לא|up:למעלה|any:כלשהו'],
- ['שאלה וכמות','who:מי|where:איפה|how:איך|why:למה|all:כולם; כל|some:חלק; כמה|many:הרבה (נספרים)|more:יותר|most:רוב; הכי|only:רק'],
- ['כינויים','I:אני|you:את; אתה; אתם|he:הוא|she:היא|we:אנחנו|our:שלנו|its:שלו/שלה (לא אדם)|his:שלו|her:שלה; אותה|there:שם; יש (there is)'],
- ['פעלים נוספים','be:להיות|been:היה (זמן מושלם)|said:אמר|get:לקבל|go:ללכת|know:לדעת|take:לקחת|see:לראות|give:לתת|think:לחשוב'],
- ['זמן ומקום','after:אחרי|before:לפני|then:אחר כך|now:עכשיו|into:לתוך|over:מעל; יותר מ-|other:אחר|each:כל אחד|very:מאוד|than:מאשר']
+ ['מילים בסיסיות','the:ה- (הידיעה)|of:של|to:אל; ל-|in:ב-; בתוך|and:ו-; וגם|at:ב- (מקום, שעה)|by:על ידי; ליד|as:בתור; כמו|that:ההוא; ש-|same:אותו; זהה'],
+ ['להיות ופעלים קטנים','is:הוא/היא (להיות, יחיד)|are:הם/הן (להיות, רבים)|was:היה; הייתה|were:היו|been:היה (זמן מושלם)|has:יש לו/לה|does:עושה (הוא/היא)|said:אמר'],
+ ['מי?','I:אני|you:את; אתה; אתם|he:הוא|she:היא|we:אנחנו|it:זה (לא אדם)|they:הם; הן'],
+ ['של מי? את מי?','his:שלו|her:שלה; אותה|its:שלו/שלה (לא אדם)|their:שלהם; שלהן|them:אותם; להם']
 ];
 
 /* Academic vocabulary: [en, he, example, example-he, part-of-speech] by category */
@@ -1380,7 +1374,7 @@ const SURV = [
 ];
 
 /* Diagnostic */
-const DIAG_SIGHT = ['the','of','to','in','is','are','was','were','and','for','this','that','they','their','have','has','can','will','because','which'];
+const DIAG_SIGHT = ['the','of','to','in','is','are','was','were','and','at','by','that','they','their','has','been','its','them','said','his'];
 const DIAG_ACAD = ['main idea','reason','result','example','explain','identify','according to the text','paragraph','information','research','problem','solution','compare','different','increase','decrease'];
 const DIAG_MEAN = ['reason','increase','decision','choice','approach','goal','claim','method','conclusion','attention'];
 const DIAG_CTX = [
@@ -1429,7 +1423,7 @@ const ACAD_HE = uniq(ACAD.map(a => a.he));
 const PHON_TYPES_ALL = ['listen', 'contains', 'missing', 'say', 'meaning'];
 const SIGHT_TYPES = ['listen', 'meaning', 'reverse', 'flash', 'say'];
 const ACAD_TYPES = ['meaning', 'reverse', 'cloze', 'listen', 'context'];
-const SK_NAMES = { dict: 'שימוש במילון', dec: 'פענוח דפוסי כתיב', sight: 'זיהוי מילים שכיחות', pron: 'קריאה עצמאית (הגייה)', mean: 'משמעות מילים', expr: 'ביטויים אקדמיים', listen: 'זיהוי בשמיעה', ctx: 'קריאה בהקשר' };
+const SK_NAMES = { dict: 'שימוש במילון', dec: 'פענוח דפוסי כתיב', sight: 'זיהוי מילים קטנות וחשובות', pron: 'קריאה עצמאית (הגייה)', mean: 'משמעות מילים', expr: 'ביטויים אקדמיים', listen: 'זיהוי בשמיעה', ctx: 'קריאה בהקשר' };
 const INT = [0, 10 * 60e3, DAY, 3 * DAY, 7 * DAY, 21 * DAY];
 const isHomo = (a, b) => HOMO.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
 
@@ -6750,7 +6744,7 @@ function diagWord(u, n, used) {
   return { w: rnd(pool.length ? pool : u.words.map(x => x.w)), he: '' };
 }
 const STAGE_NAMES = ['צלילים בסיסיים', 'תנועות ארוכות', 'OO, OU ו-OI', 'E שקטה, C ו-PH', 'סיומות מתקדמות'];
-const PART_NAMES = ['', 'צלילים', 'מילים שכיחות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר'];
+const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר'];
 const PART_INFO = ['', 'בודקות כמה צלילים בכל פעם. כשהכול נכון ממשיכות הלאה, וכשיש קושי עוצרות ולומדות.', '6 מילים קצרות שמופיעות בכל טקסט.', '5 מילים וביטויים מתוך שאלות במבחנים.', '4 מילים: האם את יודעת מה הן אומרות?', '3 משפטים קצרים מתוך טקסטים אקדמיים.'];
 const stageUnits = (sg, onlyNew) => STAGES[sg].filter(id => !onlyNew || P.units[id].st === 'nt');
 function nextStageIdx() { return STAGES.findIndex(sg => sg.some(id => P.units[id].st === 'nt')); }
@@ -6909,7 +6903,7 @@ function sightQuiz(gi, words) {
   const ws = words.map(w => SMAP[w]); const types = shuf(SIGHT_TYPES); const qs = [];
   const n = Math.min(10, Math.max(6, ws.length));
   for (let i = 0; i < n; i++) qs.push(qSight(ws[i % ws.length], types[i % types.length]));
-  startQuiz(arraySrc(mixIn(shuf(qs), setExtras(ws.map(w => ({ en: w.w, he: w.he, k: 's:' + w.w })), 3))), { kind: 'sight', area: 'sight', title: 'מילים שכיחות: ' + SG[gi].name, tag: 'sight:' + gi, back: { name: 'sight' }, again: () => startSightGroup(gi) });
+  startQuiz(arraySrc(mixIn(shuf(qs), setExtras(ws.map(w => ({ en: w.w, he: w.he, k: 's:' + w.w })), 3))), { kind: 'sight', area: 'sight', title: 'מילים קטנות וחשובות: ' + SG[gi].name, tag: 'sight:' + gi, back: { name: 'sight' }, again: () => startSightGroup(gi) });
 }
 function startAcad(ci) {
   const c = AC[ci]; let list = c.items.filter(a => !known('a:' + a.id));
@@ -7177,7 +7171,7 @@ VIEWS.results = () => {
   const ctx = r.ctx && r.ctx.length ? r.ctx.reduce((a, b) => a + b, 0) / r.ctx.length : 0;
   const ring = (v, ic, label) => { const d = Math.round(v * 100); return `<div class="rs"><svg viewBox="0 0 64 64" class="rs-r" aria-hidden="true"><circle cx="32" cy="32" r="27" pathLength="100" class="rs-bg"/><circle cx="32" cy="32" r="27" pathLength="100" class="rs-fg" style="stroke-dasharray:${d} 100"/></svg><span class="rs-ic">${ic}</span><b class="en">${d}%</b><small>${label}</small></div>`; };
   return `<section class="block card resdone">${OWL('cheer')}<h1 class="h1">כל הכבוד, ${esc(P.name)}!</h1>
-    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים שכיחות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}</div>
+    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}</div>
     <button class="btn big-btn" data-act="go" data-v="home">${PIC.route}<span>למסלול שלי</span></button></section>`;
 };
 
@@ -7459,7 +7453,7 @@ VIEWS.bcards = () => {
 VIEWS.sight = () => {
   const cur = curSight(), due = dueKeys().filter(k => k.startsWith('s:')).length;
   return `<section class="block bentry-w"><h2 class="h2">רשימות מילים של משרד החינוך</h2><p class="muted small">לפי נושאים: פירוש, משפטים, שמיעה והתאמה</p><div class="btiles">${BANDS.map(bandTile).join('')}</div></section>
-  <section class="block"><h1 class="h1">מילים שכיחות</h1></section>
+  <section class="block"><h1 class="h1">מילים קטנות וחשובות</h1></section>
   ${due ? `<section class="block card row-card"><div><b>${due} מילים לחזרה</b></div><button class="btn sm" data-act="sdue">חזרה</button></section>` : ''}
   <section class="block"><div class="glist">${SG.map(g => { const k = g.words.filter(w => known('s:' + w.w)).length; return `<button class="gcard ${g.i === cur ? 'cur' : ''}" data-act="sg" data-i="${g.i}"><div class="g-top"><b>${esc(g.name)}</b>${g.i === cur ? '<span class="chip lr">עכשיו</span>' : k === g.words.length ? '<span class="chip ok">שולטת</span>' : ''}</div><div class="g-words en" dir="ltr">${g.words.slice(0, 6).map(w => esc(w.w)).join(' · ')}…</div>${bar(k / g.words.length)}<small>${k}/${g.words.length}</small></button>`; }).join('')}</div></section>`;
 };
@@ -7858,11 +7852,11 @@ VIEWS.dlesson = () => {
    adds a mixed-practice step after every few steps, a reading text, and a checkpoint quiz.
    Steps she already knows are skipped automatically; every step can also be tested out. */
 const LV = [
-  { name: 'יסודות הקריאה', sight: [0, 1], acad: [0], dict: ['tech', 'ebase'], read: ['t1'] },
-  { name: 'תנועות ארוכות', sight: [2, 3], acad: [1], dict: ['everb', 'comp', 'pos'], read: ['t2'] },
-  { name: 'צלילים מורכבים', sight: [4, 5], acad: [2, 3], dict: ['prefix', 'suffix', 'multi'], read: ['t3'] },
-  { name: 'מילים של מבחן', sight: [6, 7], acad: [4], dict: ['need'], read: ['t4'], strat: true, pas: ['p1'] },
-  { name: 'קוראת עצמאית', sight: [8, 9], acad: [5, 6], dict: [], read: ['t5', 't6'], pas: ['p2'] }
+  { name: 'יסודות הקריאה', sight: [0], acad: [0], dict: ['tech', 'ebase'], read: ['t1'] },
+  { name: 'תנועות ארוכות', sight: [1], acad: [1], dict: ['everb', 'comp', 'pos'], read: ['t2'] },
+  { name: 'צלילים מורכבים', sight: [2], acad: [2, 3], dict: ['prefix', 'suffix', 'multi'], read: ['t3'] },
+  { name: 'מילים של מבחן', sight: [3], acad: [4], dict: ['need'], read: ['t4'], strat: true, pas: ['p1'] },
+  { name: 'קוראת עצמאית', sight: [], acad: [5, 6], dict: [], read: ['t5', 't6'], pas: ['p2'] }
 ];
 let PN = null, NS = null;
 const STEP_SECTIONS = ['sight', 'acad', 'dict', 'phon', 'unit', 'read', 'games', 'band', 'library', 'lib'];
@@ -7927,7 +7921,7 @@ function nodeTitle(n) {
   return n.t === 'st' ? 'אסטרטגיות קריאה' : n.t === 'ps' ? PASM[n.id].he : n.t === 'stage' ? 'בוחן צלילים' : n.t === 'pl' ? 'הצליל ' + uLabel(UM[n.id]) : n.t === 'sg' ? SG[n.id].name : n.t === 'ac' ? AC[n.id].name
     : n.t === 'dc' ? (n.id === 'tech' ? 'מדריך המילון' : DLM[n.id].short) : n.t === 'rd' ? TEXTS.find(t => t.id === n.id).he : n.t === 'mix' ? 'תרגול משולב' : n.t === 'rv' ? 'חזרה: צלילים ומילים' : 'בוחן סוף שלב';
 }
-const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים שכיחות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', rv: 'חזרה', boss: 'בוחן' };
+const NKIND = { st: 'אסטרטגיות קריאה', ps: 'קטע אקדמי', stage: 'בדיקת צלילים', pl: 'צלילים', sg: 'מילים קטנות וחשובות', ac: 'אוצר מילים אקדמי', dc: 'מילון', rd: 'קריאה', mix: 'שילוב מיומנויות', rv: 'חזרה', boss: 'בוחן' };
 const PIC = {
   rv: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4m0 1h10l-2 3.5L16 12H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -8034,7 +8028,7 @@ function startNode(n, quick) {
 VIEWS.jumpinfo = () => { const k = V.k, L = LV[k];
   return `<section class="block card intro diagstart">${OWL('cheer')}<span class="eyebrow">בוחן דילוג</span><h1 class="h1">לדלג על שלב ${k + 1}: ${esc(L.name)}</h1>
     <p>אם את כבר מכירה את החומר של השלב, אפשר לבדוק את זה בבוחן קצר ולעבור הלאה.</p>
-    <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים שכיחות, אוצר מילים אקדמי ומילון</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
+    <ul class="jump-l"><li><b>10</b>שאלות מכל השלב: ${P.noPhon ? '' : 'צלילים, '}מילים קטנות וחשובות, אוצר מילים אקדמי ומילון</li><li><b>90%</b>ומעלה: כל השלב מסומן כבוצע ונפתח שלב ${k + 2 <= LV.length ? k + 2 : 'הבא'}</li><li><b>פחות</b>ממשיכות בשלב כרגיל. אפשר לנסות שוב מתי שרוצים</li></ul>
     <div class="btns center"><button class="btn big-btn" data-act="pjumpgo" data-k="${k}">${I.play}<span>להתחיל את הבוחן</span></button><button class="btn ghost" data-act="go" data-v="home">חזרה למסלול</button></div></section>`; };
 function startJump(k) {
   PN = { key: 'jump:' + k, tag: 'jump:' + k, thr: 0.9 };
@@ -8662,7 +8656,7 @@ const HELPTX = {
   phon: ['דפוסי קריאה', ['איך אותיות נשמעות יחד.', 'מה שכבר בשליטה לא חוזר לתרגול.']],
   unit: ['דפוס קריאה', ['שיעור קצר, ואז תרגול.', 'שליטה = 90% דיוק בשני מפגשים לפחות.']],
   lesson: ['שיעור', ['מקשיבים, קוראים בקול ובודקים.', 'לחיצה על מילה משמיעה אותה.']],
-  sight: ['מילים שכיחות', ['מילים שמופיעות בכל טקסט.', 'לומדים לזהות אותן מיד.']],
+  sight: ['מילים קטנות וחשובות', ['המילים הקטנות שמופיעות בכל משפט.', 'לומדים לזהות אותן מיד.']],
   cards: ['כרטיסיות', ['נוגעים בכרטיסייה כדי להפוך.', '"אני יודעת" או "לא יודעת". המילים שלא ידעת יתורגלו מיד בסוף.']],
   acad: ['אוצר מילים אקדמי', ['מילים וביטויים ממבחנים.', 'לומדים ביטוי כיחידה אחת.']],
   aclearn: ['ביטוי חדש', ['מקשיבים, קוראים את המשפט ועוברים הלאה.']],
@@ -8966,7 +8960,7 @@ const ACT = {
   flip: () => { V.flip = !V.flip; const f = document.querySelector('.flip'); if (f) f.classList.toggle('on', V.flip); else render(); },
   cknow: () => { const k = 's:' + V.deck[V.i]; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; cardNext(); },
   cagain: () => { const w = V.deck[V.i]; itemRec('s:' + w, false); dkAdd('s:' + w); if (!V.again.includes(w)) { V.again.push(w); V.deck.push(w); } cardNext(); },
-  sdue: () => { const ks = dueKeys().filter(k => k.startsWith('s:')).slice(0, 10); startQuiz(arraySrc(ks.map(qFromKey)), { kind: 'sight', area: 'sight', title: 'חזרה: מילים שכיחות', back: { name: 'sight' } }); },
+  sdue: () => { const ks = dueKeys().filter(k => k.startsWith('s:')).slice(0, 10); startQuiz(arraySrc(ks.map(qFromKey)), { kind: 'sight', area: 'sight', title: 'חזרה: מילים קטנות וחשובות', back: { name: 'sight' } }); },
   ac: el => startAcad(+el.dataset.i),
   anext: () => { if (V.i < V.list.length - 1) { V.i++; V.he = false; render(); } else { V.list.forEach(id => { const k = 'a:' + id; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; }); save(); acadQuiz(V.c, V.list); } },
   aprev: () => { V.i = Math.max(0, V.i - 1); V.he = false; render(); },
