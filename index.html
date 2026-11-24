@@ -1656,7 +1656,7 @@ const CLOUD = {
     if (!this.on || (!force && now() - this.lbAt < 60e3)) return; this.lbAt = now();
     try {
       const rows = await this.rpc('leaderboard', {});
-      LB.rows = (rows || []).map(r => ({ pid: String(r.pid), n: String(r.name || '').slice(0, 24), s: +r.stars || 0, w: +r.week_stars || 0, wk: +r.week_id || 0, lv: Math.max(1, Math.min(LV.length, +r.level || 1)) }));
+      LB.rows = (rows || []).filter(r => +r.week_id !== -1).map(r => ({ pid: String(r.pid), n: String(r.name || '').slice(0, 24), s: +r.stars || 0, w: +r.week_stars || 0, wk: +r.week_id || 0, lv: Math.max(1, Math.min(LV.length, +r.level || 1)) }));
       LB.shared = true; LB.loading = false; lbRefresh();
     } catch (e) { LB.loading = false; }
   }
@@ -1664,6 +1664,7 @@ const CLOUD = {
 const cloudBadge = () => CLOUD.on && P && P.cloud ? `<span id="cloudst" class="cloudst ${CLOUD.state}" title="${CLOUD.state === 'ok' ? 'ההתקדמות נשמרת בענן' : 'אין חיבור. נשמור כשיחזור'}">${CLOUD.state === 'ok' ? '☁︎' : '⚠︎'}</span>` : '';
 const cloudErr = e => /name_taken/.test(e.message) ? 'הכינוי הזה כבר תפוס. בחרי כינוי אחר.' : /bad_login/.test(e.message) ? 'הכינוי או הקוד לא נכונים.' : /bad_pin/.test(e.message) ? 'הקוד צריך להיות 4 ספרות.' : /bad_name/.test(e.message) ? 'כינוי של 2 עד 24 תווים.' : 'אין חיבור לאינטרנט. נסי שוב.';
 function cloudEnter(data, token, name) {
+  if (data && data.deleted) { toast('החשבון הזה נמחק. אפשר לפתוח חשבון חדש.'); return; }
   let p = data && data.id ? data : null;
   const local = Object.values(DB.profiles).find(x => x.cloud === token);
   if (local && (!p || (local.last || 0) > (p.last || 0))) p = local;
@@ -8910,7 +8911,15 @@ const ACT = {
     if (P.cloud) {
       V.busy = true; render();
       try { clearTimeout(CLOUD.h); CLOUD.dirty = false; await CLOUD.rpc('delete_self', { p_token: P.cloud }); }
-      catch (e) { if (!/bad_token/.test(e.message)) { V.busy = false; render(); toast(/delete_self/.test(e.message) || e.status === 404 ? 'האפשרות עוד לא הופעלה באתר' : 'אין חיבור. נסי שוב.'); return; } }
+      catch (e) {
+        if (!/bad_token/.test(e.message)) {
+          /* the server has no delete function yet: wipe the account's data instead and mark it deleted */
+          const missing = /delete_self|PGRST202|Could not find/.test(e.message) || e.status === 404;
+          let ok = false;
+          if (missing) { try { await CLOUD.rpc('save_progress', { p_token: P.cloud, p_data: { deleted: true, at: now() }, p_stars: 0, p_week: -1, p_week_stars: 0, p_level: 1 }); ok = true; } catch (e2) { ok = /bad_token/.test(e2.message); } }
+          if (!ok) { V.busy = false; render(); toast('אין חיבור. נסי שוב.'); return; }
+        }
+      }
     }
     const id = P.id;
     if (LB.db && LB.uid && !LB.ro && LB.exists) { try { LB.db.doc('lb/' + LB.uid).update({ ['p' + id]: null }); } catch (e) { } }
