@@ -1827,7 +1827,7 @@ function qPhon(u, type, wo, lvl = 2, o = {}) {
     q = mcq({ optAudio: false, prompt: 'הקשיבי. אילו אותיות חסרות?', audio: W, big, bigLen: W.length, opts: [g, ...sample(okPool(u.gap.filter(x => x !== g), nOpt), nOpt)].map(enOpt), correct: g, reveal: o.plain ? null : hlWord(u, W), rec: rec('missing', 'dec') });
   } else if (type === 'contains') {
     const ds = sample(okPool(ENG_POOL, 40).filter(x => x !== W && x.length >= 3 && !u.rx.test(x.toLowerCase()) && !u.avx.test(x.toLowerCase())), nOpt);
-    q = mcq({ prompt: u.ask || `באיזו מילה יש ${en(u.name)}?`, opts: [W, ...ds].map(enOpt), correct: W, reveal: hlWord(u, W), rec: rec('contains', 'dec') });
+    q = mcq({ prompt: u.ask || `באיזו מילה יש ${en(u.name)}?`, opts: [W, ...ds].map(enOpt), correct: W, reveal: hlWord(u, W), rec: rec('contains', 'dec') }); q.sayOk = W; q.sayU = u.id;
   } else {
     q = mcq({ prompt: 'מה פירוש המילה?', big: en(W), bigLen: W.length, audio: W, autoplay: false, opts: [wo.he, ...heOpts(wo.he, ALL_HE, nOpt)].map(heOpt), correct: wo.he, rec: [{ k: 'm:' + W, s: 'mean' }] });
   }
@@ -6744,6 +6744,7 @@ function answerQ(i) {
   if (ok) { Q.ok++; Q.times.push(now() - Q.t0); }
   if (dk) dkAdd(dkKey(q));
   if (!Q.o.diag) { if (ok) { Q.combo = (Q.combo || 0) + 1; Q.gain = Q.combo >= 3 ? 2 : 1; P.stars = (P.stars || 0) + Q.gain; } else { Q.combo = 0; Q.gain = 0; } q.combo = Q.combo; }
+  if (ok && q.sayOk && !Q.o.diag && !(P.units[q.sayU] && P.units[q.sayU].st === 'mast')) setTimeout(() => { if (Q && Q.q === q) TTS.say(q.sayOk); }, 200);
   applyRec(q, ok); if (ok && q.onOk) q.onOk(); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok, dk); save();
   if (Q.o.feedback === false) {
     const el = i === -1 ? document.querySelector('.dk') : document.querySelector(`.opt[data-i="${i}"], .apick[data-i="${i}"]`), box = el && (el.closest('.aopt') || el);
