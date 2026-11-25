@@ -973,6 +973,14 @@ button.dk.chosen{background:var(--plum);color:var(--on-plum);border-style:solid;
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}.ccard{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 14px 12px;border-radius:16px;border:1px solid var(--line);background:var(--surface);text-align:start;cursor:pointer;overflow:hidden;font:inherit;color:inherit}.ccard .cc-bar{position:absolute;inset:0 0 auto;height:8px;background:var(--cc)}.ccard b{font-size:1.05rem}.ccard small{color:var(--muted)}
 .cvhead{position:relative;padding-top:14px}.cvhead .cvbar{display:block;height:8px;border-radius:8px;background:var(--cc);margin-bottom:10px}
 .spick{border:2px solid var(--line);border-radius:12px;margin:8px 0;background:var(--surface)}.spick-h .link{white-space:nowrap}.spick-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line)}.spick ul{list-style:none;margin:0;padding:4px 0;max-height:260px;overflow:auto}.spick li label{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer}.spick li label:hover{background:var(--lav)}.spick input{width:20px;height:20px;accent-color:var(--plum)}.spick small{margin-inline-start:auto}
+.trbox input{width:100%;font-size:1.25rem;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--f-en)}.trbox input:focus{outline:none;border-color:var(--plum)}
+.vgoal{display:flex;gap:16px;align-items:center;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
+.vgoal.todo{border-color:var(--pink);animation:vgp 2.4s ease-in-out infinite}@keyframes vgp{50%{box-shadow:0 0 0 6px rgba(224,90,122,.12)}}
+.vgoal.done{background:var(--good-bg,#E7F3EB);border-color:var(--good,#2C7A57)}
+.vg-ring{position:relative;width:78px;height:78px;flex:none}.vg-ring svg{width:100%;height:100%;transform:rotate(-90deg)}.vg-ring b{position:absolute;inset:0;display:grid;place-items:center;font:700 1.3rem var(--f-en);color:var(--plum);line-height:1}.vg-ring small{font-size:.7rem;color:var(--muted);display:block}
+.vg-t{flex:1;min-width:0}.vg-t p svg{width:16px;height:16px;vertical-align:-3px;color:#E8833A}.vg-t p{margin:2px 0 8px}.vgoal .btn svg{width:18px;height:18px}
+.remindbox{margin-top:10px;display:grid;gap:8px}.remindbox input[type=time]{font:inherit;padding:8px 10px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.vgoal.todo{animation:none}}
 .tsel{width:100%;padding:10px;border-radius:12px;border:2px solid var(--line);font:inherit;background:var(--surface);color:var(--ink)}
 .asgform{display:grid;gap:8px;margin-bottom:12px}.asgform input[type=date]{padding:10px;border-radius:12px;border:2px solid var(--line);font:inherit;background:var(--surface);color:var(--ink)}
 .tbadge{display:inline-block;font-size:.75rem;background:#FBE2EB;color:#B23F6A;border-radius:999px;padding:1px 8px}
@@ -6745,7 +6753,7 @@ function answerQ(i) {
   if (dk) dkAdd(dkKey(q));
   if (!Q.o.diag) { if (ok) { Q.combo = (Q.combo || 0) + 1; Q.gain = Q.combo >= 3 ? 2 : 1; P.stars = (P.stars || 0) + Q.gain; } else { Q.combo = 0; Q.gain = 0; } q.combo = Q.combo; }
   if (ok && q.sayOk && !Q.o.diag && !(P.units[q.sayU] && P.units[q.sayU].st === 'mast')) setTimeout(() => { if (Q && Q.q === q) TTS.say(q.sayOk); }, 200);
-  applyRec(q, ok); if (ok && q.onOk) q.onOk(); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok, dk); save();
+  applyRec(q, ok); if (Q.o.area && V_AREAS.includes(Q.o.area) && !Q.o.diag) vocabTick(1); if (ok && q.onOk) q.onOk(); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok, dk); save();
   if (Q.o.feedback === false) {
     const el = i === -1 ? document.querySelector('.dk') : document.querySelector(`.opt[data-i="${i}"], .apick[data-i="${i}"]`), box = el && (el.closest('.aopt') || el);
     if (box) { box.classList.add('chosen'); document.querySelectorAll('.opt, .aopt, .dk').forEach(x => { if (x !== box) x.classList.add('faded'); }); }
@@ -6790,7 +6798,43 @@ function diagWord(u, n, used) {
   return { w: rnd(pool.length ? pool : u.words.map(x => x.w)), he: '' };
 }
 const STAGE_NAMES = ['צלילים בסיסיים', 'תנועות ארוכות', 'OO, OU ו-OI', 'E שקטה, C ו-PH', 'סיומות מתקדמות'];
-const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר', 'כתיבה', 'אוצר מילים כללי'];
+const PART_NAMES = ['', 'צלילים', 'מילים קטנות וחשובות', 'אוצר מילים אקדמי', 'משמעות מילים', 'קריאה בהקשר', 'כתיבה', 'אוצר מילים כללי', 'כתיבה: תרגום משפטים'];
+/* order of the placement-test parts: sounds → general vocabulary (Bands, adaptive) → small words → academic → meaning → context → writing rules → short translation */
+const DIAG_ORDER = [1, 7, 2, 3, 4, 5, 6, 8];
+const DIAG_GROUPS = [[1], [7], [2], [3], [4, 5], [6, 8]];
+function nextPart(st) { const i = DIAG_ORDER.indexOf(st.part); st.part = i < 0 || i >= DIAG_ORDER.length - 1 ? 99 : DIAG_ORDER[i + 1]; }
+const visParts = () => DIAG_ORDER.filter(p => !(p === 1 && P && P.noPhon));
+/* short translation (Hebrew → English). lvl 1 easy · 2 medium · 3 harder */
+const DIAG_TR = [
+  { id: 'tr1', l: 1, he: 'אני סטודנטית.', en: ['I am a student.'] },
+  { id: 'tr2', l: 1, he: 'הספר על השולחן.', en: ['The book is on the table.'] },
+  { id: 'tr3', l: 1, he: 'יש לי שני אחים.', en: ['I have two brothers.', 'I have got two brothers.'] },
+  { id: 'tr4', l: 1, he: 'היא לומדת אנגלית.', en: ['She learns English.', 'She studies English.', 'She is learning English.', 'She is studying English.'] },
+  { id: 'tr5', l: 2, he: 'אני לא אוהבת קפה.', en: ['I do not like coffee.'] },
+  { id: 'tr6', l: 2, he: 'הם עובדים בבית חולים.', en: ['They work in a hospital.', 'They work at a hospital.', 'They work in the hospital.', 'They work at the hospital.'] },
+  { id: 'tr7', l: 2, he: 'אתמול הלכנו לספרייה.', en: ['Yesterday we went to the library.', 'We went to the library yesterday.', 'Yesterday, we went to the library.'] },
+  { id: 'tr8', l: 3, he: 'אני חושבת שטלפונים בכיתה מסיחים את הדעת.', en: ['I think that phones in class are distracting.', 'I think phones in class are distracting.', 'I think that phones in the classroom are distracting.', 'I think phones in the classroom are distracting.', 'I think that phones in class are a distraction.', 'I think phones in class are a distraction.'] },
+  { id: 'tr9', l: 3, he: 'הרבה סטודנטים עובדים כי הם צריכים כסף.', en: ['Many students work because they need money.', 'A lot of students work because they need money.', 'Lots of students work because they need money.'] },
+  { id: 'tr10', l: 3, he: 'המחקר מראה שקריאה משפרת את אוצר המילים.', en: ['The research shows that reading improves vocabulary.', 'Research shows that reading improves vocabulary.', 'The study shows that reading improves vocabulary.', 'The research shows that reading improves the vocabulary.', 'Research shows reading improves vocabulary.'] }];
+function trNorm(s) {
+  let t = String(s || '').toLowerCase().replace(/[’‘`]/g, "'");
+  const ex = { "i'm": 'i am', "don't": 'do not', "doesn't": 'does not', "didn't": 'did not', "isn't": 'is not', "aren't": 'are not', "can't": 'cannot', "it's": 'it is', "she's": 'she is', "he's": 'he is', "they're": 'they are', "we're": 'we are', "i've": 'i have' };
+  t = t.replace(/[a-z]+'[a-z]+/g, w => ex[w] || w.replace("'", ''));
+  return t.replace(/can not/g, 'cannot').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function lev(a, b) { const m = a.length, n = b.length; let p = Array.from({ length: n + 1 }, (_, j) => j); for (let i = 1; i <= m; i++) { const c = [i]; for (let j = 1; j <= n; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); p = c; } return p[n]; }
+function trCheck(item, typed) {
+  const t = trNorm(typed); if (!t) return false;
+  return item.en.some(v => { const n = trNorm(v); return n === t || (n.length > 14 && lev(n, t) <= Math.floor(n.length / 18) + 1); });
+}
+function qTr(item) {
+  return { t: 'type', prompt: 'תרגמי לאנגלית:', bigHe: item.he, tr: item, ans: 0, opts: [{ html: en(item.en[0]) }], ansText: item.en[0], rec: [] };
+}
+function typeView(q) {
+  return `<div class="card qcard"><p class="prompt">${q.prompt}</p><div class="big-he">${esc(q.bigHe)}</div></div>
+    <div class="trbox"><input id="trin" class="en" dir="ltr" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Write in English" value="${esc(q.typed || '')}" ${q.answered ? 'disabled' : ''}></div>
+    ${q.answered ? (Q.o.feedback === false ? '' : feedback(q)) : `<div class="btns end"><button class="btn" data-act="trcheck">בדיקה</button><button class="dk" data-act="trdk">אני לא יודעת</button></div>`}`;
+}
 const PART_INFO = ['', 'בודקות כמה צלילים בכל פעם. כשהכול נכון ממשיכות הלאה, וכשיש קושי עוצרות ולומדות.', '6 מילים קצרות שמופיעות בכל טקסט.', '5 מילים וביטויים מתוך שאלות במבחנים.', '4 מילים: האם את יודעת מה הן אומרות?', '3 משפטים קצרים מתוך טקסטים אקדמיים.'];
 const stageUnits = (sg, onlyNew) => STAGES[sg].filter(id => !onlyNew || P.units[id].st === 'nt');
 function nextStageIdx() { return STAGES.findIndex(sg => sg.some(id => P.units[id].st === 'nt')); }
@@ -6803,15 +6847,15 @@ function newDiagState(stageOnly) {
   const only = stageOnly != null, sg = only ? stageOnly : 0;
   return { only, part: 1, intro: {}, stage: sg, order: stageUnits(sg, only), ui: 0, ua: [], uw: [], udk: 0, needs: 0, stoppedAt: null, fin: false, passed: 0,
     sl: shuf(SG.flatMap(g => sample(g.words, 2).map(w => w.w))), si: 0, sfu: null, al: shuf(AC.flatMap(c => sample(c.items, 1).map(x => x.id))), ai: 0, afu: null, ml: sample(DIAG_MEAN, 4), mi: 0, cl: sample([0, 1, 2, 3, 4], 3), ci: 0, count: 0,
-    wl: WRULES.map(r => r.id), wi: 0,
-    res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [], write: {} } };
+    wl: WRULES.map(r => r.id), wi: 0, tl: null, ti: 0,
+    res: { units: {}, sight: {}, acad: {}, mean: {}, ctx: [], write: {}, tr: [] } };
 }
 const infoCard = (eyebrow, title, text, cls = '') => ({ t: 'info', html: `<div class="part-intro ${cls}">${cls === 'win' ? OWL('cheer') : ''}<span class="eyebrow">${eyebrow}</span><h2>${title}</h2><p>${text}</p></div>` });
 function diagSrc(st) {
   const stopPhonics = msg => {
     st.stoppedAt = st.stage;
     const weak = Object.entries(st.res.units).filter(([, r]) => r.r === 'needs').map(([id]) => en(uLabel(UM[id])));
-    if (st.only) st.fin = true; else { st.part = 2; st.intro[2] = 1; }
+    if (st.only) st.fin = true; else { nextPart(st); st.intro[st.part] = 1; }
     return infoCard('עוצרות כאן', msg, st.one ? `נלמד את ${weak.join(' ו-')} עכשיו, צעד אחר צעד.` : `נלמד קודם את ${weak.join(' ו-')}. אחרי התרגול ייפתח בוחן קצר לצלילים הבאים.${st.only ? '' : '<br>עכשיו כמה שאלות קצרות על מילים.'}`);
   };
   return {
@@ -6819,7 +6863,7 @@ function diagSrc(st) {
       for (;;) {
         if (st.fin) return null;
         if (!st.intro[st.part]) st.intro[st.part] = 1;
-        if (st.part === 1 && P.noPhon) { if (st.only) { st.fin = true; return null; } st.part = 2; continue; }
+        if (st.part === 1 && P.noPhon) { if (st.only) { st.fin = true; return null; } nextPart(st); continue; }
         if (st.part === 1) {
           if (st.ui >= st.order.length) {
             const allKnown = st.order.every(id => st.res.units[id] && st.res.units[id].r === 'known');
@@ -6832,7 +6876,7 @@ function diagSrc(st) {
               return infoCard(`שלב ${done + 1} הושלם`, 'כל התשובות נכונות!', `ממשיכות לשלב ${nx + 1}: ${STAGE_NAMES[nx]}.`, 'win');
             }
             if (st.only) { st.fin = true; return infoCard('כל הצלילים נבדקו', 'עברת את כל השלבים!', 'מעולה. אין צלילים נוספים לבדוק.', 'win'); }
-            st.part = 2; continue;
+            nextPart(st); continue;
           }
           const u = UM[st.order[st.ui]], a = st.ua, c = a.filter(Boolean).length; let r = null;
           if (a.length >= 2) r = c === 2 ? 'known' : 'needs';   /* exactly two words per sound */
@@ -6847,38 +6891,58 @@ function diagSrc(st) {
         }
         if (st.only) return null;
         if (st.part === 2) {
-          if (st.sfu) { const q = qSight(SMAP[st.sfu], 'say'); q.variant = null; q.dm = { p: 2, w: st.sfu, fu: 1 }; return q; }
-          if (st.si < st.sl.length) { const w = st.sl[st.si]; const q = qSight(SMAP[w], 'listen'); q.variant = null; q.dm = { p: 2, w }; return q; }
-          st.part = 3; continue;
+          if (!st.sAdj) {
+            st.sAdj = 1;
+            /* strong in Bands 2–3: the small basic words are below her level, so we skip them */
+            if (st.lvl === 3) { st.sl.forEach(w => { st.res.sight[w] = 'k'; }); st.sl = []; }
+            else if (st.lvl === 2) st.sl = st.sl.slice(0, Math.ceil(st.sl.length / 2));
+          }
+          const nr = P.noPhon;   /* no reading practice: no "listen and find the word" (that tests reading) */
+          if (st.sfu) { const q = qSight(SMAP[st.sfu], nr ? 'reverse' : 'say'); q.variant = null; q.dm = { p: 2, w: st.sfu, fu: 1 }; return q; }
+          if (st.si < st.sl.length) { const w = st.sl[st.si]; const q = qSight(SMAP[w], nr ? 'meaning' : 'listen'); q.variant = null; q.dm = { p: 2, w }; return q; }
+          nextPart(st); continue;
         }
         if (st.part === 3) {
+          if (!st.aAdj) { st.aAdj = 1; if (st.lvl === 1) st.al = st.al.slice(0, 4); }
           if (st.afu) { const q = qAcad(AMAP[st.afu], 'reverse'); q.variant = null; q.dm = { p: 3, id: st.afu, fu: 1 }; return q; }
           if (st.ai < st.al.length) { const id = st.al[st.ai]; const q = qAcad(AMAP[id], 'meaning'); q.variant = null; q.dm = { p: 3, id }; return q; }
-          st.part = 4; continue;
+          nextPart(st); continue;
         }
         if (st.part === 4) {
           if (st.mi < st.ml.length) { const w = st.ml[st.mi]; const q = qMeanWord(w); q.dm = { p: 4, w }; return q; }
-          st.part = 5; continue;
+          nextPart(st); continue;
         }
         if (st.part === 5) {
           if (st.ci < st.cl.length) { const q = qCtx(DIAG_CTX[st.cl[st.ci]]); q.dkk = 'c:' + st.cl[st.ci]; q.dm = { p: 5 }; return q; }
-          st.part = 6; continue;
+          nextPart(st); continue;
         }
         if (st.part === 6) {
           if (!st.wl) { st.wl = WRULES.map(r => r.id); st.wi = 0; st.res.write = st.res.write || {}; }
           if (st.wi < st.wl.length) { const R0 = WRM[st.wl[st.wi]]; const q = wq(R0, rnd(R0.qs)); q.variant = null; q.dm = { p: 6, id: R0.id }; return q; }
-          st.part = 7; continue;
+          nextPart(st); continue;
         }
         if (st.part === 7) {
-          /* adaptive: start at Band 2. All 3 right → check Band 3 and skip Band 1. Otherwise → check Band 1 and stop. */
-          const pick = b => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), 3).map(w => [w.b, w.i]);
-          if (!st.bplan) { st.bplan = [2]; st.bl = pick(2); st.bi = 0; st.res.band = { 1: [], 2: [], 3: [] }; }
+          /* adaptive: start at Band 2 (3 words). 3/3 → Band 3 and skip Band 1 · 2/3 → a little of Band 1 and Band 3 · 0–1 → Band 1 and skip Band 3 */
+          const pick = (b, n) => sample(BANDS[b - 1].words.filter(w => !/\s/.test(w.en) && w.he), n).map(w => [w.b, w.i]);
+          if (!st.bplan) { st.bplan = [2]; st.bl = pick(2, 3); st.bi = 0; st.res.band = { 1: [], 2: [], 3: [] }; }
           if (st.bi >= st.bl.length && st.bplan.length === 1) {
-            const r2 = st.res.band[2] || [], all = r2.length >= 3 && r2.every(Boolean);
-            const nx = all ? 3 : 1; st.bplan.push(nx); st.bl = st.bl.concat(pick(nx));
-            if (all) st.res.band.skip1 = true;
+            const c2 = (st.res.band[2] || []).filter(Boolean).length;
+            if (c2 >= 3) { st.bplan.push(3); st.bl = st.bl.concat(pick(3, 3)); st.res.band.skip1 = true; }
+            else if (c2 === 2) { st.bplan.push(1, 3); st.bl = st.bl.concat(pick(1, 2), pick(3, 2)); }
+            else { st.bplan.push(1); st.bl = st.bl.concat(pick(1, 3)); st.res.band.skip3 = true; }
           }
           if (st.bi < st.bl.length) { const [b, wi] = st.bl[st.bi], w = BANDS[b - 1].words[wi]; const q = qBand(w, 'meaning', sample(BANDS[b - 1].words, 8)); q.variant = null; q.rec = []; q.dm = { p: 7, b }; return q; }
+          /* her level decides what comes next */
+          const r = st.res.band, pc = a => a && a.length ? a.filter(Boolean).length / a.length : null, s1 = pc(r[1]), s2 = pc(r[2]), s3 = pc(r[3]);
+          st.lvl = r.skip1 ? (s3 >= 0.67 ? 3 : 2) : (s2 >= 0.6 && (s1 == null || s1 >= 0.5)) ? 2 : 1;
+          nextPart(st); continue;
+        }
+        if (st.part === 8) {
+          if (!st.tl) {
+            const L = st.lvl || 1, by = l => sample(DIAG_TR.filter(x => x.l === l), 3);
+            st.tl = (L === 1 ? by(1).slice(0, 3) : L === 2 ? by(1).slice(0, 1).concat(by(2).slice(0, 2)) : by(2).slice(0, 1).concat(by(3).slice(0, 2))).map(x => x.id); st.ti = 0;
+          }
+          if (st.ti < st.tl.length) { const it = DIAG_TR.find(x => x.id === st.tl[st.ti]); const q = qTr(it); q.dm = { p: 8, id: it.id }; return q; }
           return null;
         }
         return null;
@@ -6900,16 +6964,21 @@ function diagSrc(st) {
       } else if (d.p === 4) { st.res.mean[d.w] = ok; st.mi++; }
       else if (d.p === 7) { st.res.band = st.res.band || { 1: [], 2: [], 3: [] }; (st.res.band[d.b] = st.res.band[d.b] || []).push(ok); st.bi++; }
       else if (d.p === 6) { st.res.write = st.res.write || {}; st.res.write[d.id] = ok; st.wi++; }
+      else if (d.p === 8) { const s = String(q.typed || '').trim(); (st.res.tr = st.res.tr || []).push({ id: d.id, ok: !!ok, cap: /^[A-Z]/.test(s), end: /[.!?]$/.test(s), t: s.slice(0, 160) }); st.ti++; }
       else { st.res.ctx.push(ok ? 1 : 0); st.ci++; }
     },
     prog() {
       const ph = st.part <= 1 && !P.noPhon ? Math.max(0, (st.order.length - st.ui) * 2 - st.ua.length) : 0;
-      const rest = st.only ? 0 : (st.part <= 2 ? st.sl.length - st.si : 0) + (st.part <= 3 ? st.al.length - st.ai : 0) + (st.part <= 4 ? st.ml.length - st.mi : 0) + (st.part <= 5 ? st.cl.length - st.ci : 0) + (st.part <= 6 ? (st.wl || WRULES).length - (st.wi || 0) : 0) + (st.bplan ? (st.bl.length - st.bi) + (st.bplan.length < 2 ? 3 : 0) : 6);
+      const left = p => { const c = p === st.part;
+        if (p === 2) return st.sl.length - (c ? st.si : 0); if (p === 3) return st.al.length - (c ? st.ai : 0); if (p === 4) return st.ml.length - (c ? st.mi : 0);
+        if (p === 5) return st.cl.length - (c ? st.ci : 0); if (p === 6) return (st.wl || WRULES).length - (c ? (st.wi || 0) : 0);
+        if (p === 7) return st.bplan ? (st.bl.length - st.bi) + (st.bplan.length < 2 ? 3 : 0) : 6; if (p === 8) return st.tl ? st.tl.length - (c ? st.ti : 0) : 3; return 0; };
+      const from = DIAG_ORDER.indexOf(st.part), rest = st.only || from < 0 ? 0 : DIAG_ORDER.slice(from).reduce((a, p) => a + left(p), 0);
       return [st.count, st.count + ph + rest];
     }
   };
 }
-const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${P.noPhon ? st.part - 1 : st.part} · ${PART_NAMES[Math.min(7, st.part)]}`) : '';
+const diagLabel = st => st ? (st.part === 1 ? `${st.only ? 'בוחן קצר' : 'חלק 1'} · שלב ${st.stage + 1}: ${STAGE_NAMES[st.stage]}` : `חלק ${Math.max(1, visParts().indexOf(st.part) + 1)} · ${PART_NAMES[st.part] || ''}`) : '';
 function startDiag() {
   if (!P.diag.state || !P.diag.state.order) P.diag.state = newDiagState();
   save();
@@ -6933,6 +7002,7 @@ function applyPlacement(res) {
   Object.entries(res.acad).forEach(([id, v]) => setItem('a:' + id, v === 'k' ? 4 : v === 'p' ? 2 : 1));
   Object.entries(res.mean).forEach(([w, v]) => setItem('m:' + w, v ? 4 : 1));
   if (res.write) { const W = ensureWrite(); W.dg = W.dg || {}; Object.entries(res.write).forEach(([id, ok]) => { W.dg[id] = ok ? 1 : 0; }); }
+  if (res.tr && res.tr.length) { const W = ensureWrite(), tw = res.tr.filter(x => x.t); W.dg = W.dg || {}; if (tw.some(x => !x.cap)) W.dg.cap = 0; if (tw.some(x => !x.end)) W.dg.end = 0; }
   const c = res.ctx.reduce((a, b) => a + b, 0); P.rlvl = res.ctx.length && c / res.ctx.length >= 0.67 ? 2 : 1;
   P.diag.done = true; P.diag.res = res; P.diag.at = now(); P.diag.state = null;
   P.hist.unshift({ t: now(), l: 'בוחן פתיחה', ok: null, n: null });
@@ -7240,7 +7310,7 @@ VIEWS.results = () => {
   const ctx = r.ctx && r.ctx.length ? r.ctx.reduce((a, b) => a + b, 0) / r.ctx.length : 0;
   const ring = (v, ic, label) => { const d = Math.round(v * 100); return `<div class="rs"><svg viewBox="0 0 64 64" class="rs-r" aria-hidden="true"><circle cx="32" cy="32" r="27" pathLength="100" class="rs-bg"/><circle cx="32" cy="32" r="27" pathLength="100" class="rs-fg" style="stroke-dasharray:${d} 100"/></svg><span class="rs-ic">${ic}</span><b class="en">${d}%</b><small>${label}</small></div>`; };
   return `<section class="block card resdone">${OWL('cheer')}<h1 class="h1">כל הכבוד, ${esc(P.name)}!</h1>
-    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}${r.write ? ring(part(r.write), PEN_IC, 'כתיבה') : ''}</div>${(() => { const L = bandLevel(); return `<p class="bandrec">אוצר מילים: ${L.b === 1 ? 'מומלץ להתחיל מ־' : 'מומלץ להתמקד ב־'}<b class="en">Band ${L.b}</b></p>`; })()}
+    <div class="rings">${P.noPhon || !tested.length ? '' : ring(tested.length ? known.length / tested.length : 0, I.abc, 'צלילים')}${ring(part(r.sight), I.cards, 'מילים קטנות וחשובות')}${ring(part(r.acad), I.cap, 'אקדמי')}${ring(Math.max(part(r.mean), 0) * 0.5 + ctx * 0.5, I.book, 'הבנה')}${(() => { const b = r.band, all = b ? [].concat(b[1] || [], b[2] || [], b[3] || []) : []; return all.length ? ring(all.filter(Boolean).length / all.length, I.star, 'אוצר מילים כללי') : ''; })()}${r.write || (r.tr && r.tr.length) ? ring((() => { const w = r.write && Object.keys(r.write).length ? part(r.write) : null, t = r.tr && r.tr.length ? r.tr.filter(x => x.ok).length / r.tr.length : null; return w == null ? t : t == null ? w : w * 0.5 + t * 0.5; })(), PEN_IC, 'כתיבה') : ''}</div>${(() => { const L = bandLevel(); return `<p class="bandrec">אוצר מילים: ${L.b === 1 ? 'מומלץ להתחיל מ־' : 'מומלץ להתמקד ב־'}<b class="en">Band ${L.b}</b></p>`; })()}
     <button class="btn big-btn" data-act="go" data-v="home">${PIC.route}<span>למסלול שלי</span></button></section>`;
 };
 
@@ -7277,6 +7347,42 @@ function vocabWeak() {
   const dm = m.length ? m.filter(Boolean).length / m.length : null, sp = skillPct('mean');
   return (dm != null && dm < 0.7) || (sp != null && sp < 65);
 }
+/* ---- daily words goal + calendar reminder ---- */
+const VGOAL = () => P.vgoal || 20;
+function vDay() { if (!P.vday || P.vday.d !== today()) { const y = new Date(); y.setDate(y.getDate() - 1); const yk = y.getFullYear() + '-' + (y.getMonth() + 1) + '-' + y.getDate();
+  const pv = P.vday, met = pv && pv.n >= (pv.g || VGOAL()); P.vstreak = pv && pv.d === yk && met ? (P.vstreak || 0) : 0;
+  P.vday = { d: today(), n: 0, g: VGOAL() }; } return P.vday; }
+function vocabTick(n) {
+  const d = vDay(), was = d.n; d.n += n || 1;
+  if (was < d.g && d.n >= d.g) { P.vstreak = (P.vstreak || 0) + 1; setTimeout(() => { toast(`יעד המילים היומי הושלם! ${P.vstreak > 1 ? P.vstreak + ' ימים ברצף' : ''}`); try { confetti(40, true); } catch (e) { } }, 700); }
+}
+const V_AREAS = ['band', 'sight', 'acad'];
+function vocabCard() {
+  const d = vDay(), g = d.g, k = Math.min(1, d.n / g), done = d.n >= g, pct = Math.round(k * 100);
+  const ring = `<svg viewBox="0 0 64 64" class="vg-r" aria-hidden="true"><circle cx="32" cy="32" r="27" pathLength="100" class="rs-bg"/><circle cx="32" cy="32" r="27" pathLength="100" class="rs-fg" style="stroke-dasharray:${pct} 100"/></svg>`;
+  return `<section class="block"><div class="vgoal ${done ? 'done' : d.n ? '' : 'todo'}"><div class="vg-ring">${ring}<b dir="ltr">${Math.min(d.n, 999)}<small>/${g}</small></b></div>
+    <div class="vg-t"><b>${done ? 'יעד המילים של היום הושלם' : d.n ? `עוד ${g - d.n} מילים ליעד של היום` : 'יעד המילים של היום'}</b>
+    <p class="muted small">${P.vstreak > 0 ? `${I.flame}${P.vstreak} ${P.vstreak === 1 ? 'יום' : 'ימים'} ברצף · ` : ''}${done ? 'אפשר להמשיך ולצבור עוד כוכבים' : `${g} מילים ביום, כ־10 דקות`}</p>
+    <div class="btns"><button class="btn sm" data-act="vngo">${done ? 'עוד סט' : d.n ? 'להמשיך' : 'לתרגל מילים'}</button><button class="btn sm ghost" data-act="remind">${BELL_IC}<span>תזכורת יומית</span></button></div></div></div>
+    ${V.remind ? remindBox() : ''}</section>`;
+}
+const BELL_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+function remindBox() {
+  const t = P.remindAt || '20:00', g = VGOAL();
+  return `<div class="card remindbox"><b>תזכורת יומית ביומן</b>
+    <div class="trow"><label class="lbl" for="rmtime">באיזו שעה?</label><input id="rmtime" type="time" value="${t}"></div>
+    <div class="trow"><label class="lbl" for="rmgoal">כמה מילים ביום?</label><select id="rmgoal" class="tsel">${[10, 20, 30, 50].map(n => `<option value="${n}" ${n === g ? 'selected' : ''}>${n} מילים</option>`).join('')}</select></div>
+    ${CLOUD.on ? `<button class="btn" data-act="remindsave">${BELL_IC}<span>הוספה ליומן בטלפון</span></button><p class="muted small">ייפתח קובץ יומן. מאשרים "הוספה", והטלפון יזכיר כל יום בשעה הזו עם קישור לאתר.</p>`
+      : `<button class="btn" data-act="remindsave">שמירת היעד</button><p class="muted small">תזכורת ביומן אפשר להוסיף מהאתר: noanoashalom-art.github.io/popcorn-english</p>`}</div>`;
+}
+function icsReminder(time, goal) {
+  const [hh, mm] = time.split(':').map(Number), d = new Date(); d.setHours(hh, mm, 0, 0); if (d < new Date()) d.setDate(d.getDate() + 1);
+  const p = n => String(n).padStart(2, '0'), loc = x => `${x.getFullYear()}${p(x.getMonth() + 1)}${p(x.getDate())}T${p(x.getHours())}${p(x.getMinutes())}00`;
+  const u = new Date(), stamp = `${u.getUTCFullYear()}${p(u.getUTCMonth() + 1)}${p(u.getUTCDate())}T${p(u.getUTCHours())}${p(u.getUTCMinutes())}00Z`, url = 'https://noanoashalom-art.github.io/popcorn-english/';
+  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Popcorn English//Academic Reading//HE', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT', 'UID:pe-words-' + Date.now() + '@popcorn-english', 'DTSTAMP:' + stamp,
+    'DTSTART:' + loc(d), 'DURATION:PT10M', 'RRULE:FREQ=DAILY', 'SUMMARY:🍿 ' + goal + ' מילים באנגלית - קריאה אקדמית', 'DESCRIPTION:10 דקות של מילים. ' + url, 'URL:' + url,
+    'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:זמן למילים! ' + url, 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+}
 function vocabNudge() {
   if ((P.vnudge && P.vnudge > now()) || P.bandDay === today()) return '';
   const L = bandLevel(), B = BANDS[L.b - 1], si = bCurSet(L.b), r = bandRec()[L.b] || {}, started = Object.keys(r).length > 0;
@@ -7293,6 +7399,7 @@ VIEWS.home = () => {
   const skills = Object.keys(SK_NAMES).map(k => [k, skillPct(k)]);
   const st = streak();
   return `<section class="block greet"><div class="greet-row"><div class="greet-txt"><h1 class="h1">היי ${esc(P.name)}</h1><p class="muted">${st > 1 ? `${I.flame}${st} ימים ברצף · ` : ''}${Math.round(pr.all * 100)}%</p></div><div class="starbank">${I.star}<b>${P.stars || 0}</b><small>כוכבים</small></div></div>${bar(pr.all, 'thick')}</section>
+  ${vocabCard()}
   ${vocabNudge()}
   <section class="block path-wrap"><div class="path-top"><h2 class="h2">${PIC.route}<span>המסלול שלי</span></h2><span class="ptb">${dkKeys().length ? `<button class="btn sm soft" data-act="dkall">חזרה: לא ידעתי · ${dkKeys().length}</button>` : ''}${due ? `<button class="btn sm soft" data-act="mixed">חזרה יומית</button>` : ''}</span></div>${pathHtml()}</section>
   ${asgCard()}<section class="block">${lbMini()}</section>
@@ -7388,6 +7495,7 @@ VIEWS.quiz = () => {
   else if (q.t === 'multi') body = multiView(q);
   else if (q.t === 'find') body = findView(q);
   else if (q.t === 'pick') body = pickView(q);
+  else if (q.t === 'type') body = typeView(q);
   else body = qView(q, o);
   return top + (q.ctxFn ? `<section class="block ctx">${q.ctxFn()}</section>` : q.ctx ? `<section class="block ctx">${q.ctx}</section>` : '') + `<section class="block ${q.ctxFn || q.ctx ? 'withctx' : ''}">${body}</section>`;
 };
@@ -7414,9 +7522,10 @@ h += `<div class="aopts">${q.opts.map((w, j) => { const st = q.answered ? (j ===
   else if (o.feedback !== false) h += feedback(q);
   return h;
 }
-const DTRK = () => [I.abc, I.cards, I.cap, I.book, PIC.doc, PIC.flag];
+const DTRK_IC = () => ({ 1: I.abc, 7: I.star, 2: I.cards, 3: I.cap, 4: I.book, 6: PEN_IC });
+const dGroups = () => DIAG_GROUPS.filter(g => !(g[0] === 1 && P && P.noPhon));
 function partCount(st) {
-  if (!st || st.part > 5) return null;
+  if (!st || st.part > 8) return null;
   const pc = st.pc || {};
   let done, rem;
   if (st.part === 1) {
@@ -7424,19 +7533,19 @@ function partCount(st) {
     done = Object.keys(pc).filter(k => k.startsWith('1:')).reduce((a, k) => a + pc[k], 0);
     rem = Math.max(1, (st.order.length - st.ui) * 2 - st.ua.length);
     for (let g = st.stage + 1; g < STAGES.length; g++) rem += stageUnits(g, st.only).length * 2;
-  } else { done = pc['' + st.part] || 0; rem = st.part === 2 ? st.sl.length - st.si : st.part === 3 ? st.al.length - st.ai : st.part === 4 ? st.ml.length - st.mi : st.cl.length - st.ci; }
+  } else { done = pc['' + st.part] || 0; rem = st.part === 2 ? st.sl.length - st.si : st.part === 3 ? st.al.length - st.ai : st.part === 4 ? st.ml.length - st.mi : st.part === 5 ? st.cl.length - st.ci : st.part === 6 ? (st.wl || WRULES).length - (st.wi || 0) : st.part === 7 ? (st.bplan ? st.bl.length - st.bi + (st.bplan.length < 2 ? 3 : 0) : 6) : st.tl ? st.tl.length - st.ti : 3; }
   const total = done + Math.max(0, rem); return total ? [Math.min(done + 1, total), total] : null;
 }
 function diagTrack(st) {
   const part = st ? st.part : 1, pc = Q && Q.q && Q.q.t !== 'info' ? partCount(st) : null;
-  const ic = DTRK(), N = ic.length, cur = Math.max(0, Math.min(part, N) - 1), seg = 100 / (N - 1), pos = i => (100 - i * seg).toFixed(2);
+  const G = dGroups(), icm = DTRK_IC(), ic = G.map(g => icm[g[0]]).concat([PIC.flag]), N = ic.length, gi = G.findIndex(g => g.includes(part)), cur = gi < 0 ? N - 1 : gi, seg = 100 / (N - 1), pos = i => (100 - i * seg).toFixed(2);
   /* the popcorn moves a little toward the next dot with every answer in the part */
   const frac = pc ? Math.min(0.9, (pc[0] - 1) / Math.max(1, pc[1])) : (Q && Q.trk === cur && Q.trkF) || 0;
   if (Q && pc) Q.trkF = frac;
   let mp = cur >= N - 1 ? 0 : 100 - (cur + frac) * seg;
   /* only forward: never move back toward the start */
   if (Q) { if (Q.trkMin != null) mp = Math.min(mp, Q.trkMin); Q.trkMin = mp; }
-  return `<div class="dtrack" dir="ltr" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="${cur + 1}" aria-label="חלק ${Math.min(cur + 1, 5)} מתוך 5"><div class="dt-line"><span style="left:${mp.toFixed(2)}%"></span></div>${ic.map((x, i) => `<span class="dt-dot ${i < cur ? 'done' : i === cur ? 'cur' : ''}" style="left:${pos(i)}%">${i < cur ? I.check : x}</span>`).join('')}<span class="dt-mk" id="dtmk" data-i="${cur}" data-p="${mp.toFixed(2)}" style="left:${mp.toFixed(2)}%">${OWL('mk')}</span>${pc ? `<span class="dt-n en" style="left:${pos(cur)}%">${pc[0]}/${pc[1]}</span>` : ''}</div>`;
+  return `<div class="dtrack" dir="ltr" role="progressbar" aria-valuemin="1" aria-valuemax="${N - 1}" aria-valuenow="${cur + 1}" aria-label="חלק ${Math.min(cur + 1, N - 1)} מתוך ${N - 1}"><div class="dt-line"><span style="left:${mp.toFixed(2)}%"></span></div>${ic.map((x, i) => `<span class="dt-dot ${i < cur ? 'done' : i === cur ? 'cur' : ''}" style="left:${pos(i)}%">${i < cur ? I.check : x}</span>`).join('')}<span class="dt-mk" id="dtmk" data-i="${cur}" data-p="${mp.toFixed(2)}" style="left:${mp.toFixed(2)}%">${OWL('mk')}</span>${pc ? `<span class="dt-n en" style="left:${pos(cur)}%">${pc[0]}/${pc[1]}</span>` : ''}</div>`;
 }
 function trackHop() {
   const m = document.getElementById('dtmk'); if (!m || !Q) return;
@@ -8372,7 +8481,7 @@ function answerCustom(ok) {
   q.answered = true; q.ok = ok;
   if (ok) { Q.ok++; Q.times.push(now() - Q.t0); Q.combo = (Q.combo || 0) + 1; Q.gain = Q.combo >= 3 ? 2 : 1; P.stars = (P.stars || 0) + Q.gain; } else { Q.combo = 0; Q.gain = 0; }
   q.combo = Q.combo;
-  applyRec(q, ok); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok); save();
+  applyRec(q, ok); if (Q.o.area && V_AREAS.includes(Q.o.area) && !Q.o.diag) vocabTick(q.t === 'match' ? q.pairs.length : 1); if (q.onAns) q.onAns(ok); if (Q.src.onAnswer) Q.src.onAnswer(q, ok); save();
   render(); celebrate(ok, q);
 }
 const qTopBtns = q => `${q.help ? `<button class="link small" data-act="qhelp">${q.showHelp ? 'הסתירי תרגום' : 'תרגום השאלה'}</button>` : ''}${q.kw && q.kw.length && !q.showKw && !q.answered ? ' · <button class="link small" data-act="kw">רמז: הדגישי מילות מפתח</button>' : ''}${q.showHelp && q.help ? `<div class="help">${q.help}</div>` : ''}`;
@@ -9274,6 +9383,16 @@ const ACT = {
   diagskip: () => { P.diag.done = true; P.diag.skipped = true; P.diag.state = null; P.rlvl = P.rlvl || 1; save(); toast('מתחילות מהשלב הראשון'); go('home'); },
   nodict: el => { P.noDict = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noDict ? 'אסטרטגיות המילונית הוסרו' : 'אסטרטגיות המילונית חזרו'); render(); },
   nophon: el => { P.noPhon = !!el.checked; Object.keys(PCACHE).forEach(k => delete PCACHE[k]); save(); toast(P.noPhon ? 'תרגולי הקריאה הוסרו מהמסלול' : 'תרגולי הקריאה חזרו למסלול'); render(); },
+  remind: () => { V.remind = !V.remind; render(); },
+  remindsave: () => {
+    const t = (document.getElementById('rmtime') || {}).value || '20:00', g = +((document.getElementById('rmgoal') || {}).value || 20);
+    P.remindAt = t; P.vgoal = g; const d = vDay(); d.g = g; save();
+    if (CLOUD.on) {
+      try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([icsReminder(t, g)], { type: 'text/calendar;charset=utf-8' })); a.download = 'תזכורת מילים.ics'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800); toast('פותחים את הקובץ ומוסיפים ליומן'); }
+      catch (e) { toast('לא הצלחנו ליצור את קובץ היומן'); }
+    } else toast('היעד נשמר');
+    V.remind = false; render();
+  },
   vngo: () => { const L = bandLevel(), si = bCurSet(L.b); if (si >= 0) startBandSet(L.b, si); else go('band', { bid: L.b }); },
   vnlater: () => { P.vnudge = now() + 2 * 864e5; save(); render(); },
   bopen: el => { P.bandAt = +el.dataset.b; save(); V = { name: 'band', bid: +el.dataset.b }; render(true); },
@@ -9282,8 +9401,8 @@ const ACT = {
   bdue: el => startBandReview(+el.dataset.b, 'due'),
   bquick: el => startBandReview(+el.dataset.b, 'quick'),
   bflip: () => { V.flip = true; render(); },
-  bknow: () => { const w = BANDS[V.bid - 1].words[V.deck[V.i]]; if (!P.items[w.k]) P.items[w.k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; bNext(); },
-  bdk: () => { const w = BANDS[V.bid - 1].words[V.deck[V.i]]; itemRec(w.k, false); dkAdd(w.k); if (!V.again.includes(w.i)) { V.again.push(w.i); V.deck.push(w.i); } bNext(); },
+  bknow: () => { vocabTick(1); const w = BANDS[V.bid - 1].words[V.deck[V.i]]; if (!P.items[w.k]) P.items[w.k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; bNext(); },
+  bdk: () => { vocabTick(1); const w = BANDS[V.bid - 1].words[V.deck[V.i]]; itemRec(w.k, false); dkAdd(w.k); if (!V.again.includes(w.i)) { V.again.push(w.i); V.deck.push(w.i); } bNext(); },
   bskip: () => { save(); startBandQuiz(V.bid, V.si); },
   flip: () => { V.flip = !V.flip; const f = document.querySelector('.flip'); if (f) f.classList.toggle('on', V.flip); else render(); },
   cknow: () => { const k = 's:' + V.deck[V.i]; if (!P.items[k]) P.items[k] = { b: 1, d: now() + INT[1], c: 0, w: 0 }; cardNext(); },
@@ -9327,6 +9446,8 @@ const ACT = {
   pjump: el => go('jumpinfo', { k: +el.dataset.k }),
   pjumpgo: el => startJump(+el.dataset.k),
   fpick: el => { const q = Q && Q.q; if (!q || q.answered || q.t !== 'find') return; q.sel = el.dataset.w; render(); },
+  trcheck: () => { const q = Q && Q.q; if (!q || q.t !== 'type' || q.answered) return; const el = document.getElementById('trin'), v = (el && el.value || '').trim(); if (!v) { if (el) el.focus(); return; } q.typed = v; answerQ(trCheck(q.tr, v) ? 0 : 1); },
+  trdk: () => { const q = Q && Q.q; if (!q || q.t !== 'type' || q.answered) return; q.typed = ''; answerQ(-1); },
   fcheck: () => { const q = Q.q; if (q.t === 'find' && q.sel) answerCustom(q.find.includes(q.sel)); },
   fdk: () => { const q = Q.q; dkAdd(dkKey(q)); if (q.t === 'find') q.sel = null; answerCustom(false); },
   ppick: el => { const q = Q.q, i = +el.dataset.i; if (q.answered) return; if (q.sel.includes(i)) q.sel = q.sel.filter(x => x !== i); else { q.sel.push(i); if (q.sel.length > q.need) q.sel.shift(); } render(); },
@@ -9348,7 +9469,7 @@ const ACT = {
     const first = q[other];
     if (first === i) { q.done.push(i); const p = q.pairs[i]; const ok = !q.miss.includes(i); if (p.k) itemRec(p.k, ok); skillRec('mean', ok); q.selL = q.selR = null; SFX.play('match', q.done.length); confetti(8, false, LASTXY.x, LASTXY.y); }
     else { if (!q.miss.includes(first)) q.miss.push(first); if (side === 'R') q.shake = i; else q.shakeL = i; SFX.play('bad'); }
-    if (q.done.length === q.pairs.length) { q.answered = true; q.ok = q.miss.length <= 1; if (q.ok) { Q.ok++; P.stars = (P.stars || 0) + 2; SFX.play('win'); setTimeout(() => confetti(24), 60); } save(); }
+    if (q.done.length === q.pairs.length) { q.answered = true; q.ok = q.miss.length <= 1; if (Q.o.area && V_AREAS.includes(Q.o.area) && !Q.o.diag) vocabTick(q.pairs.length); if (q.ok) { Q.ok++; P.stars = (P.stars || 0) + 2; SFX.play('win'); setTimeout(() => confetti(24), 60); } save(); }
     render();
   },
   dpick: el => { const q = Q.q, i = +el.dataset.i; if (q.answered) return; q.sel = q.sel.includes(i) ? q.sel.filter(x => x !== i) : [...q.sel, i]; render(); },
@@ -9431,6 +9552,7 @@ function boot() {
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && e.target && e.target.id === 'pname') { e.preventDefault(); ACT.newp(); }
     if (e.key === 'Enter' && e.target && e.target.id === 'dsearch') { e.preventDefault(); ACT.dsearch(); }
+    if (e.key === 'Enter' && e.target && e.target.id === 'trin') { e.preventDefault(); ACT.trcheck(); }
     if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('flip')) { e.preventDefault(); ACT.flip(); }
     if (e.key === 'Escape' && TOUR) { tourEnd(); return; }
     if (e.key === 'Escape' && (SHEET || NS || GS || HELP || PROF)) { SHEET = null; NS = null; GS = null; HELP = false; PROF = false; render(); }
